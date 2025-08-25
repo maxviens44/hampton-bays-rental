@@ -131,19 +131,81 @@ function About() {
 }
 
 function Gallery() {
+  const [open, setOpen] = useState(false)
+  const [current, setCurrent] = useState(0)
+
+  useEffect(() => {
+    const onKey = (e) => {
+      if (!open) return
+      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'ArrowRight') setCurrent((i) => (i + 1) % IMAGES.length)
+      if (e.key === 'ArrowLeft') setCurrent((i) => (i - 1 + IMAGES.length) % IMAGES.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [open])
+
   return (
     <section id="gallery" className="bg-white">
       <div className="mx-auto max-w-6xl px-4 py-12">
         <h2 className="text-2xl font-semibold tracking-tight text-gray-900">Gallery</h2>
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {IMAGES.map(img => (
-            <figure key={img.src} className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-sm">
-              <img src={img.src} alt={img.alt} className="h-64 w-full object-cover" />
+          {IMAGES.map((img, idx) => (
+            <figure
+              key={img.src}
+              className="overflow-hidden rounded-2xl border border-gray-200 bg-gray-50 shadow-sm cursor-zoom-in"
+              onClick={() => { setCurrent(idx); setOpen(true) }}
+            >
+              <img src={img.src} alt={img.alt} loading="lazy" className="h-64 w-full object-cover" />
               <figcaption className="px-4 py-3 text-sm text-gray-700">{img.alt}</figcaption>
             </figure>
           ))}
         </div>
       </div>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          role="dialog"
+          aria-modal="true"
+          onClick={() => setOpen(false)}
+        >
+          <button
+            aria-label="Close"
+            className="absolute right-4 top-4 rounded-full bg-white/90 p-2 shadow"
+            onClick={(e) => { e.stopPropagation(); setOpen(false) }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+
+          <button
+            aria-label="Previous"
+            className="absolute left-3 sm:left-6 rounded-full bg-white/80 p-2 shadow"
+            onClick={(e) => { e.stopPropagation(); setCurrent((i) => (i - 1 + IMAGES.length) % IMAGES.length) }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 19l-7-7 7-7"/></svg>
+          </button>
+
+          <img
+            src={IMAGES[current].src}
+            alt={IMAGES[current].alt}
+            className="max-h-[90vh] max-w-[90vw] rounded-2xl object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+
+          <button
+            aria-label="Next"
+            className="absolute right-3 sm:right-6 rounded-full bg-white/80 p-2 shadow"
+            onClick={(e) => { e.stopPropagation(); setCurrent((i) => (i + 1) % IMAGES.length) }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5l7 7-7 7"/></svg>
+          </button>
+
+          <div className="absolute bottom-4 mx-auto max-w-4xl px-3 text-center text-sm text-white/90">
+            {IMAGES[current].alt}
+          </div>
+        </div>
+      )}
     </section>
   )
 }
