@@ -103,21 +103,18 @@ function About() {
         <h2 className="text-2xl font-semibold tracking-tight text-gray-900">About The Home</h2>
         <div className="mt-6 grid items-start gap-8 lg:grid-cols-2">
           <div className="prose max-w-none text-gray-700">
-            <p>
-              This home is just a moment away from one of the best bay beaches in the Hamptons. East Landing offers endless experiences to enjoy such as 4th of July fireworks bonfires with loved ones clamming and bird watching or a relaxing day at the beach while the bay waves roll at your feet. Only point two miles from the front door this beach paradise is yours to enjoy.
-            </p>
-            <p>
-              The beautifully crafted home is newly built by Paramount a renowned luxury construction company in the Hamptons. The residence offers ten foot ceilings and about two thousand square feet of well designed living and entertaining space with five bedrooms two and a half baths and an attached two car garage. Inside a meticulously maintained interior features an open concept layout including a light filled living room with a fireplace focal point and an eat in kitchen with stainless steel appliances.
-            </p>
-            <p>
-              All bedrooms are located on the second floor. The primary bedroom supports a king bed and an oversized custom walk in closet. The home features upgraded designer lighting throughout including in the primary closet. Hardwood floors are also noteworthy throughout.
-            </p>
-            <p>
-              The unfinished lower level with impressive twelve foot ceilings is memorable. Reimagine the space as more living space or a future pool house function if you add a pool. Enjoy morning coffee on the front porch and after a day at the beach retreat to the side patio with pergola to take in evening bay breezes in a private corner of the property with room for a pool and mature evergreens.
-            </p>
-            <p>
-              The friendly hamlet of Hampton Bays is known for year round beauty and activity. You are surrounded by desirable ocean and bay beaches and have access to abundant waterfront dining. The location is also convenient to Westhampton and Southampton villages.
-            </p>
+           <p>
+  Just steps from one of the best bay beaches in the Hamptons, this newly built five-bedroom, three-bath home offers the perfect mix of modern comfort and coastal charm. Only 0.2 miles from the front door, you can spend your days with bay waves rolling at your feet, or head just a few minutes further to experience the world-famous ocean beaches the Hamptons are known for.
+</p>
+<p>
+  Inside, the home features more than 2,000 square feet of bright and airy living space with soaring ten-foot ceilings. The open layout includes a light-filled living room with a fireplace as the focal point, flowing seamlessly into a well-appointed eat-in kitchen. Four bedrooms are located on the second floor, while a private fifth bedroom is tucked away in the finished lower level. Throughout the home, you’ll find hardwood floors, upgraded designer lighting, and thoughtful touches that make the space as stylish as it is comfortable.
+</p>
+<p>
+  The lower level is a true entertainment hub, boasting twelve-foot ceilings, a home theater, and a ping pong table. Step outside and you’ll find your own private oasis: a 16x40 pool and jacuzzi set up for relaxation or fun in the sun. Whether you’re gathering with friends or enjoying a quiet escape, the setting is designed to make every moment memorable.
+</p>
+<p>
+  Located in the friendly hamlet of Hampton Bays, the home offers year-round beauty and activity. You’ll be surrounded by desirable bay and ocean beaches and can take advantage of abundant waterfront dining. With easy access to both Westhampton and Southampton villages, this retreat is perfectly situated for beach days, fine dining, and exploring all that the Hamptons has to offer.
+</p>
           </div>
           <div className="grid grid-cols-2 gap-4">
             {IMAGES.slice(0,4).map(img => (
