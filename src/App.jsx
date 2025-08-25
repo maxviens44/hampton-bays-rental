@@ -37,7 +37,7 @@ function ImageHero() {
       <div className="relative mx-auto max-w-6xl px-4 py-24 sm:py-32">
         <div className="max-w-2xl rounded-2xl bg-white/80 p-6 shadow-lg backdrop-blur">
           <h1 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Hampton Bays Summer Home</h1>
-          <p className="mt-3 text-gray-700">Elegant four bedroom home a short walk to East Landing Bay Beach in Hampton Bays NY</p>
+          <p className="mt-3 text-gray-700">Elegant five bedroom home a short walk to East Landing Bay Beach in Hampton Bays NY</p>
           <div className="mt-5 flex gap-3">
             <a href="#gallery" className="rounded-xl bg-gray-900 px-5 py-3 text-white shadow hover:bg-gray-800 transition">View Gallery</a>
             <a href="#inquire" className="rounded-xl bg-white px-5 py-3 text-gray-900 ring-1 ring-gray-300 shadow hover:bg-gray-50 transition">Inquire</a>
@@ -73,10 +73,10 @@ function Nav() {
 function Highlights() {
   const items = [
     { label: "Walk to Bay Beach", value: ".2 miles to East Landing" },
-    { label: "Bedrooms", value: "4" },
+    { label: "Bedrooms", value: "5" },
     { label: "Bathrooms", value: "2.5" },
     { label: "Living Space", value: "About 2,000 sq ft" },
-    { label: "Ceilings", value: "10 foot on main floor" },
+    { label: "Amenities", value: "Pool, jacuzzi and outdoor kitchen" },
     { label: "Parking", value: "Attached 2 car garage" }
   ]
   return (
@@ -107,7 +107,7 @@ function About() {
               This home is just a moment away from one of the best bay beaches in the Hamptons. East Landing offers endless experiences to enjoy such as 4th of July fireworks bonfires with loved ones clamming and bird watching or a relaxing day at the beach while the bay waves roll at your feet. Only point two miles from the front door this beach paradise is yours to enjoy.
             </p>
             <p>
-              The beautifully crafted home is newly built by Paramount a renowned luxury construction company in the Hamptons. The residence offers ten foot ceilings and about two thousand square feet of well designed living and entertaining space with four bedrooms two and a half baths and an attached two car garage. Inside a meticulously maintained interior features an open concept layout including a light filled living room with a fireplace focal point and an eat in kitchen with stainless steel appliances.
+              The beautifully crafted home is newly built by Paramount a renowned luxury construction company in the Hamptons. The residence offers ten foot ceilings and about two thousand square feet of well designed living and entertaining space with five bedrooms two and a half baths and an attached two car garage. Inside a meticulously maintained interior features an open concept layout including a light filled living room with a fireplace focal point and an eat in kitchen with stainless steel appliances.
             </p>
             <p>
               All bedrooms are located on the second floor. The primary bedroom supports a king bed and an oversized custom walk in closet. The home features upgraded designer lighting throughout including in the primary closet. Hardwood floors are also noteworthy throughout.
