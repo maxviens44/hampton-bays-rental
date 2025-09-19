@@ -124,7 +124,7 @@ export default function App() {
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
             <p>
-              Welcome to your Hampton Bays getaway with bay views, a saltwater in-ground pool, and an easy drive to beaches, restaurants, and shops. This 3,750 sq ft home sleeps up to 10 across 4 bedrooms and 5 bathrooms, designed for comfort and style
+              Welcome to your Hampton Bays getaway with bay views, a saltwater in-ground pool, and an easy drive to beaches, restaurants, and shops. This 3,750 sq ft home sleeps up to 10 across 4 bedrooms and 5 bathrooms, designed for comfort and style.
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
@@ -132,10 +132,10 @@ export default function App() {
               <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
               <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views.</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
-              <li>Central air, outdoor shower, and workout room.
+              <li>Central air, outdoor shower, and workout room.</li>
             </ul>
             <p>
-             Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with plenty of natural light and fast Wi-Fi, making it easy to work remotely.
+              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with plenty of natural light and fast Wi-Fi, making it easy to work remotely.
             </p>
             <h4 className="font-semibold mt-4">Sleeping configuration</h4>
             <p className="text-sm">
@@ -143,13 +143,13 @@ export default function App() {
             </p>
             <h4 className="font-semibold mt-4">Location</h4>
             <p className="text-sm">
-              In the heart of Hampton Bays near marinas, dining, and beaches. Quick access to the best of the Hamptons
+              In the heart of Hampton Bays near marinas, dining, and beaches. Quick access to the best of the Hamptons.
             </p>
             <h4 className="font-semibold mt-4">Good to know</h4>
             <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Saltwater pool is seasonal and professionally maintained</li>
-              <li>Outdoor shower available</li>
-             </ul>
+              <li>Saltwater pool is seasonal and professionally maintained.</li>
+              <li>Outdoor shower available.</li>
+            </ul>
             <div className="mt-6">
               <a
                 href="#contact"
@@ -166,7 +166,7 @@ export default function App() {
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-          <p className="text-sm text-neutral-600 mb-6">
+        <p className="text-sm text-neutral-600 mb-6">
             Click any photo to view it full screen
           </p>
 
