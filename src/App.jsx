@@ -124,7 +124,7 @@ function HomeSections() {
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool</li>
-              <li>Chef kitchen with Viking appliances, pot filler, Quartzite counters, and island seating</li>
+              <li>Chef kitchen with Viking appliances, Quartzite counters, and island seating</li>
               <li>Main level includes two oversized en-suite bedrooms with direct patio access</li>
               <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry</li>
