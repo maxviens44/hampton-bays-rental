@@ -39,7 +39,7 @@ const images = [
   { file: "stairs.webp", label: "Staircase" }
 ]
 
-function Header({ isInfo }) {
+function Header() {
   return (
     <header className="px-6 md:px-10 py-6 border-b">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -47,10 +47,10 @@ function Header({ isInfo }) {
           2 Hubbard Street • Hampton Bays
         </a>
         <nav className="hidden md:flex items-center gap-6 text-sm">
-          {!isInfo && <a href="#about" className="hover:underline">About</a>}
-          {!isInfo && <a href="#gallery" className="hover:underline">Gallery</a>}
+          <a href="#about" className="hover:underline">About</a>
+          <a href="#gallery" className="hover:underline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
-          {!isInfo && <a href="#contact" className="hover:underline">Contact</a>}
+          <a href="#contact" className="hover:underline">Contact</a>
         </nav>
       </div>
     </header>
