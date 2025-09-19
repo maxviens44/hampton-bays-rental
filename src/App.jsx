@@ -170,7 +170,7 @@ function HomeSections() {
       <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
-          <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
+        <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
 
           <form
             name="contact"
@@ -278,6 +278,22 @@ function Pill({ children, href }) {
   )
 }
 
+function AccordionCard({ title, open, onClick, children }) {
+  return (
+    <div className="rounded-2xl border shadow-sm bg-white">
+      <button onClick={onClick} className="w-full flex items-center justify-between px-4 py-3">
+        <span className="font-medium">{title}</span>
+        <Chevron open={open} />
+      </button>
+      {open && (
+        <div className="px-5 pb-4 text-sm">
+          {children}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function InfoPage() {
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
 
@@ -340,9 +356,31 @@ function InfoPage() {
     { town: "East Hampton", name: "Serafina", url: "https://www.serafinarestaurant.com/east-hampton", desc: "Lively outpost serving contemporary Italian favorites" }
   ]
 
-  const gmaps = (dest) =>
+  const gmaps = dest =>
     `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
+  // handle deep links like #/info/house and smooth scroll to section
+  const scrollToId = (id) => {
+    const el = document.getElementById(id)
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
+  }
+
+  useEffect(() => {
+    const handle = () => {
+      const h = window.location.hash || ""
+      const m = h.match(/^#\/info\/([a-z-]+)/i)
+      if (m && m[1]) {
+        setTimeout(() => scrollToId(m[1]), 0)
+      }
+    }
+    handle()
+    window.addEventListener("hashchange", handle)
+    return () => window.removeEventListener("hashchange", handle)
+  }, [])
+
+  // restaurant town filter
+  const towns = ["All", "Hampton Bays", "Southampton", "Sag Harbor", "East Hampton"]
+  const [townFilter, setTownFilter] = React.useState("All")
   const visibleRestaurants =
     townFilter === "All" ? restaurants : restaurants.filter(r => r.town === townFilter)
 
@@ -362,9 +400,9 @@ function InfoPage() {
       <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
         <div className="max-w-5xl mx-auto px-6 md:px-10">
           <nav className="flex items-center gap-4 py-3 text-sm">
-            <a href="#house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
-            <a href="#beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
-            <a href="#restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
+            <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
+            <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
+            <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
           </nav>
         </div>
       </div>
@@ -377,7 +415,6 @@ function InfoPage() {
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Wi-Fi */}
               <AccordionCard title="Wi Fi" open={open.wifi} onClick={() => toggle("wifi")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Network name, staythehamptons</li>
@@ -386,7 +423,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Check in and out */}
               <AccordionCard title="Check in and out" open={open.checkin} onClick={() => toggle("checkin")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Check in after 4 pm</li>
@@ -396,7 +432,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Garbage and recycling */}
               <AccordionCard title="Garbage and recycling" open={open.trash} onClick={() => toggle("trash")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Bins on the side of the house near the driveway</li>
@@ -405,7 +440,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Lighting and HVAC */}
               <AccordionCard title="Lighting and HVAC" open={open.lighting} onClick={() => toggle("lighting")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Most lights are on dimmers, slide to adjust brightness</li>
@@ -414,7 +448,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Pool and outdoor */}
               <AccordionCard title="Pool and outdoor" open={open.outdoor} onClick={() => toggle("outdoor")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Saltwater pool with weekly service in season</li>
@@ -423,7 +456,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Parking and EV */}
               <AccordionCard title="Parking and EV" open={open.parking} onClick={() => toggle("parking")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Driveway fits four cars, garage access only if noted</li>
@@ -431,7 +463,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Home office */}
               <AccordionCard title="Home office" open={open.office} onClick={() => toggle("office")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Dedicated desk in a quiet room with natural light</li>
@@ -440,7 +471,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* Emergency */}
               <AccordionCard title="Emergency" open={open.emergency} onClick={() => toggle("emergency")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Dial 911 for emergencies</li>
@@ -449,7 +479,6 @@ function InfoPage() {
                 </ul>
               </AccordionCard>
 
-              {/* House rules */}
               <AccordionCard title="House rules" open={open.rules} onClick={() => toggle("rules")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>No parties and no smoking</li>
@@ -539,23 +568,6 @@ function InfoPage() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* simple reusable accordion card */
-function AccordionCard({ title, open, onClick, children }) {
-  return (
-    <div className="rounded-2xl border shadow-sm bg-white">
-      <button onClick={onClick} className="w-full flex items-center justify-between px-4 py-3">
-        <span className="font-medium">{title}</span>
-        <Chevron open={open} />
-      </button>
-      {open && (
-        <div className="px-5 pb-4 text-sm">
-          {children}
-        </div>
-      )}
-    </div>
   )
 }
 
