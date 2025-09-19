@@ -24,7 +24,8 @@ const images = [
   { file: "room1.webp", label: "Bedroom 2" },
   { file: "room2.webp", label: "Bedroom 3" },
   { file: "room4.webp", label: "Bedroom 4" },
-  { file: "office-room.webp", label: "Home Office" },
+  { file: "office-room.webp", label: "Office" },
+  { file: "room-office2.webp", label: "Office" },
   { file: "basement1.webp", label: "Media Room" },
   { file: "basement2.webp", label: "Media Room" },
   { file: "bath1.webp", label: "Guest Bathroom" },
@@ -34,8 +35,7 @@ const images = [
   { file: "foyer2.webp", label: "Entryway" },
   { file: "garage.webp", label: "Detached Garage" },
   { file: "laundry.webp", label: "Laundry Room" },
-   { file: "restroom.webp", label: "Half Bath" },
-  { file: "room-office2.webp", label: "Secondary Office" },
+  { file: "restroom.webp", label: "Half Bath" },
   { file: "stairs.webp", label: "Staircase" }
 ]
 
