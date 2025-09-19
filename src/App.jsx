@@ -1,51 +1,43 @@
 import React, { useEffect, useState, useCallback } from "react"
 
-const fileNames = [
-  "balcony.webp",
-  "basement1.webp",
-  "basement2.webp",
-  "bath1.webp",
-  "bath2.webp",
-  "bath4.webp",
-  "bathmain.webp",
-  "bathmain2.webp",
-  "bathmain3.webp",
-  "dining.webp",
-  "foyer.webp",
-  "foyer2.webp",
-  "garage.webp",
-  "hosue.webp",
-  "kitchen1.webp",
-  "kitchen2.webp",
-  "kitchen3.webp",
-  "laundry.webp",
-  "living.webp",
-  "living2.webp",
-  "living3.webp",
-  "office-room.webp",
-  "planbasement.webp",
-  "planmain.webp",
-  "plansecond.webp",
-  "pool1.webp",
-  "pool2.webp",
-  "pool3.webp",
-  "pool4.webp",
-  "primary.webp",
-  "primary2.webp",
-  "primarydoors.webp",
-  "restroom.webp",
-  "room-office2.webp",
-  "room1.webp",
-  "room2.webp",
-  "room4.webp",
-  "stairs.webp",
-  "top.webp",
+const images = [
+  { file: "top.webp", label: "Aerial View" },
+  { file: "hosue.webp", label: "Exterior Front" }, // keep as-is if file name is really "hosue.webp"
+  { file: "kitchen1.webp", label: "Kitchen" },
+  { file: "kitchen2.webp", label: "Chef Kitchen" },
+  { file: "kitchen3.webp", label: "Chef Kitchen" },
+  { file: "dining.webp", label: "Dining Area" },
+  { file: "living.webp", label: "Living Room" },
+  { file: "living2.webp", label: "Living Room" },
+  { file: "living3.webp", label: "Living Room" },
+  { file: "pool1.webp", label: "Saltwater Pool" },
+  { file: "pool2.webp", label: "Pool and Patio" },
+  { file: "pool3.webp", label: "Poolside" },
+  { file: "pool4.webp", label: "Pool View" },
+  { file: "primary.webp", label: "Primary Bedroom" },
+  { file: "primary2.webp", label: "Primary Suite" },
+  { file: "primarydoors.webp", label: "Primary Doors to Balcony" },
+  { file: "bathmain.webp", label: "Primary Suite Bathroom" },
+  { file: "bathmain2.webp", label: "Primary Suite Bathroom" },
+  { file: "bathmain3.webp", label: "Primary Suite Bathroom" },
+  { file: "room1.webp", label: "Bedroom 2" },
+  { file: "room2.webp", label: "Bedroom 3" },
+  { file: "room4.webp", label: "Bedroom 4" },
+  { file: "office-room.webp", label: "Home Office" },
+  { file: "balcony.webp", label: "Balcony View" },
+  { file: "basement1.webp", label: "Media Room" },
+  { file: "basement2.webp", label: "Media Room" },
+  { file: "bath1.webp", label: "Guest Bathroom" },
+  { file: "bath2.webp", label: "Guest Bathroom" },
+  { file: "bath4.webp", label: "Guest Bathroom" },
+  { file: "foyer.webp", label: "Front Foyer" },
+  { file: "foyer2.webp", label: "Entryway" },
+  { file: "garage.webp", label: "Detached Garage" },
+  { file: "laundry.webp", label: "Laundry Room" },
+   { file: "restroom.webp", label: "Half Bath" },
+  { file: "room-office2.webp", label: "Secondary Office" },
+  { file: "stairs.webp", label: "Staircase" }
 ]
-
-function labelFromFile(name) {
-  const base = name.replace(".webp", "").replace(/-/g, " ")
-  return base.charAt(0).toUpperCase() + base.slice(1)
-}
 
 export default function App() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -59,11 +51,11 @@ export default function App() {
   const close = useCallback(() => setLightboxOpen(false), [])
 
   const next = useCallback(() => {
-    setIndex((i) => (i + 1) % fileNames.length)
+    setIndex((i) => (i + 1) % images.length)
   }, [])
 
   const prev = useCallback(() => {
-    setIndex((i) => (i - 1 + fileNames.length) % fileNames.length)
+    setIndex((i) => (i - 1 + images.length) % images.length)
   }, [])
 
   useEffect(() => {
@@ -103,7 +95,7 @@ export default function App() {
           <div className="relative">
             <img
               src="/images/top.webp"
-              alt="Top"
+              alt="Aerial View"
               className="w-full h-[46vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
@@ -166,33 +158,29 @@ export default function App() {
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-        <p className="text-sm text-neutral-600 mb-6">
+          <p className="text-sm text-neutral-600 mb-6">
             Click any photo to view it full screen
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-            {fileNames.map((fname, idx) => {
-              const src = `/images/${fname}`
-              const label = labelFromFile(fname)
-              return (
-                <button
-                  key={src}
-                  onClick={() => openAt(idx)}
-                  className="group relative focus:outline-none"
-                  aria-label={`Open ${label}`}
-                >
-                  <img
-                    src={src}
-                    alt={label}
-                    loading={idx < 6 ? "eager" : "lazy"}
-                    className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
-                  />
-                  <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
-                    {label}
-                  </span>
-                </button>
-              )
-            })}
+            {images.map((img, idx) => (
+              <button
+                key={img.file}
+                onClick={() => openAt(idx)}
+                className="group relative focus:outline-none"
+                aria-label={`Open ${img.label}`}
+              >
+                <img
+                  src={`/images/${img.file}`}
+                  alt={img.label}
+                  loading={idx < 6 ? "eager" : "lazy"}
+                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                />
+                <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
+                  {img.label}
+                </span>
+              </button>
+            ))}
           </div>
         </div>
       </section>
@@ -223,12 +211,11 @@ export default function App() {
         >
           <div className="relative max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
             <img
-              src={`/images/${fileNames[index]}`}
-              alt={labelFromFile(fileNames[index])}
+              src={`/images/${images[index].file}`}
+              alt={images[index].label}
               className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
             />
 
-            {/* Close */}
             <button
               onClick={close}
               aria-label="Close"
@@ -237,7 +224,6 @@ export default function App() {
               Close
             </button>
 
-            {/* Prev */}
             <button
               onClick={prev}
               aria-label="Previous"
@@ -246,7 +232,6 @@ export default function App() {
               Prev
             </button>
 
-            {/* Next */}
             <button
               onClick={next}
               aria-label="Next"
