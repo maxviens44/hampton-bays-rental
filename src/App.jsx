@@ -189,4 +189,235 @@ function HomeSections() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="First Name" placeholder="First Name" required className="bor
+              <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+
+            <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+              Submit Inquiry
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* Lightbox */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          onClick={close}
+        >
+          <div className="relative max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={`/images/${images[index].file}`}
+              alt={images[index].label}
+              className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
+            />
+
+            <button
+              onClick={close}
+              aria-label="Close"
+              className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Close
+            </button>
+
+            <button
+              onClick={prev}
+              aria-label="Previous"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Prev
+            </button>
+
+            <button
+              onClick={next}
+              aria-label="Next"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+function InfoPage() {
+  return (
+    <section className="px-6 md:px-10 py-8 md:py-12">
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-2xl font-semibold mb-2">House Information</h2>
+        <p className="text-neutral-700 mb-6">
+          Quick reference for your stay. Save this page for offline use. Contact and emergency info below
+        </p>
+
+        <div className="space-y-8">
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Wi-Fi</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Network, staythehamptons</li>
+              <li>Password, provided after booking</li>
+              <li>Coverage, whole house, office, pool patio</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Check in and out</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Check in after 4 pm</li>
+              <li>Check out by 10 am</li>
+              <li>Smart lock code sent the morning of arrival</li>
+              <li>Before leaving, run the dishwasher and take trash to outdoor bins</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Garbage and recycling</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Bins on the side of the house near the driveway</li>
+              <li>Trash pickup Monday and Thursday, recycling Wednesday</li>
+              <li>Break down boxes and rinse cans and bottles</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Lighting and HVAC</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Most lights on dimmers, slide to adjust brightness</li>
+              <li>Pool and patio lights, switches near the back sliders</li>
+              <li>Thermostats, keep between 68 and 74 for comfort and efficiency</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Pool and outdoor</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Saltwater pool with weekly service in season</li>
+              <li>Outdoor shower by the garage walkway</li>
+              <li>Close umbrellas and secure cushions if windy</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Parking and EV</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Driveway fits four cars, garage access only if noted</li>
+              <li>Street parking rules vary by season, check posted signs</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Emergency</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>Dial 911 for emergencies</li>
+              <li>Urgent home issues, use the host number in your arrival email</li>
+              <li>Nearest hospital, Stony Brook Southampton Hospital, about 20 minutes west</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Beaches, popular picks</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li><b>Hampton Bays</b>, Ponquogue, Tiana, Meschutt, Shinnecock East County Park</li>
+              <li><b>Southampton</b>, Coopers, Old Town, Flying Point</li>
+              <li><b>Sag Harbor</b>, Foster Memorial, also called Long Beach, Havens</li>
+              <li><b>East Hampton</b>, Main Beach, Two Mile Hollow, Georgica, Indian Wells</li>
+            </ul>
+            <p className="text-xs text-neutral-600 mt-1">Parking may require town permits in season, check rules before you go</p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">Restaurants, guest favorites</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+              <div>
+                <p className="font-medium">Hampton Bays</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Rumba</li>
+                  <li>Cowfish</li>
+                  <li>Edgewater</li>
+                  <li>Oakland’s</li>
+                  <li>1 North Steakhouse</li>
+                  <li>Sundays on the Bay</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium">Southampton</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>75 Main</li>
+                  <li>Sant Ambroeus</li>
+                  <li>Tutto il Giorno</li>
+                  <li>Union Burger Bar</li>
+                  <li>Le Charlot</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium">Sag Harbor</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>The American Hotel</li>
+                  <li>Le Bilboquet</li>
+                  <li>Lulu Kitchen and Bar</li>
+                  <li>Page at 63 Main</li>
+                  <li>Tutto il Giorno</li>
+                </ul>
+              </div>
+              <div>
+                <p className="font-medium">East Hampton</p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Nick and Toni’s</li>
+                  <li>East Hampton Grill</li>
+                  <li>Cittanuova</li>
+                  <li>Fresno</li>
+                  <li>Serafina</li>
+                </ul>
+              </div>
+            </div>
+            <p className="text-xs text-neutral-600 mt-1">Summer reservations fill quickly, book ahead on Resy or OpenTable</p>
+          </div>
+
+          <div>
+            <h3 className="text-lg font-semibold mb-2">House rules</h3>
+            <ul className="list-disc pl-5 text-sm space-y-1">
+              <li>No parties and no smoking</li>
+              <li>No pets unless approved before booking</li>
+              <li>Quiet hours after 10 pm per town guidance</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export default function App() {
+  const [route, setRoute] = useState(window.location.hash || "#/")
+  useEffect(() => {
+    const onHash = () => setRoute(window.location.hash || "#/")
+    window.addEventListener("hashchange", onHash)
+    return () => window.removeEventListener("hashchange", onHash)
+  }, [])
+
+  const isInfo = route.startsWith("#/info")
+
+  return (
+    <main className="min-h-screen bg-white">
+      <Header isInfo={isInfo} />
+      {isInfo ? <InfoPage /> : <HomeSections />}
+      <footer className="px-6 md:px-10 py-8 border-t">
+        <div className="max-w-7xl mx-auto text-sm text-neutral-600">
+          © {new Date().getFullYear()} Hamptons Rental
+        </div>
+      </footer>
+    </main>
+  )
+}
