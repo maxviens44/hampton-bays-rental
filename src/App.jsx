@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react"
 
 const images = [
-  { file: "top.webp", label: "Aerial View" },
   { file: "hosue.webp", label: "Exterior Front" }, // keep as-is if file name is really "hosue.webp"
+  { file: "top.webp", label: "Aerial View" },
   { file: "kitchen1.webp", label: "Kitchen" },
   { file: "kitchen2.webp", label: "Chef Kitchen" },
   { file: "kitchen3.webp", label: "Chef Kitchen" },
