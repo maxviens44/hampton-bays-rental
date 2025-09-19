@@ -41,12 +41,13 @@ const images = [
 
 function Header() {
   return (
-    <header className="px-6 md:px-10 py-6 border-b">
+    <header className="px-6 md:px-10 py-6 border-b sticky top-0 bg-white/90 backdrop-blur">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <a href="/" className="text-xl md:text-2xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
         </a>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        {/* change hidden md:flex -> flex */}
+        <nav className="flex items-center gap-6 text-sm">
           <a href="#about" className="hover:underline">About</a>
           <a href="#gallery" className="hover:underline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
@@ -56,6 +57,7 @@ function Header() {
     </header>
   )
 }
+
 
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
