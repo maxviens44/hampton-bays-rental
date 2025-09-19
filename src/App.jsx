@@ -97,8 +97,8 @@ export default function App() {
         <div className="max-w-7xl mx-auto">
           <div className="relative">
             <img
-              src="/images/top.webp"
-              alt="Aerial View"
+              src="/images/hosue.webp"
+              alt="House View"
               className="w-full h-[46vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
@@ -106,7 +106,7 @@ export default function App() {
             <div className="absolute inset-0 bg-black/20" />
             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
               <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
-                Modern coastal retreat with pool
+                Luxury Hampton Bays Retreat
               </h2>
             </div>
           </div>
