@@ -18,9 +18,9 @@ const images = [
   { file: "primary2.webp", label: "Primary Suite" },
   { file: "primarydoors.webp", label: "Primary Doors to Balcony" },
   { file: "balcony.webp", label: "Balcony View" },
-  { file: "bathmain.webp", label: "Primary Suite Bathroom" },
-  { file: "bathmain2.webp", label: "Primary Suite Bathroom" },
-  { file: "bathmain3.webp", label: "Primary Suite Bathroom" },
+  { file: "bathmain.webp", label: "Luxurious En-Suite Bathroom" },
+  { file: "bathmain2.webp", label: "Luxurious En-Suite Bathroom" },
+  { file: "bathmain3.webp", label: "Luxurious En-Suite Bathroom" },
   { file: "room1.webp", label: "Bedroom 2" },
   { file: "room2.webp", label: "Bedroom 3" },
   { file: "room4.webp", label: "Bedroom 4" },
@@ -122,7 +122,7 @@ export default function App() {
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
               <li>Chef kitchen with Viking appliances, pot filler, Quartzite counters, and island seating.</li>
               <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
-              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views.</li>
+              <li>Primary suite upstairs with two walk-in closets, private balcony with bay views luxurious en-suite bathroom with walk-in shower and standalone jacuzzi tub.</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
               <li>Central air, outdoor shower, and workout room.</li>
             </ul>
