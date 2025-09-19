@@ -257,110 +257,42 @@ function InfoPage() {
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
 
   const beaches = [
-    {
-      name: "Ponquogue Beach",
-      desc: "Wide ocean beach with soft sand, seasonal facilities, and classic Dune Road views",
-      info: "https://www.southamptontownny.gov/facilities/facility/details/Ponquogue-Beach-Pavilion-34",
-      dest: "Ponquogue Beach, Dune Rd, Hampton Bays, NY"
-    },
-    {
-      name: "Tiana Beach",
-      desc: "Family friendly ocean spot with a pavilion area and gentle surf on calmer days",
-      info: "https://www.southamptontownny.gov/facilities/facility/details/tianabeachandpavilion-36",
-      dest: "Tiana Beach, Dune Rd, Hampton Bays, NY"
-    },
-    {
-      name: "Meschutt Beach County Park",
-      desc: "Bay beach with calmer water, a small boardwalk vibe, and easy access to food",
-      info: "https://suffolkcountyny.gov/Departments/Parks/Our-Parks/Meschutt-Beach-County-Park",
-      dest: "Meschutt Beach County Park, Hampton Bays, NY"
-    },
-    {
-      name: "Shinnecock East County Park",
-      desc: "Scenic stretch of oceanfront near the inlet, more natural and less built up",
-      info: "https://www.suffolkcountyny.gov/Departments/Parks/Our-Parks/Shinnecock-East-County-Park",
-      dest: "Shinnecock East County Park, Dune Rd, Southampton, NY"
-    },
-    {
-      name: "Coopers Beach",
-      desc: "Southampton flagship beach with dunes, services, and long shoreline walks",
-      info: "https://www.southamptonvillage.org/Facilities/Facility/Details/Coopers-Beach-6",
-      dest: "Coopers Beach, 268 Meadow Ln, Southampton, NY 11968"
-    },
-    {
-      name: "Old Town Beach",
-      desc: "Quieter option south of the village with easy access and classic ocean views",
-      info: "https://www.southamptontownny.gov/Facilities/Facility/Details/Old-Town-Beach-35",
-      dest: "Old Town Beach, 159 Gin Ln, Southampton, NY 11968"
-    },
-    {
-      name: "Flying Point Beach",
-      desc: "Water Mill favorite with a broad beach face and a more relaxed feel",
-      info: "https://www.southamptontownny.gov/1445/Flying-Point-Comfort-Station",
-      dest: "Flying Point Beach, 1055 Flying Point Rd, Water Mill, NY 11976"
-    },
-    {
-      name: "Foster Memorial Beach Long Beach",
-      desc: "Sag Harbor bay beach with calm water and sunset views along the causeway",
-      info: "https://www.southamptontownny.gov/facilities/facility/details/Foster-Memorial-Beach-Long-Beach-31",
-      dest: "Foster Memorial Beach, Long Beach Rd, Sag Harbor, NY 11963"
-    },
-    {
-      name: "Havens Beach",
-      desc: "Village bay beach close to town, convenient for short visits and families",
-      info: "https://www.sagharborny.gov/parksrec/page/havens-beach",
-      dest: "Havens Beach, Sag Harbor, NY"
-    },
-    {
-      name: "Main Beach East Hampton",
-      desc: "Iconic East Hampton ocean beach with lifeguards and postcard dunes",
-      info: "https://easthamptonvillage.org/394/Main-Beach",
-      dest: "Main Beach, 104 Ocean Ave, East Hampton, NY 11937"
-    },
-    {
-      name: "Two Mile Hollow Beach",
-      desc: "Less crowded village beach with the same sweeping Atlantic shoreline",
-      info: "https://easthamptonvillage.org/395/Two-Mile-Hollow-Beach",
-      dest: "Two Mile Hollow Beach, East Hampton, NY 11937"
-    },
-    {
-      name: "Georgica Beach",
-      desc: "Beautiful stretch near Georgica Pond with a quieter, refined vibe",
-      info: "https://easthamptonvillage.org/396/Georgica-Beach",
-      dest: "Georgica Beach, 219 Lily Pond Ln, East Hampton, NY 11937"
-    },
-    {
-      name: "Indian Wells Beach",
-      desc: "Amagansett favorite with a long open beach and seasonal facilities",
-      info: "https://www.easthamptonny.gov/Facilities/Facility/Details/Indian-Wells-Beach-19",
-      dest: "Indian Wells Beach, Amagansett, NY 11930"
-    }
+    { name: "Ponquogue Beach", desc: "Wide ocean beach with soft sand and seasonal facilities", info: "https://www.southamptontownny.gov/facilities/facility/details/Ponquogue-Beach-Pavilion-34", dest: "Ponquogue Beach, Dune Rd, Hampton Bays, NY" },
+    { name: "Tiana Beach", desc: "Family friendly ocean spot with pavilion area and gentle surf", info: "https://www.southamptontownny.gov/facilities/facility/details/tianabeachandpavilion-36", dest: "Tiana Beach, Dune Rd, Hampton Bays, NY" },
+    { name: "Meschutt Beach County Park", desc: "Bay beach with calmer water and easy food options", info: "https://suffolkcountyny.gov/Departments/Parks/Our-Parks/Meschutt-Beach-County-Park", dest: "Meschutt Beach County Park, Hampton Bays, NY" },
+    { name: "Shinnecock East County Park", desc: "Natural oceanfront near the inlet with fewer structures", info: "https://www.suffolkcountyny.gov/Departments/Parks/Our-Parks/Shinnecock-East-County-Park", dest: "Shinnecock East County Park, Dune Rd, Southampton, NY" },
+    { name: "Coopers Beach", desc: "Southampton flagship beach with services and long shoreline walks", info: "https://www.southamptonvillage.org/Facilities/Facility/Details/Coopers-Beach-6", dest: "Coopers Beach, 268 Meadow Ln, Southampton, NY 11968" },
+    { name: "Old Town Beach", desc: "Quieter option south of the village with classic ocean views", info: "https://www.southamptontownny.gov/Facilities/Facility/Details/Old-Town-Beach-35", dest: "Old Town Beach, 159 Gin Ln, Southampton, NY 11968" },
+    { name: "Flying Point Beach", desc: "Water Mill favorite with a broad beach face and relaxed feel", info: "https://www.southamptontownny.gov/1445/Flying-Point-Comfort-Station", dest: "Flying Point Beach, 1055 Flying Point Rd, Water Mill, NY 11976" },
+    { name: "Foster Memorial Beach Long Beach", desc: "Sag Harbor bay beach with calm water and sunset views", info: "https://www.southamptontownny.gov/facilities/facility/details/Foster-Memorial-Beach-Long-Beach-31", dest: "Foster Memorial Beach, Long Beach Rd, Sag Harbor, NY 11963" },
+    { name: "Havens Beach", desc: "Village bay beach close to town and convenient for families", info: "https://www.sagharborny.gov/parksrec/page/havens-beach", dest: "Havens Beach, Sag Harbor, NY" },
+    { name: "Main Beach East Hampton", desc: "Iconic village ocean beach with lifeguards and dunes", info: "https://easthamptonvillage.org/394/Main-Beach", dest: "Main Beach, 104 Ocean Ave, East Hampton, NY 11937" },
+    { name: "Two Mile Hollow Beach", desc: "Less crowded village beach with wide Atlantic shoreline", info: "https://easthamptonvillage.org/395/Two-Mile-Hollow-Beach", dest: "Two Mile Hollow Beach, East Hampton, NY 11937" },
+    { name: "Georgica Beach", desc: "Beautiful stretch near Georgica Pond with a quieter vibe", info: "https://easthamptonvillage.org/396/Georgica-Beach", dest: "Georgica Beach, 219 Lily Pond Ln, East Hampton, NY 11937" },
+    { name: "Indian Wells Beach", desc: "Amagansett favorite with long open beach and seasonal facilities", info: "https://www.easthamptonny.gov/Facilities/Facility/Details/Indian-Wells-Beach-19", dest: "Indian Wells Beach, Amagansett, NY 11930" }
   ]
 
   const restaurants = [
     // Hampton Bays
-    { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water with fish tacos, rum drinks, and a lively scene" },
-    { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront dining with seafood, sushi, steaks, and outdoor seating on the canal" },
-    { town: "Hampton Bays", name: "Edgewater", url: "https://www.edgewaterrestaurant.com/", desc: "Classic Italian with seafood pastas and a family friendly vibe near the bay" },
-    { town: "Hampton Bays", name: "Oakland’s", url: "https://oaklandsrestaurant.net/", desc: "Seasonal marina restaurant for seafood platters, cocktails, and sunset views" },
-    { town: "Hampton Bays", name: "1 North Steakhouse", url: "https://www.1northsteakhouse.com/", desc: "Local favorite steakhouse with hearty cuts and a busy bar scene" },
-
+    { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water with fish tacos and rum drinks" },
+    { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood, sushi, and steaks with canal views" },
+    { town: "Hampton Bays", name: "Edgewater", url: "https://www.edgewaterrestaurant.com/", desc: "Classic Italian with seafood pastas and a family friendly vibe" },
+    { town: "Hampton Bays", name: "Oakland’s", url: "https://oaklandsrestaurant.net/", desc: "Seasonal marina restaurant for seafood platters and sunsets" },
+    { town: "Hampton Bays", name: "1 North Steakhouse", url: "https://www.1northsteakhouse.com/", desc: "Local steakhouse with hearty cuts and a busy bar scene" },
     // Southampton
-    { town: "Southampton", name: "75 Main", url: "https://75main.com/", desc: "Trendy main street spot serving American bistro fare with a Hamptons social vibe" },
-    { town: "Southampton", name: "Sant Ambroeus", url: "https://www.santambroeus.com/pages/location-southampton", desc: "Chic Milan style cafe and restaurant for upscale Italian classics and desserts" },
-    { town: "Southampton", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/southampton/", desc: "Stylish Italian with handmade pastas and a cozy garden setting" },
-    { town: "Southampton", name: "Union Burger Bar", url: "https://unionburgerbar.com/", desc: "Casual pub with gourmet burgers, craft beer, and whiskey selections" },
-    { town: "Southampton", name: "Le Charlot", url: "https://lecharlot.us/", desc: "Elegant French bistro serving Provençal dishes in a refined setting" },
-
+    { town: "Southampton", name: "75 Main", url: "https://75main.com/", desc: "Trendy American bistro with a Hamptons social vibe" },
+    { town: "Southampton", name: "Sant Ambroeus", url: "https://www.santambroeus.com/pages/location-southampton", desc: "Chic Milan style cafe and upscale Italian classics" },
+    { town: "Southampton", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/southampton/", desc: "Stylish Italian with handmade pastas and garden seating" },
+    { town: "Southampton", name: "Union Burger Bar", url: "https://unionburgerbar.com/", desc: "Casual pub for gourmet burgers and craft beer" },
+    { town: "Southampton", name: "Le Charlot", url: "https://lecharlot.us/", desc: "Elegant French bistro with Provençal dishes" },
     // Sag Harbor
-    { town: "Sag Harbor", name: "The American Hotel", url: "https://theamericanhotel.com/", desc: "Historic inn with refined French inspired dining and a deep wine list" },
-    { town: "Sag Harbor", name: "Le Bilboquet", url: "https://lebilboquetsag.com/", desc: "Upscale waterfront French inspired seafood with a lively scene" },
+    { town: "Sag Harbor", name: "The American Hotel", url: "https://theamericanhotel.com/", desc: "Historic inn with refined French inspired dining and deep wine list" },
+    { town: "Sag Harbor", name: "Le Bilboquet", url: "https://lebilboquetsag.com/", desc: "Upscale waterfront French inspired seafood and lively scene" },
     { town: "Sag Harbor", name: "Lulu Kitchen & Bar", url: "https://www.lulusagharbor.com/", desc: "Modern Mediterranean with wood fired dishes and tapas" },
-    { town: "Sag Harbor", name: "Page at 63 Main", url: "https://pagesagharbor.com/", desc: "Farm to table American menu with a charming garden patio" },
-    { town: "Sag Harbor", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/sag-harbor/", desc: "Rustic chic Italian with simple seasonal coastal dishes" },
-
+    { town: "Sag Harbor", name: "Page at 63 Main", url: "https://pagesagharbor.com/", desc: "Farm to table American menu with a garden patio" },
+    { town: "Sag Harbor", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/sag-harbor/", desc: "Rustic chic Italian with seasonal coastal dishes" },
     // East Hampton
-    { town: "East Hampton", name: "Nick & Toni’s", url: "https://www.nickandtonis.com/", desc: "Mediterranean inspired menu and wood fired pizzas, celebrity favorite" },
+    { town: "East Hampton", name: "Nick & Toni’s", url: "https://www.nickandtonis.com/", desc: "Mediterranean inspired menu and wood fired pizzas" },
     { town: "East Hampton", name: "East Hampton Grill", url: "https://easthamptongrill.com/", desc: "Refined American grill known for rotisserie chicken and steaks" },
     { town: "East Hampton", name: "Cittanuova", url: "https://www.cittanuova.com/", desc: "Vibrant trattoria for pasta, pizza, and aperitivos" },
     { town: "East Hampton", name: "Fresno", url: "https://www.fresnorestaurant.com/", desc: "Casual upscale bistro popular for seafood and local wines" },
@@ -373,11 +305,92 @@ function InfoPage() {
   return (
     <section className="px-6 md:px-10 py-8 md:py-12">
       <div className="max-w-5xl mx-auto space-y-10">
+
+        {/* House Information */}
         <div>
-          <h2 className="text-2xl font-semibold">Local Information</h2>
-          <p className="text-sm text-neutral-700">
-            Beach permits, parking, and lifeguard schedules vary by town and season. Use the official links for current rules and use the directions link for one click navigation from the house.
-          </p>
+          <h2 className="text-2xl font-semibold mb-2">House Information</h2>
+          <div className="space-y-6 text-sm">
+            <div>
+              <h3 className="text-lg font-semibold">Wi Fi</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Network name, staythehamptons</li>
+                <li>Password, provided after booking</li>
+                <li>Coverage, whole house, office, and pool patio</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Check in and out</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Check in after 4 pm</li>
+                <li>Check out by 10 am</li>
+                <li>Smart lock code sent the morning of arrival</li>
+                <li>Before leaving, run the dishwasher and take trash to outdoor bins</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Garbage and recycling</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Bins on the side of the house near the driveway</li>
+                <li>Trash pickup Monday and Thursday, recycling Wednesday</li>
+                <li>Break down boxes and rinse cans and bottles</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Lighting and HVAC</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Most lights are on dimmers, slide to adjust brightness</li>
+                <li>Pool and patio lights, switches near the back sliders</li>
+                <li>Thermostats, keep between 68 and 74 for comfort and efficiency</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Pool and outdoor</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Saltwater pool with weekly service in season</li>
+                <li>Outdoor shower by the garage walkway</li>
+                <li>Close umbrellas and secure cushions if windy</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Parking and EV</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Driveway fits four cars, garage access only if noted</li>
+                <li>Street parking rules vary by season, check posted signs</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Home office</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Dedicated desk in a quiet room with natural light</li>
+                <li>Fast Wi Fi, strong signal in office and common areas</li>
+                <li>Several standard outlets and a surge protected power strip</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">Emergency</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>Dial 911 for emergencies</li>
+                <li>Urgent home issues, use the host phone number in your arrival email</li>
+                <li>Nearest hospital, Stony Brook Southampton Hospital, about 20 minutes west</li>
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold">House rules</h3>
+              <ul className="list-disc pl-5 space-y-1">
+                <li>No parties and no smoking</li>
+                <li>No pets unless approved before booking</li>
+                <li>Quiet hours after 10 pm per town guidance</li>
+              </ul>
+            </div>
+          </div>
         </div>
 
         {/* Beaches */}
@@ -387,7 +400,7 @@ function InfoPage() {
             {beaches.map(b => (
               <li key={b.name} className="border rounded-xl p-4">
                 <p className="font-medium">{b.name}</p>
-                <p className="text-sm text-neutral-700 mt-1">{b.desc}</p>
+                <p className="text-neutral-700 mt-1">{b.desc}</p>
                 <div className="mt-2 flex flex-wrap gap-4 text-sm">
                   <a className="underline" href={b.info} target="_blank" rel="noreferrer">Official info</a>
                   <a className="underline" href={gmaps(b.dest)} target="_blank" rel="noreferrer">Directions</a>
@@ -395,6 +408,7 @@ function InfoPage() {
               </li>
             ))}
           </ul>
+          <p className="text-xs text-neutral-500 mt-2">Parking and permits vary by town and season. Check official pages before you go.</p>
         </div>
 
         {/* Restaurants */}
@@ -415,14 +429,14 @@ function InfoPage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-neutral-500 mt-2">
-            Summer reservations book up quickly. Check Resy or OpenTable for availability.
-          </p>
+          <p className="text-xs text-neutral-500 mt-2">Summer reservations book up quickly. Check Resy or OpenTable.</p>
         </div>
+
       </div>
     </section>
   )
 }
+
 
 
 export default function App() {
