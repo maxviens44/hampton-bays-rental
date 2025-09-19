@@ -127,19 +127,19 @@ export default function App() {
               Welcome to your Hampton Bays getaway with bay views, a saltwater in-ground pool, and an easy drive to beaches, restaurants, and shops. This 3,750 sq ft home sleeps up to 10 across 4 bedrooms and 5 bathrooms, designed for comfort and style
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool</li>
-              <li>Chef kitchen with Viking appliances, pot filler, Quartzite counters, and island seating</li>
-              <li>Main level includes two oversized en-suite bedrooms with direct patio access</li>
-              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views</li>
-              <li>Fully finished walk-out lower level with 9 ft ceilings, media room, guest bedroom, full bath, laundry, and storage</li>
-              <li>Central air, central vacuum, outdoor shower, and a detached two-car garage with a finished second level</li>
+              <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
+              <li>Chef kitchen with Viking appliances, pot filler, Quartzite counters, and island seating.</li>
+              <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
+              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views.</li>
+              <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
+              <li>Central air, outdoor shower, and workout room.
             </ul>
             <p>
-              The layout works for families, couples, and small groups that want shared spaces and private suites. Enjoy mornings on the balcony, afternoons by the saltwater pool, and evenings by the fire after dinner in town
+             Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with plenty of natural light and fast Wi-Fi, making it easy to work remotely.
             </p>
             <h4 className="font-semibold mt-4">Sleeping configuration</h4>
             <p className="text-sm">
-              4 bedrooms total. Primary suite upstairs plus two en-suite bedrooms on the main level and one guest room on the lower level
+              4 bedrooms total. Primary suite upstairs plus two en-suite bedrooms on the main level and one guest room on the lower level.
             </p>
             <h4 className="font-semibold mt-4">Location</h4>
             <p className="text-sm">
@@ -149,8 +149,7 @@ export default function App() {
             <ul className="list-disc pl-5 space-y-1 text-sm">
               <li>Saltwater pool is seasonal and professionally maintained</li>
               <li>Outdoor shower available</li>
-              <li>No parties. No smoking. Local occupancy rules apply</li>
-            </ul>
+             </ul>
             <div className="mt-6">
               <a
                 href="#contact"
