@@ -1,41 +1,44 @@
 import React, { useEffect, useState, useCallback } from "react"
 
 const images = [
-  { file: "hosue.webp", label: "Exterior Front" }, // keep as-is if file name is really "hosue.webp"
   { file: "top.webp", label: "Aerial View" },
-  { file: "kitchen1.webp", label: "Kitchen" },
-  { file: "kitchen2.webp", label: "Chef Kitchen" },
-  { file: "kitchen3.webp", label: "Chef Kitchen" },
-  { file: "dining.webp", label: "Dining Area" },
-  { file: "living.webp", label: "Living Room" },
-  { file: "living2.webp", label: "Living Room" },
-  { file: "living3.webp", label: "Living Room" },
-  { file: "pool1.webp", label: "Saltwater Pool" },
-  { file: "pool2.webp", label: "Pool and Patio" },
-  { file: "pool3.webp", label: "Poolside" },
-  { file: "pool4.webp", label: "Pool View" },
-  { file: "primary.webp", label: "Primary Bedroom" },
-  { file: "primary2.webp", label: "Primary Suite" },
-  { file: "primarydoors.webp", label: "Primary Doors to Balcony" },
   { file: "balcony.webp", label: "Balcony View" },
-  { file: "bathmain.webp", label: "Luxurious En-Suite Bathroom" },
-  { file: "bathmain2.webp", label: "Luxurious En-Suite Bathroom" },
-  { file: "bathmain3.webp", label: "Luxurious En-Suite Bathroom" },
-  { file: "room1.webp", label: "Bedroom 2" },
-  { file: "room2.webp", label: "Bedroom 3" },
-  { file: "room4.webp", label: "Bedroom 4" },
-  { file: "office-room.webp", label: "Office" },
-  { file: "room-office2.webp", label: "Office" },
-  { file: "basement1.webp", label: "Media Room" },
-  { file: "basement2.webp", label: "Media Room" },
-  { file: "bath1.webp", label: "Guest Bathroom" },
-  { file: "bath2.webp", label: "Guest Bathroom" },
-  { file: "bath4.webp", label: "Guest Bathroom" },
+  { file: "basement1.webp", label: "Finished Basement" },
+  { file: "basement2.webp", label: "Basement Lounge" },
+  { file: "bath1.webp", label: "Guest Bath" },
+  { file: "bath2.webp", label: "Bathroom" },
+  { file: "bath4.webp", label: "Full Bathroom" },
+  { file: "bathmain.webp", label: "Main Bath" },
+  { file: "bathmain2.webp", label: "Primary Suite Bathroom" },
+  { file: "bathmain3.webp", label: "Luxury Bath" },
+  { file: "dining.webp", label: "Dining Area" },
   { file: "foyer.webp", label: "Front Foyer" },
   { file: "foyer2.webp", label: "Entryway" },
   { file: "garage.webp", label: "Detached Garage" },
+  { file: "hosue.webp", label: "Exterior Front" },
+  { file: "kitchen1.webp", label: "Kitchen" },
+  { file: "kitchen2.webp", label: "Chef Kitchen" },
+  { file: "kitchen3.webp", label: "Kitchen Island" },
   { file: "laundry.webp", label: "Laundry Room" },
+  { file: "living.webp", label: "Living Room" },
+  { file: "living2.webp", label: "Living Room View" },
+  { file: "living3.webp", label: "Living Room Detail" },
+  { file: "office-room.webp", label: "Home Office" },
+  { file: "planbasement.webp", label: "Floor Plan • Basement" },
+  { file: "planmain.webp", label: "Floor Plan • Main" },
+  { file: "plansecond.webp", label: "Floor Plan • Second" },
+  { file: "pool1.webp", label: "Saltwater Pool" },
+  { file: "pool2.webp", label: "Pool and Patio" },
+  { file: "pool3.webp", label: "Poolside" },
+  { file: "pool4.webp", label: "Evening Pool" },
+  { file: "primary.webp", label: "Primary Bedroom" },
+  { file: "primary2.webp", label: "Primary Suite" },
+  { file: "primarydoors.webp", label: "Primary Doors to Balcony" },
   { file: "restroom.webp", label: "Half Bath" },
+  { file: "room-office2.webp", label: "Secondary Office" },
+  { file: "room1.webp", label: "Guest Bedroom" },
+  { file: "room2.webp", label: "Bedroom 2" },
+  { file: "room4.webp", label: "Bedroom 3" },
   { file: "stairs.webp", label: "Staircase" }
 ]
 
@@ -122,34 +125,13 @@ export default function App() {
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
               <li>Chef kitchen with Viking appliances, pot filler, Quartzite counters, and island seating.</li>
               <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
-              <li>Primary suite upstairs with two walk-in closets, private balcony with bay views luxurious en-suite bathroom with walk-in shower and standalone jacuzzi tub.</li>
+              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views.</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
               <li>Central air, outdoor shower, and workout room.</li>
             </ul>
             <p>
               Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with plenty of natural light and fast Wi-Fi, making it easy to work remotely.
             </p>
-            <h4 className="font-semibold mt-4">Sleeping configuration</h4>
-            <p className="text-sm">
-              4 bedrooms total. Primary suite upstairs plus two en-suite bedrooms on the main level and one guest room on the lower level.
-            </p>
-            <h4 className="font-semibold mt-4">Location</h4>
-            <p className="text-sm">
-              In the heart of Hampton Bays near marinas, dining, and beaches. Quick access to the best of the Hamptons.
-            </p>
-            <h4 className="font-semibold mt-4">Good to know</h4>
-            <ul className="list-disc pl-5 space-y-1 text-sm">
-              <li>Saltwater pool is seasonal and professionally maintained.</li>
-              <li>Outdoor shower available.</li>
-            </ul>
-            <div className="mt-6">
-              <a
-                href="#contact"
-                className="inline-block rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition"
-              >
-                Check availability and rates
-              </a>
-            </div>
           </div>
         </div>
       </section>
@@ -185,13 +167,49 @@ export default function App() {
         </div>
       </section>
 
-      {/* Contact */}
+      {/* Contact with Netlify Form */}
       <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
-          <p className="text-neutral-700">
-            For availability and rates, reach out through your preferred booking platform or email
+          <p className="text-neutral-700 mb-6">
+            For availability and rates, submit the form below
           </p>
+
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/thanks.html"
+            className="space-y-4"
+          >
+            {/* Netlify needs this hidden input */}
+            <input type="hidden" name="form-name" value="contact" />
+            {/* Honeypot field to reduce spam */}
+            <p className="hidden">
+              <label>
+                Don’t fill this out if you’re human
+                <input name="bot-field" />
+              </label>
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="date" name="Desired Dates" placeholder="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+
+            <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+              Submit Inquiry
+            </button>
+          </form>
         </div>
       </section>
 
