@@ -120,7 +120,7 @@ function HomeSections() {
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
             <p>
-              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a saltwater in-ground pool and easy access to beaches, restaurants, and shops. With 3,750 sq ft of space, the home comfortably sleeps up to 10 guests across 4 bedrooms and 5 bathrooms, blending elegance with modern convenience.
+              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops. With 3,750 sq ft of space, the home comfortably sleeps up to 10 guests across 4 bedrooms and 5 bathrooms, blending elegance with modern convenience.
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool</li>
