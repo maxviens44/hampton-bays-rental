@@ -1,5 +1,4 @@
 import React from "react"
-import { motion } from "framer-motion"
 
 const fileNames = [
   "balcony.webp",
@@ -51,7 +50,6 @@ function labelFromFile(name) {
 export default function App() {
   return (
     <main className="min-h-screen bg-white">
-      {/* Header */}
       <header className="px-6 md:px-10 py-6 border-b">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
@@ -65,7 +63,6 @@ export default function App() {
         </div>
       </header>
 
-      {/* Hero */}
       <section className="px-0 py-0">
         <div className="max-w-7xl mx-auto">
           <div className="relative">
@@ -86,12 +83,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* Gallery */}
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
           <p className="text-sm text-neutral-600 mb-6">
-            All photos below are synced from the repository images you provided.
+            All photos below are synced from your repository images
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -100,13 +96,11 @@ export default function App() {
               const label = labelFromFile(fname)
               return (
                 <figure key={src} className="group">
-                  <motion.img
+                  <img
                     src={src}
                     alt={label}
                     loading={idx < 6 ? "eager" : "lazy"}
-                    className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm"
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                    className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
                   />
                   <figcaption className="text-xs text-neutral-600 mt-2 px-1">
                     {label}
@@ -118,23 +112,20 @@ export default function App() {
         </div>
       </section>
 
-      {/* About placeholder. You said you will update this with the new Airbnb text */}
       <section id="about" className="px-6 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <p className="text-neutral-700">
-            Replace this block with your new Airbnb listing text. If you paste the final copy here,
-            I will wire it in and format it with headings, amenities, and a booking CTA.
+            Replace this block with your new Airbnb listing text
           </p>
         </div>
       </section>
 
-      {/* Contact */}
       <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
           <p className="text-neutral-700">
-            For availability and rates, reach out through your preferred booking platform or email.
+            For availability and rates, reach out through your preferred booking platform or email
           </p>
         </div>
       </section>
