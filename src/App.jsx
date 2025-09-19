@@ -109,6 +109,9 @@ function HomeSections() {
               <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
               </h2>
+              <p className="text-white text-sm md:text-lg drop-shadow">
+                10 guests · 4 bedrooms · 5 beds · 5 baths
+              </p>
             </div>
           </div>
         </div>
