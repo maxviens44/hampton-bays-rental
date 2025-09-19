@@ -103,7 +103,7 @@ export default function App() {
             <div className="absolute inset-0 bg-black/20" />
             <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
               <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
-                Luxury Hampton Bays Retreat
+                Luxury Hamptons Retreat
               </h2>
             </div>
           </div>
