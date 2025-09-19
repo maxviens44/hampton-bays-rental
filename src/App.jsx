@@ -116,7 +116,7 @@ export default function App() {
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
             <p>
-              Welcome to your Hampton Bays getaway with bay views, a saltwater in-ground pool, and an easy drive to beaches, restaurants, and shops. This 3,750 sq ft home sleeps up to 10 across 4 bedrooms and 5 bathrooms, designed for comfort and style.
+              Welcome to your Hamptons getaway with bay views, a saltwater in-ground pool, and an easy drive to beaches, restaurants, and shops. This 3,750 sq ft home sleeps up to 10 across 4 bedrooms and 5 bathrooms, designed for comfort and style.
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
