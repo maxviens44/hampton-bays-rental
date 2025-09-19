@@ -79,7 +79,7 @@ export default function App() {
       <header className="px-6 md:px-10 py-6 border-b">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <h1 className="text-xl md:text-2xl font-semibold tracking-tight">
-            2 Hubbard St • Hampton Bays
+            2 Hubbard Street • Hampton Bays
           </h1>
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <a href="#about" className="hover:underline">About</a>
