@@ -114,7 +114,7 @@ function HomeSections() {
         </div>
       </section>
 
-      {/* About above Gallery */}
+      {/* About */}
       <section id="about" className="px-6 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
@@ -131,7 +131,7 @@ function HomeSections() {
               <li>Central air, outdoor shower, and workout room.</li>
             </ul>
             <p>
-              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with plenty of natural light and fast Wi-Fi, making it easy to work remotely.
+              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with natural light and fast Wi-Fi for remote work.
             </p>
           </div>
         </div>
@@ -141,8 +141,52 @@ function HomeSections() {
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-          <p className="text-sm text-neutral-600 mb-6">
-            Click any photo to view it full screen
-          </p>
+          <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:gri
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+            {images.map((img, idx) => (
+              <button
+                key={img.file}
+                onClick={() => openAt(idx)}
+                className="group relative focus:outline-none"
+                aria-label={`Open ${img.label}`}
+              >
+                <img
+                  src={`/images/${img.file}`}
+                  alt={img.label}
+                  loading={idx < 6 ? "eager" : "lazy"}
+                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                />
+                <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
+                  {img.label}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Contact with Netlify Form */}
+      <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
+        <div className="max-w-3xl mx-auto">
+          <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
+          <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
+
+          <form
+            name="contact"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/thanks.html"
+            className="space-y-4"
+          >
+            <input type="hidden" name="form-name" value="contact" />
+            <p className="hidden">
+              <label>
+                Don’t fill this out if you’re human
+                <input name="bot-field" />
+              </label>
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <input type="text" name="First Name" placeholder="First Name" required className="bor
