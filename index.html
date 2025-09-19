@@ -1,23 +1,90 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hamptons Summer Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Page Title -->
+    <title>Luxury Hamptons Rental | Hampton Bays Short Term House with Pool</title>
+
+    <!-- Meta Description -->
+    <meta name="description" content="Luxury 4 bedroom 5 bath home in Hampton Bays with bay views and a saltwater pool. Short term rental in The Hamptons near beaches dining and shops. Perfect for families couples and small groups." />
+
+    <!-- Optional keywords -->
+    <meta name="keywords" content="Hampton Bays rental, Hamptons vacation home, short term rental Hamptons, house with pool Hamptons, luxury rental Hamptons, Hampton Bays Airbnb, Hampton Bays VRBO" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://staythehamptons.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Luxury Hamptons Rental in Hampton Bays" />
+    <meta property="og:description" content="Spacious 4BR 5BA with saltwater pool bay views and modern finishes. Walk or drive to beaches and top restaurants in The Hamptons." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://staythehamptons.com/" />
+    <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />
+    <meta property="og:image:alt" content="Hampton Bays luxury rental with saltwater pool" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Luxury Hamptons Rental | Hampton Bays House with Pool" />
+    <meta name="twitter:description" content="Book a luxury Hampton Bays rental with pool bay views and quick access to beaches and dining." />
+    <meta name="twitter:image" content="https://staythehamptons.com/images/top.webp" />
+
+    <!-- PWA and theming niceties -->
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Icons -->
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Performance: Preload hero to improve first paint -->
+    <link rel="preload" as="image" href="/images/hosue.webp" imagesrcset="/images/hosue.webp" imagesizes="100vw" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "VacationRental",
+      "name": "Luxury Hamptons Rental in Hampton Bays",
+      "description": "Luxury 4 bedroom 5 bath home with bay views saltwater pool and modern chef kitchen. Ideal for families couples and small groups seeking a short term rental in The Hamptons.",
+      "url": "https://staythehamptons.com/",
+      "image": [
+        "https://staythehamptons.com/images/top.webp",
+        "https://staythehamptons.com/images/pool1.webp",
+        "https://staythehamptons.com/images/living.webp",
+        "https://staythehamptons.com/images/kitchen2.webp"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Hampton Bays",
+        "addressRegion": "NY",
+        "postalCode": "11946",
+        "addressCountry": "US"
+      },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Saltwater pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Bay views", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Chef kitchen", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Home office", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Central air", "value": true }
+      ],
+      "numberOfRooms": 4
+    }
+    </script>
   </head>
+
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
-    <!-- Hidden form for Netlify build-time detection -->
-<form name="contact" netlify netlify-honeypot="bot-field" action="/thanks.html" hidden>
-  <input type="text" name="First Name" />
-  <input type="text" name="Last Name" />
-  <input type="email" name="Email" />
-  <input type="tel" name="Phone" />
-  <input type="date" name="Desired Dates" />
-  <input type="number" name="Number of Nights (7 minimum)" />
-</form>
 
+    <!-- Hidden form for Netlify build-time detection -->
+    <form name="contact" netlify netlify-honeypot="bot-field" action="/thanks.html" hidden>
+      <input type="text" name="First Name" />
+      <input type="text" name="Last Name" />
+      <input type="email" name="Email" />
+      <input type="tel" name="Phone" />
+      <input type="date" name="Desired Dates" />
+      <input type="number" name="Number of Nights (7 minimum)" />
+    </form>
   </body>
 </html>
