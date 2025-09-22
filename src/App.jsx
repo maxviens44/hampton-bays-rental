@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react"
 
 const images = [
   { file: "top.webp", label: "Aerial View" },
+  { file: "hosue.webp", label: "Exterior Front" },
   { file: "balcony.webp", label: "Balcony View" },
   { file: "basement1.webp", label: "Finished Basement" },
   { file: "basement2.webp", label: "Basement Lounge" },
@@ -15,7 +16,6 @@ const images = [
   { file: "foyer.webp", label: "Front Foyer" },
   { file: "foyer2.webp", label: "Entryway" },
   { file: "garage.webp", label: "Detached Garage" },
-  { file: "hosue.webp", label: "Exterior Front" },
   { file: "kitchen1.webp", label: "Kitchen" },
   { file: "kitchen2.webp", label: "Chef Kitchen" },
   { file: "kitchen3.webp", label: "Kitchen Island" },
@@ -127,9 +127,9 @@ function HomeSections() {
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool</li>
-              <li>Chef's kitchen with Viking appliances, Quartzite counters, and island seating</li>
+              <li>Chef kitchen with Viking appliances, Quartzite counters, and island seating</li>
               <li>Main level includes two oversized en-suite bedrooms with direct patio access</li>
-              <li>Primary bedroom located on second floor with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views</li>
+              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry</li>
               <li>Central air, outdoor shower, and workout room</li>
             </ul>
@@ -146,7 +146,8 @@ function HomeSections() {
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
           <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          {/* UPDATED: added grid-flow-row */}
+          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {images.map((img, idx) => (
               <button
                 key={img.file}
