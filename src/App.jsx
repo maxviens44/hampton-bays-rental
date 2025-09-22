@@ -29,7 +29,7 @@ const images = [
   { file: "basement1.webp", label: "Finished Basement" },
   { file: "basement2.webp", label: "Basement Lounge" },
   { file: "bath2.webp", label: "Bathroom" },
-   { file: "room-office2.webp", label: "Home Office" },
+  { file: "room-office2.webp", label: "Home Office" },
   { file: "foyer.webp", label: "Front Foyer" },
   { file: "foyer2.webp", label: "Entryway" },
   { file: "garage.webp", label: "Detached Garage" },
@@ -145,7 +145,7 @@ function HomeSections() {
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
           <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
 
-          {/* UPDATED: added grid-flow-row */}
+          {/* STRICT ROW ORDER */}
           <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {images.map((img, idx) => (
               <button
@@ -297,6 +297,142 @@ function AccordionCard({ title, open, onClick, children }) {
   )
 }
 
+/* -------- Availability Calendar component -------- */
+function AvailabilityCalendar({ year = new Date().getFullYear() }) {
+  const [unavailable, setUnavailable] = React.useState(new Set());
+  const [loaded, setLoaded] = React.useState(false);
+
+  const isOwner = typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("owner") === "1";
+
+  React.useEffect(() => {
+    let ok = true;
+    fetch("/data/unavailable.json", { cache: "no-store" })
+      .then(r => (r.ok ? r.json() : []))
+      .then(arr => {
+        if (!ok) return;
+        const clean = Array.isArray(arr) ? arr.filter(Boolean) : [];
+        setUnavailable(new Set(clean));
+        setLoaded(true);
+      })
+      .catch(() => setLoaded(true));
+    return () => { ok = false; };
+  }, []);
+
+  const fmt = (d) => {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+  };
+
+  const toggle = (dateStr) => {
+    if (!isOwner) return;
+    setUnavailable(prev => {
+      const next = new Set(prev);
+      if (next.has(dateStr)) next.delete(dateStr);
+      else next.add(dateStr);
+      return next;
+    });
+  };
+
+  const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate();
+  const monthName = (m) => new Date(year, m, 1).toLocaleString("en-US", { month: "long" });
+
+  const downloadJSON = () => {
+    const arr = Array.from(unavailable).sort();
+    const blob = new Blob([JSON.stringify(arr, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "unavailable.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  return (
+    <section id="availability" className="scroll-mt-28">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-lg font-semibold">Availability {year}</h3>
+        <div className="text-xs text-neutral-600">
+          <span className="inline-block w-3 h-3 align-middle border border-red-500/50 bg-red-50 mr-1" /> Unavailable
+          <span className="mx-2">•</span>
+          <span className="inline-block w-3 h-3 align-middle border border-green-500/50 bg-green-50 mr-1" /> Available
+        </div>
+      </div>
+
+      {!loaded && <p className="text-sm text-neutral-600">Loading calendar…</p>}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+        {Array.from({ length: 12 }, (_, month) => {
+          const firstDay = new Date(year, month, 1).getDay(); // 0=Sun..6=Sat
+          const total = daysInMonth(year, month);
+          const cells = [];
+          for (let i = 0; i < firstDay; i++) cells.push(null);
+          for (let d = 1; d <= total; d++) cells.push(new Date(year, month, d));
+
+          return (
+            <div key={month} className="rounded-2xl border bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <p className="font-medium">{monthName(month)}</p>
+                <p className="text-xs text-neutral-500">{year}</p>
+              </div>
+
+              <div className="grid grid-cols-7 text-[11px] text-neutral-500 mb-1">
+                {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
+                  <div key={d} className="text-center py-1">{d}</div>
+                ))}
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 text-sm">
+                {cells.map((dateObj, i) => {
+                  if (!dateObj) return <div key={i} className="h-9" />;
+                  const ds = fmt(dateObj);
+                  const isUnavailable = unavailable.has(ds);
+                  return (
+                    <button
+                      key={ds}
+                      type="button"
+                      onClick={() => toggle(ds)}
+                      className={`h-9 rounded-md border text-center leading-9 transition
+                        ${isUnavailable
+                          ? "line-through border-red-500/50 bg-red-50 text-red-700"
+                          : "border-green-500/50 bg-green-50 text-green-700"}
+                        ${isOwner ? "hover:brightness-95" : "cursor-default"}`}
+                      aria-pressed={isUnavailable}
+                      title={`${ds} • ${isUnavailable ? "Unavailable" : "Available"}${isOwner ? " (click to toggle)" : ""}`}
+                    >
+                      {dateObj.getDate()}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="mt-4 flex items-center justify-between">
+        <p className="text-xs text-neutral-500">
+          {isOwner
+            ? "Owner mode is ON (toggled by ?owner=1). Click a day to mark unavailable, then download JSON and commit it to /public/data/unavailable.json."
+            : "Calendar is read-only. Availability is for reference and updated by the host."}
+        </p>
+
+        {isOwner && (
+          <button
+            onClick={downloadJSON}
+            className="text-sm rounded-full border px-4 py-2 hover:bg-black hover:text-white transition"
+          >
+            Download updated unavailable.json
+          </button>
+        )}
+      </div>
+    </section>
+  );
+}
+
+/* -------- Info Page -------- */
 function InfoPage() {
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
 
@@ -403,6 +539,7 @@ function InfoPage() {
             <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
             <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
             <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
+            <a href="#/info/availability" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Availability</a>
           </nav>
         </div>
       </div>
@@ -550,6 +687,9 @@ function InfoPage() {
               <p className="text-sm text-neutral-600">No restaurants for this filter</p>
             )}
           </section>
+
+          {/* Availability (owner can toggle with ?owner=1) */}
+          <AvailabilityCalendar year={new Date().getFullYear()} />
 
           {/* Back to top */}
           <div className="pt-4">
