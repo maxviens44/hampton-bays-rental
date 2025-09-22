@@ -61,9 +61,6 @@ function Header() {
 
 /* ────────────────────────────────────────────────────────── *
  * Availability Calendar (VIEW-ONLY, fed by /availability.json)
- *  - Default: all dates available
- *  - Any date in /availability.json.booked[] is shown as Booked
- *  - Shows current month + next 11 months
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
@@ -73,14 +70,12 @@ function AvailabilityCalendar({ months = 12 }) {
     let cancelled = false
     ;(async () => {
       try {
-        // Cache-bust so updates show immediately after deploys
         const res = await fetch(`/availability.json?v=${Date.now()}`)
         if (!res.ok) throw new Error("Failed to load availability.json")
         const data = await res.json()
         const dates = Array.isArray(data?.booked) ? data.booked : []
         if (!cancelled) setBooked(new Set(dates))
       } catch {
-        // If missing or invalid, just keep everything available
         if (!cancelled) setBooked(new Set())
       } finally {
         if (!cancelled) setLoaded(true)
@@ -114,7 +109,6 @@ function AvailabilityCalendar({ months = 12 }) {
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-medium">{name}</h4>
-          {/* no "view only" badge for visitors */}
         </div>
 
         <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
@@ -130,9 +124,7 @@ function AvailabilityCalendar({ months = 12 }) {
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
             const base = "aspect-square flex items-center justify-center rounded-md border transition select-none"
-            const stateCls = isBooked
-              ? "bg-neutral-200 line-through text-neutral-500"
-              : "bg-white"
+            const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
               <div
@@ -171,9 +163,7 @@ function AvailabilityCalendar({ months = 12 }) {
         </div>
       </div>
 
-      {!loaded && (
-        <div className="text-sm text-neutral-500 mb-2">Loading calendar…</div>
-      )}
+      {!loaded && <div className="text-sm text-neutral-500 mb-2">Loading calendar…</div>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {monthsList.map(({ year, month, key }) => (
@@ -185,7 +175,7 @@ function AvailabilityCalendar({ months = 12 }) {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Home (hero, about, gallery, contact + calendar)
+ * Home (hero, about, gallery, contact + calendar) + LIGHTBOX
  * ────────────────────────────────────────────────────────── */
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -207,7 +197,7 @@ function HomeSections() {
     document.body.style.overflow = "hidden"
     return () => {
       window.removeEventListener("keydown", onKey)
-      document.body.style.overflow = ""
+    document.body.style.overflow = ""
     }
   }, [lightboxOpen, close, next, prev])
 
@@ -253,14 +243,11 @@ function HomeSections() {
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
               <li>Central air, outdoor shower, and workout room.</li>
             </ul>
-            <p>
-              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with natural light and fast Wi-Fi for remote work.
-            </p>
           </div>
         </div>
       </section>
 
-      {/* Gallery (keeps strict order via grid-flow-row) */}
+      {/* Gallery (click to open lightbox) */}
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
@@ -269,6 +256,7 @@ function HomeSections() {
             {images.map((img, idx) => (
               <button
                 key={img.file}
+                type="button"
                 onClick={() => openAt(idx)}
                 className="group relative focus:outline-none"
                 aria-label={`Open ${img.label}`}
@@ -290,6 +278,51 @@ function HomeSections() {
 
       {/* Contact + Calendar */}
       <ContactSection />
+
+      {/* Lightbox overlay */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+          role="dialog"
+          aria-modal="true"
+          onClick={close}
+        >
+          <div
+            className="relative max-w-6xl w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={`/images/${images[index].file}`}
+              alt={images[index].label}
+              className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
+            />
+            <button
+              onClick={close}
+              aria-label="Close"
+              type="button"
+              className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Close
+            </button>
+            <button
+              onClick={prev}
+              aria-label="Previous"
+              type="button"
+              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Prev
+            </button>
+            <button
+              onClick={next}
+              aria-label="Next"
+              type="button"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </>
   )
 }
@@ -387,7 +420,10 @@ function AccordionCard({ title, open, onClick, children }) {
 }
 
 function InfoPage() {
+  // Define origin here and keep gmaps scoped here to avoid reference errors
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
+  const gmaps = (dest) =>
+    `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
   const [open, setOpen] = useState({
     wifi: true,
@@ -444,10 +480,7 @@ function InfoPage() {
     { town: "East Hampton", name: "Serafina", url: "https://www.serafinarestaurant.com/east-hampton", desc: "Lively outpost serving contemporary Italian favorites" }
   ]
 
-  const gmaps = dest =>
-    `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
-
-  // Deep links like #/info/house
+  // deep links like #/info/house
   const scrollToId = (id) => {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
