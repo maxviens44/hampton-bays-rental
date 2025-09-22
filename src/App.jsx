@@ -125,12 +125,12 @@ function HomeSections() {
               Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops. With 3,750 sq ft of space, the home comfortably sleeps up to 10 guests across 4 bedrooms and 5 bathrooms, blending elegance with modern convenience.
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Great room with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool</li>
-              <li>Chef kitchen with Viking appliances, Quartzite counters, and island seating</li>
-              <li>Main level includes two oversized en-suite bedrooms with direct patio access</li>
-              <li>Primary suite upstairs with two walk-in closets, spa bath with walk-in shower and standalone jacuzzi tub, and a private balcony with bay views</li>
-              <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry</li>
-              <li>Central air, outdoor shower, and workout room</li>
+              <li>Livingroom with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
+              <li>Chef's kitchen with Viking appliances, Quartzite counters, and island seating.</li>
+              <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
+              <li>The entire north wing of the second floor is devoted to the primary suite, complete with dual walk-in closets, a serene spa bath featuring a walk-in shower and freestanding jacuzzi tub, and a private balcony where you can take in the tranquil bay views.</li>
+              <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
+              <li>Central air, outdoor shower, and workout room.</li>
             </ul>
             <p>
               Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with natural light and fast Wi Fi for remote work
