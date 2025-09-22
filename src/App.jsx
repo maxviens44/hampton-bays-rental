@@ -111,9 +111,12 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
     return (
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <h4 className="font-medium">{name}</h4>
-          <div className="text-xs text-neutral-500">{editable ? "Click to toggle" : "View only"}</div>
-        </div>
+  <h4 className="font-medium">{name}</h4>
+  {editable && (
+    <div className="text-xs text-neutral-500">Click to toggle</div>
+  )}
+</div>
+
         <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
             <div key={d} className="py-1 text-neutral-600">{d}</div>
