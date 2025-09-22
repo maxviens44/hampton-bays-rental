@@ -57,10 +57,9 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar (owner can click to cross-off dates)
+ * Availability Calendar (read-only unless owner is logged in)
  * ────────────────────────────────────────────────────────── */
-function AvailabilityCalendar({ months = 12 }) {
-  // Persist booked dates as ISO strings: YYYY-MM-DD
+function AvailabilityCalendar({ months = 12, editable = false }) {
   const STORAGE_KEY = "hb_booked_dates_v1"
   const [booked, setBooked] = useState(() => {
     try {
@@ -79,20 +78,19 @@ function AvailabilityCalendar({ months = 12 }) {
 
   const today = new Date()
   const startYear = today.getFullYear()
-  const startMonth = today.getMonth() // 0-11
+  const startMonth = today.getMonth()
 
   const pad = (n) => (n < 10 ? `0${n}` : `${n}`)
   const toISO = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`
-
   const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
   const startOfMonthWeekday = (y, m) => new Date(y, m, 1).getDay()
-
   const isPast = (y, m, d) => {
     const date = new Date(y, m, d, 23, 59, 59, 999)
     return date < new Date(today.getFullYear(), today.getMonth(), today.getDate())
   }
 
   const toggleDate = (y, m, d) => {
+    if (!editable) return
     const iso = toISO(y, m, d)
     setBooked((prev) => {
       const next = new Set(prev)
@@ -104,10 +102,8 @@ function AvailabilityCalendar({ months = 12 }) {
 
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
-    const firstDow = startOfMonthWeekday(year, month) // 0=Sun
+    const firstDow = startOfMonthWeekday(year, month)
     const total = daysInMonth(year, month)
-
-    // Build leading blanks + days
     const cells = []
     for (let i = 0; i < firstDow; i++) cells.push(null)
     for (let d = 1; d <= total; d++) cells.push(d)
@@ -116,7 +112,7 @@ function AvailabilityCalendar({ months = 12 }) {
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-medium">{name}</h4>
-          <div className="text-xs text-neutral-500">Click a day to toggle availability</div>
+          <div className="text-xs text-neutral-500">{editable ? "Click to toggle" : "View only"}</div>
         </div>
         <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
@@ -131,12 +127,12 @@ function AvailabilityCalendar({ months = 12 }) {
             const past = isPast(year, month, d)
             const base = "aspect-square flex items-center justify-center rounded-md border transition select-none"
             const bookedCls = bookedDay ? "bg-neutral-200 line-through text-neutral-500" : "bg-white hover:bg-neutral-50"
-            const pastCls = past ? "opacity-40 cursor-not-allowed" : "cursor-pointer"
+            const pastCls = past ? "opacity-40 cursor-not-allowed" : editable ? "cursor-pointer" : "cursor-default"
             return (
               <button
                 key={iso}
                 type="button"
-                disabled={past}
+                disabled={past || !editable}
                 onClick={() => toggleDate(year, month, d)}
                 className={`${base} ${bookedCls} ${pastCls}`}
                 aria-pressed={bookedDay}
@@ -152,7 +148,6 @@ function AvailabilityCalendar({ months = 12 }) {
     )
   }
 
-  // Build the 12 months starting from *now*
   const monthsList = Array.from({ length: months }, (_, i) => {
     const m = startMonth + i
     const y = startYear + Math.floor(m / 12)
@@ -174,7 +169,8 @@ function AvailabilityCalendar({ months = 12 }) {
         </div>
       </div>
       <p className="text-sm text-neutral-700 mb-4">
-        The calendar below shows the current month and the next 11 months. Click a day to mark it booked (saved to this browser).
+        The calendar shows the current month and the next 11 months.
+        {editable ? " You’re in owner edit mode." : " Viewing only (owner can log in to edit)."}
       </p>
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {monthsList.map(({ year, month, key }) => (
@@ -183,6 +179,38 @@ function AvailabilityCalendar({ months = 12 }) {
       </div>
     </section>
   )
+}
+
+/* ────────────────────────────────────────────────────────── *
+ * Simple Netlify Identity gate to enable owner edit mode
+ * ────────────────────────────────────────────────────────── */
+function useOwnerIdentity() {
+  const [isOwner, setIsOwner] = useState(false)
+  const ownerEmail = import.meta.env.VITE_OWNER_EMAIL
+
+  useEffect(() => {
+    const id = window.netlifyIdentity
+    if (!id) {
+      setIsOwner(false)
+      return
+    }
+
+    const check = (user) => {
+      const ok = !!user && !!ownerEmail && user.email?.toLowerCase() === ownerEmail.toLowerCase()
+      setIsOwner(ok)
+    }
+
+    id.on("init", check)
+    id.on("login", check)
+    id.on("logout", () => setIsOwner(false))
+    id.init()
+    // cleanup is optional; widget is global
+  }, [ownerEmail])
+
+  const login = () => window.netlifyIdentity?.open("login")
+  const logout = () => window.netlifyIdentity?.logout()
+
+  return { isOwner, login, logout }
 }
 
 function HomeSections() {
@@ -195,14 +223,8 @@ function HomeSections() {
   }, [])
 
   const close = useCallback(() => setLightboxOpen(false), [])
-
-  const next = useCallback(() => {
-    setIndex((i) => (i + 1) % images.length)
-  }, [])
-
-  const prev = useCallback(() => {
-    setIndex((i) => (i - 1 + images.length) % images.length)
-  }, [])
+  const next = useCallback(() => setIndex(i => (i + 1) % images.length), [])
+  const prev = useCallback(() => setIndex(i => (i - 1 + images.length) % images.length), [])
 
   useEffect(() => {
     if (!lightboxOpen) return
@@ -272,10 +294,8 @@ function HomeSections() {
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-          <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
-
-          {/* strict row order */}
-          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
+        <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {images.map((img, idx) => (
               <button
                 key={img.file}
@@ -298,50 +318,8 @@ function HomeSections() {
         </div>
       </section>
 
-      {/* Contact + Calendar below the form */}
-      <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
-        <div className="max-w-3xl mx-auto">
-          <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
-          <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
-
-          <form
-            name="contact"
-            method="POST"
-            data-netlify="true"
-            netlify-honeypot="bot-field"
-            action="/thanks.html"
-            className="space-y-4"
-          >
-            <input type="hidden" name="form-name" value="contact" />
-            <p className="hidden">
-              <label>
-                Don’t fill this out if you’re human
-                <input name="bot-field" />
-              </label>
-            </p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
-              <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
-              <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
-              <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
-            </div>
-
-            <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
-              Submit Inquiry
-            </button>
-          </form>
-
-          {/* Availability calendar lives right under the form */}
-          <AvailabilityCalendar months={12} />
-        </div>
-      </section>
+      {/* Contact + Calendar */}
+      <ContactSection />
 
       {/* Lightbox */}
       {lightboxOpen && (
@@ -357,34 +335,82 @@ function HomeSections() {
               alt={images[index].label}
               className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
             />
-
-            <button
-              onClick={close}
-              aria-label="Close"
-              className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Close
-            </button>
-
-            <button
-              onClick={prev}
-              aria-label="Previous"
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Prev
-            </button>
-
-            <button
-              onClick={next}
-              aria-label="Next"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Next
-            </button>
+            <button onClick={close} aria-label="Close" className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
+            <button onClick={prev} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
+            <button onClick={next} aria-label="Next" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
           </div>
         </div>
       )}
     </>
+  )
+}
+
+/* Admin/Login bar + Contact + Calendar */
+function ContactSection() {
+  const { isOwner, login, logout } = useOwnerIdentity()
+
+  return (
+    <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
+      <div className="max-w-3xl mx-auto">
+        {/* Admin bar (only visible to owner or when widget is present) */}
+        <div className="mb-4 flex items-center justify-between">
+          <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
+          <div className="flex items-center gap-2 text-xs">
+            {window.netlifyIdentity ? (
+              isOwner ? (
+                <>
+                  <span className="rounded-full border px-2 py-1 bg-black text-white">Owner Mode</span>
+                  <button onClick={logout} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Log out</button>
+                </>
+              ) : (
+                <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
+              )
+            ) : (
+              <span className="text-neutral-500">Identity not loaded</span>
+            )}
+          </div>
+        </div>
+
+        <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
+
+        <form
+          name="contact"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/thanks.html"
+          className="space-y-4"
+        >
+          <input type="hidden" name="form-name" value="contact" />
+          <p className="hidden">
+            <label>
+              Don’t fill this out if you’re human
+              <input name="bot-field" />
+            </label>
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
+          </div>
+
+          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+            Submit Inquiry
+          </button>
+        </form>
+
+        {/* Calendar right under the form; read-only unless owner */}
+        <AvailabilityCalendar months={12} editable={isOwner} />
+      </div>
+    </section>
   )
 }
 
@@ -443,7 +469,6 @@ function InfoPage() {
     emergency: false,
     rules: false
   })
-
   const toggle = (key) => setOpen((s) => ({ ...s, [key]: !s[key] }))
 
   const beaches = [
@@ -510,15 +535,8 @@ function InfoPage() {
     return () => window.removeEventListener("hashchange", handle)
   }, [])
 
-  // restaurant town filter
-  const towns = ["All", "Hampton Bays", "Southampton", "Sag Harbor", "East Hampton"]
-  const [townFilter, setTownFilter] = useState("All")
-  const visibleRestaurants =
-    townFilter === "All" ? restaurants : restaurants.filter(r => r.town === townFilter)
-
   return (
     <section className="bg-gradient-to-b from-slate-50 to-white">
-      {/* Page header */}
       <div className="px-6 md:px-10 pt-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-semibold">Local Information</h2>
@@ -528,7 +546,6 @@ function InfoPage() {
         </div>
       </div>
 
-      {/* Sticky in-page menu */}
       <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
         <div className="max-w-5xl mx-auto px-6 md:px-10">
           <nav className="flex items-center gap-4 py-3 text-sm">
@@ -541,11 +558,9 @@ function InfoPage() {
 
       <div className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-5xl mx-auto space-y-12">
-
-          {/* House Information */}
+          {/* House */}
           <section id="house" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <AccordionCard title="Wi Fi" open={open.wifi} onClick={() => toggle("wifi")}>
                 <ul className="list-disc pl-5 space-y-1">
@@ -639,30 +654,11 @@ function InfoPage() {
             <p className="text-xs text-neutral-500 mt-3">Parking and permits vary by town and season. Check official pages before you go</p>
           </section>
 
-          {/* Restaurants with filter */}
+          {/* Restaurants */}
           <section id="restaurants" className="scroll-mt-28">
-            <div className="flex items-center justify-between mb-3">
-              <h3 className="text-lg font-semibold">Restaurants</h3>
-              <div className="flex items-center gap-2 text-sm">
-                <span className="text-neutral-600">Filter</span>
-                <div className="flex flex-wrap gap-2">
-                  {["All", "Hampton Bays", "Southampton", "Sag Harbor", "East Hampton"].map(t => (
-                    <button
-                      key={t}
-                      onClick={() => setTownFilter(t)}
-                      className={`px-3 py-1 rounded-full border transition ${
-                        townFilter === t ? "bg-black text-white" : "hover:bg-black hover:text-white"
-                      }`}
-                    >
-                      {t}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-
+            <h3 className="text-lg font-semibold mb-3">Restaurants</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {visibleRestaurants.map(r => (
+              {restaurants.map(r => (
                 <div key={r.name} className="rounded-2xl border shadow-sm bg-white p-4 hover:shadow-md transition">
                   <div className="flex items-center justify-between">
                     <p className="font-medium">{r.name}</p>
@@ -670,17 +666,11 @@ function InfoPage() {
                   </div>
                   <p className="text-sm text-neutral-700 mt-1">{r.desc}</p>
                   <div className="mt-3">
-                    <a href={r.url} target="_blank" rel="noreferrer" className="underline text-sm">
-                      Website
-                    </a>
+                    <a href={r.url} target="_blank" rel="noreferrer" className="underline text-sm">Website</a>
                   </div>
                 </div>
               ))}
             </div>
-
-            {visibleRestaurants.length === 0 && (
-              <p className="text-sm text-neutral-600">No restaurants for this filter</p>
-            )}
           </section>
 
           {/* Back to top */}
@@ -710,7 +700,6 @@ export default function App() {
     window.addEventListener("hashchange", onHash)
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
-
   const isInfo = route.startsWith("#/info")
 
   return (
