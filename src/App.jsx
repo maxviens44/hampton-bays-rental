@@ -60,25 +60,34 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar (editable only when owner is logged in)
+ * Availability Calendar (VIEW-ONLY, fed by /availability.json)
+ *  - Default: all dates available
+ *  - Any date in /availability.json.booked[] is shown as Booked
+ *  - Shows current month + next 11 months
  * ────────────────────────────────────────────────────────── */
-function AvailabilityCalendar({ months = 12, editable = false }) {
-  const STORAGE_KEY = "hb_booked_dates_v1"
-
-  const [booked, setBooked] = useState(() => {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY)
-      return raw ? new Set(JSON.parse(raw)) : new Set()
-    } catch {
-      return new Set()
-    }
-  })
+function AvailabilityCalendar({ months = 12 }) {
+  const [booked, setBooked] = useState(() => new Set())
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...booked]))
-    } catch {}
-  }, [booked])
+    let cancelled = false
+    ;(async () => {
+      try {
+        // Cache-bust so updates show immediately after deploys
+        const res = await fetch(`/availability.json?v=${Date.now()}`)
+        if (!res.ok) throw new Error("Failed to load availability.json")
+        const data = await res.json()
+        const dates = Array.isArray(data?.booked) ? data.booked : []
+        if (!cancelled) setBooked(new Set(dates))
+      } catch {
+        // If missing or invalid, just keep everything available
+        if (!cancelled) setBooked(new Set())
+      } finally {
+        if (!cancelled) setLoaded(true)
+      }
+    })()
+    return () => { cancelled = true }
+  }, [])
 
   const today = new Date()
   const startYear = today.getFullYear()
@@ -93,17 +102,6 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
     return date < new Date(today.getFullYear(), today.getMonth(), today.getDate())
   }
 
-  const toggleDate = (y, m, d) => {
-    if (!editable) return
-    const iso = toISO(y, m, d)
-    setBooked((prev) => {
-      const next = new Set(prev)
-      if (next.has(iso)) next.delete(iso)
-      else next.add(iso)
-      return next
-    })
-  }
-
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
     const firstDow = startOfMonthWeekday(year, month)
@@ -116,8 +114,7 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-medium">{name}</h4>
-          {/* Only show hint when owner can edit */}
-          {editable && <div className="text-xs text-neutral-500">Click to toggle</div>}
+          {/* no "view only" badge for visitors */}
         </div>
 
         <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
@@ -130,24 +127,22 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
             const iso = toISO(year, month, d)
-            const bookedDay = booked.has(iso)
+            const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
             const base = "aspect-square flex items-center justify-center rounded-md border transition select-none"
-            const bookedCls = bookedDay ? "bg-neutral-200 line-through text-neutral-500" : "bg-white hover:bg-neutral-50"
-            const pastCls = past ? "opacity-40 cursor-not-allowed" : editable ? "cursor-pointer" : "cursor-default"
+            const stateCls = isBooked
+              ? "bg-neutral-200 line-through text-neutral-500"
+              : "bg-white"
+            const pastCls = past ? "opacity-40" : ""
             return (
-              <button
+              <div
                 key={iso}
-                type="button"
-                disabled={past || !editable}
-                onClick={() => toggleDate(year, month, d)}
-                className={`${base} ${bookedCls} ${pastCls}`}
-                aria-pressed={bookedDay}
-                aria-label={`${name} ${d}${bookedDay ? " (booked)" : ""}`}
-                title={bookedDay ? "Booked" : "Available"}
+                className={`${base} ${stateCls} ${pastCls}`}
+                aria-label={`${name} ${d}${isBooked ? " (booked)" : ""}`}
+                title={isBooked ? "Booked" : "Available"}
               >
                 {d}
-              </button>
+              </div>
             )
           })}
         </div>
@@ -175,6 +170,11 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
           </span>
         </div>
       </div>
+
+      {!loaded && (
+        <div className="text-sm text-neutral-500 mb-2">Loading calendar…</div>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
@@ -185,43 +185,7 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Netlify Identity helper (checks if current user is the owner)
- * ────────────────────────────────────────────────────────── */
-function useOwnerIdentity() {
-  const [isOwner, setIsOwner] = useState(false)
-  const ownerEmail = (import.meta.env.VITE_OWNER_EMAIL || "").trim()
-
-  useEffect(() => {
-    const id = window.netlifyIdentity
-    if (!id) {
-      setIsOwner(false)
-      return
-    }
-
-    const checkOwner = (user) => {
-      const email = user?.email?.toLowerCase?.() || ""
-      const ok = !!user && !!ownerEmail && email === ownerEmail.toLowerCase()
-      setIsOwner(ok)
-    }
-
-    id.on("init", checkOwner)
-    id.on("login", (user) => { checkOwner(user); id.close?.() })
-    id.on("logout", () => setIsOwner(false))
-    id.init()
-
-    return () => {
-      try { id.off("init"); id.off("login"); id.off("logout") } catch {}
-    }
-  }, [ownerEmail])
-
-  const login = () => window.netlifyIdentity?.open("login")
-  const logout = () => window.netlifyIdentity?.logout()
-
-  return { isOwner, login, logout }
-}
-
-/* ────────────────────────────────────────────────────────── *
- * Home (hero, about, gallery, contact+calendar)
+ * Home (hero, about, gallery, contact + calendar)
  * ────────────────────────────────────────────────────────── */
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
@@ -330,32 +294,12 @@ function HomeSections() {
   )
 }
 
-/* Admin/Login bar + Contact + Calendar */
+/* Contact + Calendar (no login UI; calendar is view-only) */
 function ContactSection() {
-  const { isOwner, login, logout } = useOwnerIdentity()
-
   return (
     <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
       <div className="max-w-3xl mx-auto">
-        {/* Owner toolbar */}
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
-          <div className="flex items-center gap-2 text-xs">
-            {window.netlifyIdentity ? (
-              isOwner ? (
-                <>
-                  <span className="rounded-full border px-2 py-1 bg-black text-white">Owner Mode</span>
-                  <button onClick={logout} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Log out</button>
-                </>
-              ) : (
-                <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
-              )
-            ) : (
-              <span className="text-neutral-500">Identity not loaded</span>
-            )}
-          </div>
-        </div>
-
+        <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
         <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
 
         <form
@@ -392,8 +336,8 @@ function ContactSection() {
           </button>
         </form>
 
-        {/* Calendar right under the form; read-only for visitors, editable for owner */}
-        <AvailabilityCalendar months={12} editable={isOwner} />
+        {/* Calendar directly under the form */}
+        <AvailabilityCalendar months={12} />
       </div>
     </section>
   )
@@ -503,7 +447,7 @@ function InfoPage() {
   const gmaps = dest =>
     `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
-  // deep links like #/info/house
+  // Deep links like #/info/house
   const scrollToId = (id) => {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
