@@ -64,6 +64,7 @@ function Header() {
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12, editable = false }) {
   const STORAGE_KEY = "hb_booked_dates_v1"
+
   const [booked, setBooked] = useState(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY)
@@ -115,7 +116,7 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-medium">{name}</h4>
-          {/* No "view only" text for visitors; subtle hint only when editable */}
+          {/* Only show hint when owner can edit */}
           {editable && <div className="text-xs text-neutral-500">Click to toggle</div>}
         </div>
 
@@ -184,20 +185,16 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Netlify Identity helper: confirms owner + robust init
+ * Netlify Identity helper (checks if current user is the owner)
  * ────────────────────────────────────────────────────────── */
 function useOwnerIdentity() {
   const [isOwner, setIsOwner] = useState(false)
-  const [idReady, setIdReady] = useState(false)
-  const [status, setStatus] = useState("") // optional status text for the owner toolbar
   const ownerEmail = (import.meta.env.VITE_OWNER_EMAIL || "").trim()
 
   useEffect(() => {
     const id = window.netlifyIdentity
     if (!id) {
-      setStatus("Identity widget not found")
       setIsOwner(false)
-      setIdReady(false)
       return
     }
 
@@ -205,40 +202,22 @@ function useOwnerIdentity() {
       const email = user?.email?.toLowerCase?.() || ""
       const ok = !!user && !!ownerEmail && email === ownerEmail.toLowerCase()
       setIsOwner(ok)
-      setStatus(ok ? "Owner logged in" : user ? "Logged in (not owner)" : "Logged out")
     }
 
-    // Init (safe to call multiple times; widget guards itself)
-    id.on("init", (user) => {
-      setIdReady(true)
-      checkOwner(user)
-    })
-    id.on("login", (user) => {
-      checkOwner(user)
-      id.close() // close modal after login
-    })
-    id.on("logout", () => {
-      setIsOwner(false)
-      setStatus("Logged out")
-    })
-
-    // If we arrived via an invite/confirmation link, the widget usually handles it.
-    // Just ensure it initializes on load:
+    id.on("init", checkOwner)
+    id.on("login", (user) => { checkOwner(user); id.close?.() })
+    id.on("logout", () => setIsOwner(false))
     id.init()
 
     return () => {
-      try {
-        id.off("init")
-        id.off("login")
-        id.off("logout")
-      } catch {}
+      try { id.off("init"); id.off("login"); id.off("logout") } catch {}
     }
   }, [ownerEmail])
 
   const login = () => window.netlifyIdentity?.open("login")
   const logout = () => window.netlifyIdentity?.logout()
 
-  return { isOwner, idReady, status, login, logout, ownerEmail }
+  return { isOwner, login, logout }
 }
 
 /* ────────────────────────────────────────────────────────── *
@@ -347,34 +326,13 @@ function HomeSections() {
 
       {/* Contact + Calendar */}
       <ContactSection />
-
-      {/* Lightbox */}
-      {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4"
-          role="dialog"
-          aria-modal="true"
-          onClick={close}
-        >
-          <div className="relative max-w-6xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={`/images/${images[index].file}`}
-              alt={images[index].label}
-              className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
-            />
-            <button onClick={close} aria-label="Close" className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
-            <button onClick={prev} aria-label="Previous" className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
-            <button onClick={next} aria-label="Next" className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
-          </div>
-        </div>
-      )}
     </>
   )
 }
 
 /* Admin/Login bar + Contact + Calendar */
 function ContactSection() {
-  const { isOwner, idReady, status, login, logout, ownerEmail } = useOwnerIdentity()
+  const { isOwner, login, logout } = useOwnerIdentity()
 
   return (
     <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
@@ -390,13 +348,7 @@ function ContactSection() {
                   <button onClick={logout} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Log out</button>
                 </>
               ) : (
-                <>
-                  <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
-                  {/* Optional tiny status for debugging owner login */}
-                  {idReady && ownerEmail && (
-                    <span className="text-neutral-500">Using: {ownerEmail}</span>
-                  )}
-                </>
+                <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
               )
             ) : (
               <span className="text-neutral-500">Identity not loaded</span>
