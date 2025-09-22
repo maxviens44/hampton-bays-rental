@@ -10,6 +10,10 @@ const images = [
   { file: "kitchen2.webp", label: "Chef's Kitchen" },
   { file: "kitchen3.webp", label: "Chef's Kitchen" },
   { file: "dining.webp", label: "Dining Area" },
+  { file: "pool1.webp", label: "Saltwater Pool" },
+  { file: "pool2.webp", label: "Pool and Patio" },
+  { file: "pool3.webp", label: "Poolside" },
+  { file: "pool4.webp", label: "Salt Water Pool" },
   { file: "primary.webp", label: "Primary Bedroom" },
   { file: "primary2.webp", label: "Primary Suite" },
   { file: "primarydoors.webp", label: "Primary Doors to Balcony" },
@@ -31,12 +35,8 @@ const images = [
   { file: "garage.webp", label: "Detached Garage" },
   { file: "laundry.webp", label: "Laundry Room" },
   { file: "office-room.webp", label: "Home Office" },
-  { file: "pool1.webp", label: "Saltwater Pool" },
-  { file: "pool2.webp", label: "Pool and Patio" },
-  { file: "pool3.webp", label: "Poolside" },
-  { file: "pool4.webp", label: "Evening Pool" },
   { file: "restroom.webp", label: "Half Bath" },
-   { file: "stairs.webp", label: "Staircase" }
+  { file: "stairs.webp", label: "Staircase" }
 ]
 
 function Header() {
