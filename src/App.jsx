@@ -1,5 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react"
 
+/* ────────────────────────────────────────────────────────── *
+ * Image list (keeps strict order in the grid)
+ * ────────────────────────────────────────────────────────── */
 const images = [
   { file: "top.webp", label: "Aerial View" },
   { file: "hosue.webp", label: "Exterior Front" },
@@ -57,7 +60,7 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar (read-only unless owner is logged in)
+ * Availability Calendar (editable only when owner is logged in)
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12, editable = false }) {
   const STORAGE_KEY = "hb_booked_dates_v1"
@@ -111,17 +114,17 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
     return (
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-  <h4 className="font-medium">{name}</h4>
-  {editable && (
-    <div className="text-xs text-neutral-500">Click to toggle</div>
-  )}
-</div>
+          <h4 className="font-medium">{name}</h4>
+          {/* No "view only" text for visitors; subtle hint only when editable */}
+          {editable && <div className="text-xs text-neutral-500">Click to toggle</div>}
+        </div>
 
         <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
             <div key={d} className="py-1 text-neutral-600">{d}</div>
           ))}
         </div>
+
         <div className="grid grid-cols-7 gap-1 text-sm">
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
@@ -171,7 +174,7 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
           </span>
         </div>
       </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
@@ -181,46 +184,71 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Simple Netlify Identity gate to enable owner edit mode
+ * Netlify Identity helper: confirms owner + robust init
  * ────────────────────────────────────────────────────────── */
 function useOwnerIdentity() {
   const [isOwner, setIsOwner] = useState(false)
-  const ownerEmail = import.meta.env.VITE_OWNER_EMAIL
+  const [idReady, setIdReady] = useState(false)
+  const [status, setStatus] = useState("") // optional status text for the owner toolbar
+  const ownerEmail = (import.meta.env.VITE_OWNER_EMAIL || "").trim()
 
   useEffect(() => {
     const id = window.netlifyIdentity
     if (!id) {
+      setStatus("Identity widget not found")
       setIsOwner(false)
+      setIdReady(false)
       return
     }
 
-    const check = (user) => {
-      const ok = !!user && !!ownerEmail && user.email?.toLowerCase() === ownerEmail.toLowerCase()
+    const checkOwner = (user) => {
+      const email = user?.email?.toLowerCase?.() || ""
+      const ok = !!user && !!ownerEmail && email === ownerEmail.toLowerCase()
       setIsOwner(ok)
+      setStatus(ok ? "Owner logged in" : user ? "Logged in (not owner)" : "Logged out")
     }
 
-    id.on("init", check)
-    id.on("login", check)
-    id.on("logout", () => setIsOwner(false))
+    // Init (safe to call multiple times; widget guards itself)
+    id.on("init", (user) => {
+      setIdReady(true)
+      checkOwner(user)
+    })
+    id.on("login", (user) => {
+      checkOwner(user)
+      id.close() // close modal after login
+    })
+    id.on("logout", () => {
+      setIsOwner(false)
+      setStatus("Logged out")
+    })
+
+    // If we arrived via an invite/confirmation link, the widget usually handles it.
+    // Just ensure it initializes on load:
     id.init()
-    // cleanup is optional; widget is global
+
+    return () => {
+      try {
+        id.off("init")
+        id.off("login")
+        id.off("logout")
+      } catch {}
+    }
   }, [ownerEmail])
 
   const login = () => window.netlifyIdentity?.open("login")
   const logout = () => window.netlifyIdentity?.logout()
 
-  return { isOwner, login, logout }
+  return { isOwner, idReady, status, login, logout, ownerEmail }
 }
 
+/* ────────────────────────────────────────────────────────── *
+ * Home (hero, about, gallery, contact+calendar)
+ * ────────────────────────────────────────────────────────── */
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [index, setIndex] = useState(0)
 
-  const openAt = useCallback((i) => {
-    setIndex(i)
-    setLightboxOpen(true)
-  }, [])
-
+  const openAt = useCallback((i) => { setIndex(i); setLightboxOpen(true) }, [])
   const close = useCallback(() => setLightboxOpen(false), [])
   const next = useCallback(() => setIndex(i => (i + 1) % images.length), [])
   const prev = useCallback(() => setIndex(i => (i - 1 + images.length) % images.length), [])
@@ -283,18 +311,18 @@ function HomeSections() {
               <li>Central air, outdoor shower, and workout room.</li>
             </ul>
             <p>
-              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with natural light and fast Wi Fi for remote work
+              Ideal for families, couples, or small groups, the home balances open gathering areas with private bedroom suites. Spend your days at the beach or lounging by the saltwater pool, then unwind by the fire after dinner in town. For those who need to stay connected, the property also features a dedicated home office with natural light and fast Wi-Fi for remote work.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Gallery */}
+      {/* Gallery (keeps strict order via grid-flow-row) */}
       <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-        <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
-        <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
+          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {images.map((img, idx) => (
               <button
                 key={img.file}
@@ -346,12 +374,12 @@ function HomeSections() {
 
 /* Admin/Login bar + Contact + Calendar */
 function ContactSection() {
-  const { isOwner, login, logout } = useOwnerIdentity()
+  const { isOwner, idReady, status, login, logout, ownerEmail } = useOwnerIdentity()
 
   return (
     <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
       <div className="max-w-3xl mx-auto">
-        {/* Admin bar (only visible to owner or when widget is present) */}
+        {/* Owner toolbar */}
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
           <div className="flex items-center gap-2 text-xs">
@@ -362,7 +390,13 @@ function ContactSection() {
                   <button onClick={logout} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Log out</button>
                 </>
               ) : (
-                <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
+                <>
+                  <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
+                  {/* Optional tiny status for debugging owner login */}
+                  {idReady && ownerEmail && (
+                    <span className="text-neutral-500">Using: {ownerEmail}</span>
+                  )}
+                </>
               )
             ) : (
               <span className="text-neutral-500">Identity not loaded</span>
@@ -406,14 +440,16 @@ function ContactSection() {
           </button>
         </form>
 
-        {/* Calendar right under the form; read-only unless owner */}
+        {/* Calendar right under the form; read-only for visitors, editable for owner */}
         <AvailabilityCalendar months={12} editable={isOwner} />
       </div>
     </section>
   )
 }
 
-/* small UI helpers for Info page */
+/* ────────────────────────────────────────────────────────── *
+ * Info Page (deep-link sections)
+ * ────────────────────────────────────────────────────────── */
 function Chevron({ open }) {
   return (
     <svg
@@ -525,9 +561,7 @@ function InfoPage() {
     const handle = () => {
       const h = window.location.hash || ""
       const m = h.match(/^#\/info\/([a-z-]+)/i)
-      if (m && m[1]) {
-        setTimeout(() => scrollToId(m[1]), 0)
-      }
+      if (m && m[1]) setTimeout(() => scrollToId(m[1]), 0)
     }
     handle()
     window.addEventListener("hashchange", handle)
@@ -612,7 +646,7 @@ function InfoPage() {
               <AccordionCard title="Home office" open={open.office} onClick={() => toggle("office")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Dedicated desk in a quiet room with natural light</li>
-                  <li>Fast Wi Fi with strong signal in office and common areas</li>
+                  <li>Fast Wi-Fi with strong signal in office and common areas</li>
                   <li>Several standard outlets and a surge protected power strip</li>
                 </ul>
               </AccordionCard>
@@ -676,10 +710,7 @@ function InfoPage() {
           <div className="pt-4">
             <a
               href="#top"
-              onClick={(e) => {
-                e.preventDefault()
-                window.scrollTo({ top: 0, behavior: "smooth" })
-              }}
+              onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
               className="inline-block rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition"
             >
               Back to top
@@ -692,6 +723,9 @@ function InfoPage() {
   )
 }
 
+/* ────────────────────────────────────────────────────────── *
+ * App router
+ * ────────────────────────────────────────────────────────── */
 export default function App() {
   const [route, setRoute] = useState(window.location.hash || "#/")
   useEffect(() => {
