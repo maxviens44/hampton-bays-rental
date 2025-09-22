@@ -168,11 +168,7 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
           </span>
         </div>
       </div>
-      <p className="text-sm text-neutral-700 mb-4">
-        The calendar shows the current month and the next 11 months.
-        {editable ? " You’re in owner edit mode." : " Viewing only (owner can log in to edit)."}
-      </p>
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
