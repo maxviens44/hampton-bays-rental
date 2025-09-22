@@ -34,7 +34,6 @@ const images = [
   { file: "foyer2.webp", label: "Entryway" },
   { file: "garage.webp", label: "Detached Garage" },
   { file: "laundry.webp", label: "Laundry Room" },
-  { file: "office-room.webp", label: "Home Office" },
   { file: "restroom.webp", label: "Half Bath" },
   { file: "stairs.webp", label: "Staircase" }
 ]
