@@ -10,8 +10,8 @@
     <!-- Meta Description -->
     <meta name="description" content="Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom rental with saltwater pool, bay views, and modern finishes. Short term rental near Hamptons beaches and dining." />
 
-    <!-- Keywords -->
-    <meta name="keywords" content="Hamptons cedar shingle house, Hampton Bays rental, Hamptons vacation home, short term rental Hamptons, house with pool Hamptons, luxury rental Hamptons, Hampton Bays Airbnb, Hampton Bays VRBO" />
+    <!-- Optional SEO -->
+    <meta name="robots" content="index,follow" />
 
     <!-- Canonical -->
     <link rel="canonical" href="https://staythehamptons.com/" />
@@ -69,8 +69,22 @@
 
   <body>
     <div id="root"></div>
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 
+    <!-- Netlify Identity -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+    <script>
+      if (window.netlifyIdentity) {
+        window.netlifyIdentity.on('init', function (user) {
+          // If we came from an invite link and not logged in yet, open signup
+          if (!user && /\binvite_token=/.test(window.location.hash)) {
+            window.netlifyIdentity.open('signup');
+          }
+        });
+        window.netlifyIdentity.init();
+      }
+    </script>
+
+    <!-- React App -->
     <script type="module" src="/src/main.jsx"></script>
 
     <!-- Hidden form for Netlify build-time detection -->
@@ -82,7 +96,5 @@
       <input type="date" name="Desired Dates" />
       <input type="number" name="Number of Nights (7 minimum)" />
     </form>
-   
-
   </body>
 </html>
