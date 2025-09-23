@@ -98,6 +98,16 @@
   <input type="hidden" name="Calculated Nights" />
   <input type="text" name="bot-field" />
 </form>
+    <!-- Hidden form for Netlify build-time detection -->
+<form name="review-pending" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="review-pending" />
+  <input type="text" name="Name" />
+  <input type="text" name="Stars" />
+  <input type="text" name="Stayed From" />
+  <input type="text" name="Stayed To" />
+  <textarea name="Comment"></textarea>
+</form>
+
 
   </body>
 </html>
