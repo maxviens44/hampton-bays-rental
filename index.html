@@ -56,7 +56,6 @@
 
     <!-- Favicon & Icons -->
     <link rel="icon" type="image/png" href="/favicon.png" />
-    <!-- Optional if you have them: -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="icon" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" sizes="512x512" href="/android-chrome-512x512.png" />
@@ -83,6 +82,24 @@
   </head>
   <body class="font-sans bg-white text-neutral-900">
     <div id="root"></div>
+
+    <!-- Hidden fallback so Netlify detects the Reviews form at build time -->
+    <form name="review-pending" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" hidden>
+      <input type="hidden" name="form-name" value="review-pending" />
+      <p class="hidden">
+        <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
+      </p>
+      <input type="text" name="Name" />
+      <input type="date" name="Stayed From" />
+      <input type="date" name="Stayed To" />
+      <select name="Stars">
+        <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
+      </select>
+      <textarea name="Comment"></textarea>
+      <input type="hidden" name="Status" value="Pending" />
+      <button type="submit">Submit</button>
+    </form>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
