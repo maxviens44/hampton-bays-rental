@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useState, useCallback, useMemo } from "react"
 
 /* Images shown in the Gallery */
 const images = [
@@ -322,8 +322,24 @@ function HomeSections() {
   )
 }
 
-/* Contact + Calendar (viewers) */
+/* Contact + Calendar (updated with Check-in/Check-out) */
 function ContactSection() {
+  const [checkIn, setCheckIn] = useState("")
+  const [checkOut, setCheckOut] = useState("")
+
+  // Compute nights to include in Netlify submission (hidden field)
+  const nights = useMemo(() => {
+    if (!checkIn || !checkOut) return 0
+    const d1 = new Date(checkIn)
+    const d2 = new Date(checkOut)
+    const ms = d2 - d1
+    const days = Math.round(ms / (1000 * 60 * 60 * 24))
+    return days > 0 ? days : 0
+  }, [checkIn, checkOut])
+
+  const todayIso = new Date().toISOString().slice(0, 10)
+  const validDates = !checkIn || !checkOut ? true : nights > 0
+
   return (
     <section id="contact" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-t">
       <div className="max-w-3xl mx-auto">
@@ -355,12 +371,47 @@ function ContactSection() {
             <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
+
+          {/* NEW: Check-in / Check-out dates */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-neutral-700">Check-in</label>
+              <input
+                type="date"
+                name="Check-in"
+                required
+                min={todayIso}
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <label className="text-sm text-neutral-700">Check-out</label>
+              <input
+                type="date"
+                name="Check-out"
+                required
+                min={checkIn || todayIso}
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
           </div>
 
-          <button type="submit" className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+          {/* Hidden computed nights so your email still includes it */}
+          <input type="hidden" name="Number of Nights" value={nights > 0 ? String(nights) : ""} />
+
+          {checkIn && checkOut && nights <= 0 && (
+            <p className="text-sm text-red-600">Check-out must be after check-in.</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={!validDates}
+            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
+          >
             Submit Inquiry
           </button>
         </form>
@@ -492,7 +543,9 @@ function InfoPage() {
           <section id="beaches" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Beaches</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {beaches.map((b) => (
+              {[
+                ...beaches
+              ].map((b) => (
                 <div key={b.name} className="rounded-2xl border shadow-sm bg-white p-4 hover:shadow-md transition">
                   <p className="font-medium">{b.name}</p>
                   <p className="text-sm text-neutral-700 mt-1">{b.desc}</p>
