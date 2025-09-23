@@ -116,7 +116,6 @@ function AvailabilityCalendar({ months = 12, editable = false }) {
       <div className="rounded-2xl border bg-white p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <h4 className="font-medium">{name}</h4>
-          {/* Only show hint when owner can edit */}
           {editable && <div className="text-xs text-neutral-500">Click to toggle</div>}
         </div>
 
@@ -308,6 +307,7 @@ function HomeSections() {
                 onClick={() => openAt(idx)}
                 className="group relative focus:outline-none"
                 aria-label={`Open ${img.label}`}
+                type="button"
               >
                 <img
                   src={`/images/${img.file}`}
@@ -326,6 +326,29 @@ function HomeSections() {
 
       {/* Contact + Calendar */}
       <ContactSection />
+
+      {/* Lightbox (restored) */}
+      {lightboxOpen && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 md:p-4"
+          role="dialog"
+          aria-modal="true"
+          onClick={close}
+        >
+          <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
+            <img
+              src={`/images/${images[index].file}`}
+              alt={images[index].label}
+              className="w-full h-[70vh] md:h-[82vh] object-contain rounded-lg"
+            />
+            <div className="absolute inset-x-0 -bottom-12 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-2">
+              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
+              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
+              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   )
 }
