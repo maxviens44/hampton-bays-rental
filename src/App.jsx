@@ -96,7 +96,7 @@ function AvailabilityCalendar({ months = 12 }) {
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
     const firstDow = startOfMonthWeekday(year, month)
-    aconst total = daysInMonth(year, month)
+    const total = daysInMonth(year, month)
     const cells = []
     for (let i = 0; i < firstDow; i++) cells.push(null)
     for (let d = 1; d <= total; d++) cells.push(d)
