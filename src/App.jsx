@@ -58,7 +58,7 @@ function Header() {
   )
 }
 
-/* View-only Availability, fed by /availability.json */
+/* View-only Availability Calendar */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
   const [loaded, setLoaded] = useState(false)
@@ -73,7 +73,7 @@ function AvailabilityCalendar({ months = 12 }) {
         const dates = Array.isArray(data?.booked) ? data.booked : []
         if (!cancelled) setBooked(new Set(dates))
       } catch {
-        if (!cancelled) setBooked(new Set()) // default = all available
+        if (!cancelled) setBooked(new Set())
       } finally {
         if (!cancelled) setLoaded(true)
       }
@@ -103,15 +103,12 @@ function AvailabilityCalendar({ months = 12 }) {
 
     return (
       <div className="rounded-xl border bg-white p-3 sm:p-4 shadow-sm">
-        <div className="flex items-center justify-between mb-2">
-          <h4 className="font-medium text-sm sm:text-base">{name}</h4>
-        </div>
+        <h4 className="font-medium text-sm sm:text-base mb-2">{name}</h4>
         <div className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-xs mb-1">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
             <div key={d} className="py-1 text-neutral-600">{d}</div>
           ))}
         </div>
-
         <div className="grid grid-cols-7 gap-1 text-xs sm:text-sm">
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
@@ -122,12 +119,7 @@ function AvailabilityCalendar({ months = 12 }) {
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
-              <div
-                key={iso}
-                className={`${base} ${stateCls} ${pastCls}`}
-                aria-label={`${name} ${d}${isBooked ? " (booked)" : ""}`}
-                title={isBooked ? "Booked" : "Available"}
-              >
+              <div key={iso} className={`${base} ${stateCls} ${pastCls}`}>
                 {d}
               </div>
             )
@@ -145,22 +137,10 @@ function AvailabilityCalendar({ months = 12 }) {
   })
 
   return (
-    <section className="mt-8 sm:mt-10" aria-labelledby="availability-title">
-      <div className="flex items-center justify-between mb-3 px-4 sm:px-0">
-        <h3 id="availability-title" className="text-base sm:text-lg font-semibold">Availability</h3>
-        <div className="hidden sm:flex items-center gap-3 text-xs">
-          <span className="inline-flex items-center gap-1">
-            <span className="inline-block w-3 h-3 rounded-sm border bg-white" /> Available
-          </span>
-          <span className="inline-flex items-center gap-1">
-            <span className="inline-block w-3 h-3 rounded-sm border bg-neutral-200" /> Booked
-          </span>
-        </div>
-      </div>
-
-      {!loaded && <div className="text-sm text-neutral-500 mb-2 px-4 sm:px-0">Loading calendar…</div>}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 px-4 sm:px-0">
+    <section className="mt-8 sm:mt-10">
+      <h3 className="text-base sm:text-lg font-semibold mb-3">Availability</h3>
+      {!loaded && <div className="text-sm text-neutral-500 mb-2">Loading calendar…</div>}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
@@ -169,7 +149,7 @@ function AvailabilityCalendar({ months = 12 }) {
   )
 }
 
-/* Home sections + mobile-friendly Lightbox */
+/* Home Sections (Hero, About, Gallery, Contact) */
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [index, setIndex] = useState(0)
@@ -197,133 +177,50 @@ function HomeSections() {
   return (
     <>
       {/* Hero */}
-      <section className="px-0 py-0">
-        <div className="max-w-7xl mx-auto">
-          <div className="relative">
-            <img
-              src="/images/hosue.webp"
-              alt="House View"
-              className="w-full h-[42vh] sm:h-[56vh] object-cover"
-              loading="eager"
-              fetchpriority="high"
-            />
-            <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8">
-              <h2 className="text-white text-xl sm:text-4xl font-semibold drop-shadow">
-                Luxury Hamptons Retreat
-              </h2>
-              <p className="text-white text-xs sm:text-lg drop-shadow mt-1 sm:mt-2">
-                10 guests · 4 bedrooms · 5 beds · 5 baths
-              </p>
-            </div>
+      <section>
+        <div className="relative">
+          <img src="/images/hosue.webp" alt="House View" className="w-full h-[42vh] sm:h-[56vh] object-cover" />
+          <div className="absolute inset-0 bg-black/20" />
+          <div className="absolute bottom-4 left-4">
+            <h2 className="text-white text-xl sm:text-4xl font-semibold drop-shadow">Luxury Hamptons Retreat</h2>
+            <p className="text-white text-xs sm:text-lg drop-shadow mt-1">10 guests · 4 bedrooms · 5 beds · 5 baths</p>
           </div>
         </div>
       </section>
 
       {/* About */}
-      <section id="about" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-t">
-        <div className="max-w-3xl mx-auto">
-          <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">About</h3>
-          <div className="space-y-4 text-neutral-800 text-sm sm:text-base">
-            <p>
-              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops.
-            </p>
-            <ul className="list-disc pl-5 space-y-1">
-              <li>Vaulted living room opening to the patio and pool</li>
-              <li>Chef’s kitchen with Viking appliances and island seating</li>
-              <li>Two oversized en-suite bedrooms on the main level</li>
-              <li>Primary suite upstairs with balcony and spa bath</li>
-              <li>Finished lower level with media room, full bath, laundry</li>
-            </ul>
-          </div>
-        </div>
+      <section id="about" className="px-4 py-8 border-t">
+        <h3 className="text-lg sm:text-xl font-semibold mb-3">About</h3>
+        <p>Welcome to your Hamptons getaway. A cedar shingle home with heated saltwater pool and bay views.</p>
       </section>
 
       {/* Gallery */}
-      <section id="gallery" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12">
-        <div className="max-w-7xl mx-auto">
-          <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">Gallery</h3>
-          <p className="text-xs sm:text-sm text-neutral-600 mb-4 sm:mb-6">
-            Tap any photo to view it full screen
-          </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-            {images.map((img, idx) => (
-              <button
-                key={img.file}
-                type="button"
-                onClick={() => openAt(idx)}
-                className="group relative focus:outline-none"
-                aria-label={`Open ${img.label}`}
-              >
-                <img
-                  src={`/images/${img.file}`}
-                  alt={img.label}
-                  loading={idx < 6 ? "eager" : "lazy"}
-                  className="w-full h-40 sm:h-56 object-cover rounded-xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
-                />
-                <span className="absolute bottom-1 left-1 sm:bottom-2 sm:left-2 text-[10px] sm:text-xs bg-black/50 text-white px-1.5 py-0.5 sm:px-2 rounded">
-                  {img.label}
-                </span>
-              </button>
-            ))}
-          </div>
+      <section id="gallery" className="px-4 py-8">
+        <h3 className="text-lg sm:text-xl font-semibold mb-3">Gallery</h3>
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          {images.map((img, idx) => (
+            <button key={img.file} onClick={() => openAt(idx)} className="group relative">
+              <img src={`/images/${img.file}`} alt={img.label} className="w-full h-40 object-cover rounded" />
+              <span className="absolute bottom-1 left-1 text-[10px] bg-black/50 text-white px-1 rounded">{img.label}</span>
+            </button>
+          ))}
         </div>
       </section>
 
-      {/* Contact + Calendar */}
+      {/* Contact */}
       <ContactSection />
 
-      {/* Lightbox (mobile touch friendly) */}
+      {/* Lightbox */}
       {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 sm:p-4"
-          role="dialog"
-          aria-modal="true"
-          onClick={close}
-        >
-          <div
-            className="relative w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={`/images/${images[index].file}`}
-              alt={images[index].label}
-              className="w-full h-[70vh] sm:h-[82vh] object-contain rounded-lg"
-            />
-            <div className="absolute inset-x-0 -bottom-12 sm:bottom-auto sm:top-3 flex justify-center sm:justify-end gap-2">
-              <button
-                onClick={prev}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Previous"
-              >
-                Prev
-              </button>
-              <button
-                onClick={next}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Next"
-              >
-                Next
-              </button>
-              <button
-                onClick={close}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Close"
-              >
-                Close
-              </button>
-            </div>
-          </div>
+        <div className="fixed inset-0 z-50 bg-black/90 flex items-center justify-center" onClick={close}>
+          <img src={`/images/${images[index].file}`} alt={images[index].label} className="max-h-[80vh]" />
         </div>
       )}
     </>
   )
 }
 
-/* Contact + Calendar (with Check-in/Check-out) */
+/* Contact Form */
 function ContactSection() {
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
@@ -331,177 +228,66 @@ function ContactSection() {
     if (!checkIn || !checkOut) return 0
     const d1 = new Date(checkIn)
     const d2 = new Date(checkOut)
-    const ms = d2 - d1
-    const days = Math.round(ms / (1000 * 60 * 60 * 24))
+    const days = Math.round((d2 - d1) / (1000 * 60 * 60 * 24))
     return days > 0 ? days : 0
   }, [checkIn, checkOut])
 
-  const todayIso = new Date().toISOString().slice(0, 10)
-  const validDates = !checkIn || !checkOut ? true : nights > 0
-
   return (
-    <section id="contact" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-t">
-      <div className="max-w-3xl mx-auto">
-        <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Contact</h3>
-        <p className="text-neutral-700 mb-4 sm:mb-6 text-sm sm:text-base">
-          For availability and rates, submit the form below
-        </p>
+    <section id="contact" className="px-4 py-8 border-t">
+      <h3 className="text-lg sm:text-xl font-semibold mb-3">Contact</h3>
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" className="space-y-3">
+        <input type="hidden" name="form-name" value="contact" />
+        <input type="hidden" name="Nights" value={nights} />
 
-        <form
-          name="contact"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          action="/thanks.html"
-          className="space-y-3 sm:space-y-4"
-        >
-          <input type="hidden" name="form-name" value="contact" />
-          <input type="hidden" name="Calculated Nights" value={nights} />
+        <input name="First Name" placeholder="First Name" required className="border rounded px-3 py-2 w-full" />
+        <input name="Last Name" placeholder="Last Name" required className="border rounded px-3 py-2 w-full" />
+        <input type="email" name="Email" placeholder="Email" required className="border rounded px-3 py-2 w-full" />
 
-          <p className="hidden">
-            <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
-          </p>
+        <div className="grid grid-cols-3 gap-2">
+          <input type="date" name="Check-in" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} required className="border rounded px-3 py-2" />
+          <input type="date" name="Check-out" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} required className="border rounded px-3 py-2" />
+          <input type="number" value={nights} readOnly className="border rounded px-3 py-2 bg-gray-100" />
+        </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-            <div>
-              <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
-              <input
-                type="date"
-                name="Check-in"
-                min={todayIso}
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                required
-                className="border rounded-lg px-3 py-2 w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-neutral-600 mb-1">Check-out</label>
-              <input
-                type="date"
-                name="Check-out"
-                min={checkIn || todayIso}
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                required
-                className="border rounded-lg px-3 py-2 w-full"
-              />
-            </div>
-            <div>
-              <label className="block text-xs text-neutral-600 mb-1">Nights</label>
-              <input
-                type="number"
-                readOnly
-                value={nights}
-                className="border rounded-lg px-3 py-2 w-full bg-neutral-50"
-              />
-            </div>
-          </div>
-
-          {!validDates && (
-            <div className="text-xs text-red-600">Check-out must be after Check-in.</div>
-          )}
-
-          <button
-            type="submit"
-            disabled={!validDates}
-            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
-          >
-            Submit Inquiry
-          </button>
-        </form>
-
-        <AvailabilityCalendar months={12} />
-      </div>
+        <button type="submit" className="rounded border px-5 py-2 hover:bg-black hover:text-white">Submit Inquiry</button>
+      </form>
+      <AvailabilityCalendar months={12} />
     </section>
   )
 }
 
-/* Simple Info page placeholder (keeps the #/info route working) */
+/* Info page */
 function InfoPage() {
   return (
-    <section className="px-4 sm:px-6 md:px-10 py-10">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-3">Local Information</h2>
-        <p className="text-sm text-neutral-700">
-          Beaches, restaurants, and house details coming soon.
-        </p>
-      </div>
+    <section className="px-4 py-10">
+      <h2 className="text-xl font-semibold mb-3">Local Information</h2>
+      <p>Beaches, restaurants, and house details coming soon.</p>
     </section>
   )
 }
 
-/* Reviews page with Netlify form (pending approval) */
+/* Reviews page */
 function ReviewsPage() {
   return (
-    <section className="px-4 sm:px-6 md:px-10 py-10">
-      <div className="max-w-3xl mx-auto">
-        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Share Your Stay</h2>
-        <p className="text-sm text-neutral-700 mb-6">
-          Submit your review below. We’ll publish approved reviews to the site.
-        </p>
-
-        <form
-          name="review-pending"
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          action="/thanks.html"
-          className="space-y-4"
-        >
-          <input type="hidden" name="form-name" value="review-pending" />
-          <p className="hidden">
-            <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <select name="Stars" required className="border rounded-lg px-3 py-2 w-full">
-              <option value="" disabled defaultValue="">Rating (1–5 stars)</option>
-              <option>5</option>
-              <option>4</option>
-              <option>3</option>
-              <option>2</option>
-              <option>1</option>
-            </select>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs text-neutral-600 mb-1">Stayed From</label>
-              <input type="date" name="Stayed From" required className="border rounded-lg px-3 py-2 w-full" />
-            </div>
-            <div>
-              <label className="block text-xs text-neutral-600 mb-1">Stayed To</label>
-              <input type="date" name="Stayed To" required className="border rounded-lg px-3 py-2 w-full" />
-            </div>
-          </div>
-
-          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-2 w-full" />
-
-          {/* Optional hint for your moderation flow */}
-          <input type="hidden" name="Status" value="Pending" />
-
-          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
-            Submit Review
-          </button>
-        </form>
-      </div>
+    <section className="px-4 py-10">
+      <h2 className="text-xl font-semibold mb-4">Share Your Stay</h2>
+      <form name="review-pending" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thanks.html" className="space-y-3">
+        <input type="hidden" name="form-name" value="review-pending" />
+        <input name="Name" placeholder="Your Name" required className="border rounded px-3 py-2 w-full" />
+        <select name="Stars" required className="border rounded px-3 py-2 w-full" defaultValue="">
+          <option value="" disabled>Rating (1–5 stars)</option>
+          <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
+        </select>
+        <input type="date" name="Stayed From" required className="border rounded px-3 py-2 w-full" />
+        <input type="date" name="Stayed To" required className="border rounded px-3 py-2 w-full" />
+        <textarea name="Comment" placeholder="Tell us about your stay…" required className="border rounded px-3 py-2 w-full" />
+        <button type="submit" className="rounded border px-5 py-2 hover:bg-black hover:text-white">Submit Review</button>
+      </form>
     </section>
   )
 }
 
-/* App Router (hash) */
+/* App Router */
 export default function App() {
   const [route, setRoute] = useState(window.location.hash || "#/")
   useEffect(() => {
@@ -514,14 +300,10 @@ export default function App() {
   const isReviews = route.startsWith("#/reviews")
 
   return (
-    <main className="min-h-screen bg-white">
+    <main>
       <Header />
       {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
-      <footer className="px-4 sm:px-6 md:px-10 py-8 border-t">
-        <div className="max-w-7xl mx-auto text-sm text-neutral-600">
-          © {new Date().getFullYear()} Hamptons Rental
-        </div>
-      </footer>
+      <footer className="px-4 py-8 border-t text-sm text-neutral-600">© {new Date().getFullYear()} Hamptons Rental</footer>
     </main>
   )
 }
