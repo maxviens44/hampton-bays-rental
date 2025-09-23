@@ -317,7 +317,7 @@ function HomeSections() {
       {/* Contact + Calendar */}
       <ContactSection />
 
-      {/* Lightbox overlay (restored) */}
+      {/* Lightbox overlay (click image to open) */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 md:p-4"
@@ -394,6 +394,7 @@ function ContactSection() {
           className="space-y-4"
         >
           <input type="hidden" name="form-name" value="contact" />
+          {/* Optional: keep this hidden if you want nights recorded in Netlify */}
           <input type="hidden" name="Calculated Nights" value={nights} />
 
           <p className="hidden">
@@ -410,6 +411,7 @@ function ContactSection() {
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
 
+          {/* NEW: Check-in / Check-out */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
@@ -502,6 +504,8 @@ function AccordionCard({ title, open, onClick, children }) {
 
 function InfoPage() {
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
+  const gmaps = (dest) =>
+    `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
   const [open, setOpen] = useState({
     wifi: true,
@@ -557,26 +561,6 @@ function InfoPage() {
     { town: "East Hampton", name: "Fresno", url: "https://www.fresnorestaurant.com/", desc: "Casual upscale bistro popular for seafood and local wines" },
     { town: "East Hampton", name: "Serafina", url: "https://www.serafinarestaurant.com/east-hampton", desc: "Lively outpost serving contemporary Italian favorites" }
   ]
-
-  const gmaps = dest =>
-    `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
-
-  // deep links like #/info/house
-  const scrollToId = (id) => {
-    const el = document.getElementById(id)
-    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
-  }
-
-  useEffect(() => {
-    const handle = () => {
-      const h = window.location.hash || ""
-      const m = h.match(/^#\/info\/([a-z-]+)/i)
-      if (m && m[1]) setTimeout(() => scrollToId(m[1]), 0)
-    }
-    handle()
-    window.addEventListener("hashchange", handle)
-    return () => window.removeEventListener("hashchange", handle)
-  }, [])
 
   return (
     <section className="bg-gradient-to-b from-slate-50 to-white">
