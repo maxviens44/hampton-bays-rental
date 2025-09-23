@@ -43,12 +43,13 @@ const images = [
 
 function Header() {
   return (
-    <header id="top" className="px-6 md:px-10 py-6 border-b sticky top-0 bg-white/90 backdrop-blur">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="/" className="text-xl md:text-2xl font-semibold tracking-tight">
+    <header id="top" className="px-4 sm:px-6 md:px-10 py-4 sm:py-6 border-b sticky top-0 bg-white/90 backdrop-blur">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+        <a href="/" className="text-lg sm:text-xl md:text-2xl font-semibold tracking-tight truncate">
           2 Hubbard Street • Hampton Bays
         </a>
-        <nav className="flex items-center gap-6 text-sm">
+        {/* Mobile-friendly nav: tighter gaps + horizontal scroll if needed */}
+        <nav className="flex items-center gap-4 sm:gap-6 text-sm overflow-x-auto whitespace-nowrap">
           <a href="#about" className="hover:underline">About</a>
           <a href="#gallery" className="hover:underline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
@@ -90,7 +91,7 @@ function AvailabilityCalendar({ months = 12 }) {
   const startMonth = today.getMonth()
 
   const pad = (n) => (n < 10 ? `0${n}` : `${n}`)
-  const toISO = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`
+  const toISO = (y, m, d) => `${y}_${pad(m + 1)}_${pad(d)}`.replace(/_/g, "-")
   const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
   const startOfMonthWeekday = (y, m) => new Date(y, m, 1).getDay()
   const isPast = (y, m, d) => {
@@ -124,7 +125,7 @@ function AvailabilityCalendar({ months = 12 }) {
             const iso = toISO(year, month, d)
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
-            const base = "w-7 h-7 flex items-center justify-center rounded border text-xs select-none"
+            const base = "w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-[10px] sm:text-xs select-none"
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
@@ -151,7 +152,7 @@ function AvailabilityCalendar({ months = 12 }) {
   })
 
   return (
-    <section className="mt-8 md:mt-10" aria-labelledby="availability-title">
+    <section className="mt-6 sm:mt-8 md:mt-10" aria-labelledby="availability-title">
       <div className="flex items-center justify-between mb-2">
         <h3 id="availability-title" className="text-base md:text-lg font-semibold">Availability</h3>
         <div className="hidden md:flex items-center gap-3 text-xs">
@@ -247,16 +248,16 @@ function HomeSections() {
             <img
               src="/images/hosue.webp"
               alt="House View"
-              className="w-full h-[46vh] md:h-[62vh] object-cover"
+              className="w-full h-[42vh] sm:h-[46vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
             <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-              <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
+            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
+              <h2 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
               </h2>
-              <p className="text-white text-sm md:text-lg drop-shadow">
+              <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
             </div>
@@ -265,7 +266,7 @@ function HomeSections() {
       </section>
 
       {/* About */}
-      <section id="about" className="px-6 md:px-10 py-8 md:py-12 border-t">
+      <section id="about" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
@@ -288,7 +289,7 @@ function HomeSections() {
       </section>
 
       {/* Gallery (keeps strict order via grid-flow-row) */}
-      <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
+      <section id="gallery" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
           <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
@@ -304,7 +305,7 @@ function HomeSections() {
                   src={`/images/${img.file}`}
                   alt={img.label}
                   loading={idx < 6 ? "eager" : "lazy"}
-                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                  className="w-full h-44 sm:h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
                 />
                 <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
                   {img.label}
@@ -332,10 +333,10 @@ function HomeSections() {
               alt={images[index].label}
               className="w-full h-[70vh] md:h-[82vh] object-contain rounded-lg"
             />
-            <div className="absolute inset-x-0 -bottom-12 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-2">
-              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
-              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
-              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
+            <div className="absolute inset-x-0 bottom-3 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-3 px-3">
+              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Prev</button>
+              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Next</button>
+              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Close</button>
             </div>
           </div>
         </div>
@@ -363,10 +364,10 @@ function ContactSection() {
   const valid = !checkIn || !checkOut ? true : nights > 0
 
   return (
-    <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
+    <section id="contact" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12 border-t">
       <div className="max-w-3xl mx-auto">
         {/* Owner toolbar */}
-        <div className="mb-4 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between gap-2">
           <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
           <div className="flex items-center gap-2 text-xs">
             {window.netlifyIdentity ? (
@@ -403,16 +404,16 @@ function ContactSection() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
+            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-3 text-base w-full" />
+            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-3 text-base w-full" />
           </div>
 
-          {/* NEW: Check-in / Check-out */}
+          {/* Check-in / Check-out */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
@@ -423,7 +424,7 @@ function ContactSection() {
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-2 w-full"
+                className="border rounded-lg px-3 py-3 text-base w-full"
               />
             </div>
             <div>
@@ -435,7 +436,7 @@ function ContactSection() {
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-2 w-full"
+                className="border rounded-lg px-3 py-3 text-base w-full"
               />
             </div>
           </div>
@@ -447,7 +448,7 @@ function ContactSection() {
           <button
             type="submit"
             disabled={!valid}
-            className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
+            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-base font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
           >
             Submit Inquiry
           </button>
@@ -565,7 +566,7 @@ function InfoPage() {
 
   return (
     <section className="bg-gradient-to-b from-slate-50 to-white">
-      <div className="px-6 md:px-10 pt-8">
+      <div className="px-4 sm:px-6 md:px-10 pt-6 sm:pt-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-semibold">Local Information</h2>
           <p className="text-sm text-neutral-700">
@@ -575,8 +576,8 @@ function InfoPage() {
       </div>
 
       <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
-        <div className="max-w-5xl mx-auto px-6 md:px-10">
-          <nav className="flex items-center gap-4 py-3 text-sm">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-10">
+          <nav className="flex items-center gap-3 sm:gap-4 py-2.5 sm:py-3 text-sm overflow-x-auto whitespace-nowrap">
             <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
             <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
             <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
@@ -584,8 +585,8 @@ function InfoPage() {
         </div>
       </div>
 
-      <div className="px-6 md:px-10 py-8 md:py-12">
-        <div className="max-w-5xl mx-auto space-y-12">
+      <div className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
+        <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
           {/* House */}
           <section id="house" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
@@ -702,7 +703,7 @@ function InfoPage() {
           </section>
 
           {/* Back to top */}
-          <div className="pt-4">
+          <div className="pt-2 sm:pt-4">
             <a
               href="#top"
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
@@ -755,7 +756,7 @@ function ReviewsPage() {
   }, [])
 
   return (
-    <section className="px-6 md:px-10 py-8 md:py-12">
+    <section className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-xl md:text-2xl font-semibold mb-4">Guest Reviews</h2>
 
@@ -805,8 +806,8 @@ function ReviewsPage() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <select name="Stars" required className="border rounded-lg px-3 py-2 w-full">
+            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
+            <select name="Stars" required className="border rounded-lg px-3 py-3 text-base w-full">
               <option value="" disabled>Rating (1–5 stars)</option>
               <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
             </select>
@@ -815,20 +816,20 @@ function ReviewsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed From</label>
-              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-2 w-full" required />
+              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-3 text-base w-full" required />
             </div>
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed To</label>
-              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-2 w-full" required />
+              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-3 text-base w-full" required />
             </div>
           </div>
 
-          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-2 w-full" />
+          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-3 text-base w-full" />
 
           {/* Optional moderation hint */}
           <input type="hidden" name="Status" value="Pending" />
 
-          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+          <button type="submit" className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-base font-medium hover:bg-black hover:text-white transition">
             Submit Review
           </button>
         </form>
@@ -855,7 +856,7 @@ export default function App() {
     <main className="min-h-screen bg-white">
       <Header />
       {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
-      <footer className="px-6 md:px-10 py-8 border-t">
+      <footer className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
           © {new Date().getFullYear()} Hamptons Rental
         </div>
@@ -863,4 +864,3 @@ export default function App() {
     </main>
   )
 }
-
