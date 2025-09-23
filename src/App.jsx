@@ -335,6 +335,7 @@ function ContactSection() {
     const days = Math.round(ms / (1000 * 60 * 60 * 24))
     return days > 0 ? days : 0
   }, [checkIn, checkOut])
+
   const todayIso = new Date().toISOString().slice(0, 10)
   const validDates = !checkIn || !checkOut ? true : nights > 0
 
@@ -355,6 +356,8 @@ function ContactSection() {
           className="space-y-3 sm:space-y-4"
         >
           <input type="hidden" name="form-name" value="contact" />
+          <input type="hidden" name="Calculated Nights" value={nights} />
+
           <p className="hidden">
             <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
           </p>
@@ -363,4 +366,162 @@ function ContactSection() {
             <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
           </div>
-          <div
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
+              <input
+                type="date"
+                name="Check-in"
+                min={todayIso}
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+                required
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Check-out</label>
+              <input
+                type="date"
+                name="Check-out"
+                min={checkIn || todayIso}
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                required
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Nights</label>
+              <input
+                type="number"
+                readOnly
+                value={nights}
+                className="border rounded-lg px-3 py-2 w-full bg-neutral-50"
+              />
+            </div>
+          </div>
+
+          {!validDates && (
+            <div className="text-xs text-red-600">Check-out must be after Check-in.</div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!validDates}
+            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
+          >
+            Submit Inquiry
+          </button>
+        </form>
+
+        <AvailabilityCalendar months={12} />
+      </div>
+    </section>
+  )
+}
+
+/* Simple Info page placeholder (keeps the #/info route working) */
+function InfoPage() {
+  return (
+    <section className="px-4 sm:px-6 md:px-10 py-10">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-3">Local Information</h2>
+        <p className="text-sm text-neutral-700">
+          Beaches, restaurants, and house details coming soon.
+        </p>
+      </div>
+    </section>
+  )
+}
+
+/* Reviews page with Netlify form (pending approval) */
+function ReviewsPage() {
+  return (
+    <section className="px-4 sm:px-6 md:px-10 py-10">
+      <div className="max-w-3xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Share Your Stay</h2>
+        <p className="text-sm text-neutral-700 mb-6">
+          Submit your review below. We’ll publish approved reviews to the site.
+        </p>
+
+        <form
+          name="review-pending"
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          action="/thanks.html"
+          className="space-y-4"
+        >
+          <input type="hidden" name="form-name" value="review-pending" />
+          <p className="hidden">
+            <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
+          </p>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <select name="Stars" required className="border rounded-lg px-3 py-2 w-full">
+              <option value="" disabled defaultValue="">Rating (1–5 stars)</option>
+              <option>5</option>
+              <option>4</option>
+              <option>3</option>
+              <option>2</option>
+              <option>1</option>
+            </select>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Stayed From</label>
+              <input type="date" name="Stayed From" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Stayed To</label>
+              <input type="date" name="Stayed To" required className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+          </div>
+
+          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-2 w-full" />
+
+          {/* Optional hint for your moderation flow */}
+          <input type="hidden" name="Status" value="Pending" />
+
+          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+            Submit Review
+          </button>
+        </form>
+      </div>
+    </section>
+  )
+}
+
+/* App Router (hash) */
+export default function App() {
+  const [route, setRoute] = useState(window.location.hash || "#/")
+  useEffect(() => {
+    const onHash = () => setRoute(window.location.hash || "#/")
+    window.addEventListener("hashchange", onHash)
+    return () => window.removeEventListener("hashchange", onHash)
+  }, [])
+
+  const isInfo = route.startsWith("#/info")
+  const isReviews = route.startsWith("#/reviews")
+
+  return (
+    <main className="min-h-screen bg-white">
+      <Header />
+      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
+      <footer className="px-4 sm:px-6 md:px-10 py-8 border-t">
+        <div className="max-w-7xl mx-auto text-sm text-neutral-600">
+          © {new Date().getFullYear()} Hamptons Rental
+        </div>
+      </footer>
+    </main>
+  )
+}
