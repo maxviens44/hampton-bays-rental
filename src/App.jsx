@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react"
+import React, { useEffect, useMemo, useState, useCallback } from "react"
 
 /* Images shown in the Gallery */
 const images = [
@@ -50,6 +50,7 @@ function Header() {
           <a href="#about" className="hover:underline">About</a>
           <a href="#gallery" className="hover:underline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
+          <a href="#/reviews" className="hover:underline">Reviews</a>
           <a href="#contact" className="hover:underline">Contact</a>
         </nav>
       </div>
@@ -242,7 +243,7 @@ function HomeSections() {
       <section id="gallery" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">Gallery</h3>
-          <p className="text-xs sm:text-sm text-neutral-600 mb-4 sm:mb-6">
+        <p className="text-xs sm:text-sm text-neutral-600 mb-4 sm:mb-6">
             Tap any photo to view it full screen
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
@@ -272,7 +273,7 @@ function HomeSections() {
       {/* Contact + Calendar */}
       <ContactSection />
 
-      {/* Lightbox (mobile touch friendly) */}
+      {/* Lightbox */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 sm:p-4"
@@ -280,40 +281,16 @@ function HomeSections() {
           aria-modal="true"
           onClick={close}
         >
-          <div
-            className="relative w-full max-w-5xl"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
             <img
               src={`/images/${images[index].file}`}
               alt={images[index].label}
               className="w-full h-[70vh] sm:h-[82vh] object-contain rounded-lg"
             />
             <div className="absolute inset-x-0 -bottom-12 sm:bottom-auto sm:top-3 flex justify-center sm:justify-end gap-2">
-              <button
-                onClick={prev}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Previous"
-              >
-                Prev
-              </button>
-              <button
-                onClick={next}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Next"
-              >
-                Next
-              </button>
-              <button
-                onClick={close}
-                type="button"
-                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-                aria-label="Close"
-              >
-                Close
-              </button>
+              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow" aria-label="Previous">Prev</button>
+              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow" aria-label="Next">Next</button>
+              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow" aria-label="Close">Close</button>
             </div>
           </div>
         </div>
@@ -322,12 +299,10 @@ function HomeSections() {
   )
 }
 
-/* Contact + Calendar (updated with Check-in/Check-out) */
+/* Contact + Calendar (with Check-in/Check-out) */
 function ContactSection() {
   const [checkIn, setCheckIn] = useState("")
   const [checkOut, setCheckOut] = useState("")
-
-  // Compute nights to include in Netlify submission (hidden field)
   const nights = useMemo(() => {
     if (!checkIn || !checkOut) return 0
     const d1 = new Date(checkIn)
@@ -336,7 +311,6 @@ function ContactSection() {
     const days = Math.round(ms / (1000 * 60 * 60 * 24))
     return days > 0 ? days : 0
   }, [checkIn, checkOut])
-
   const todayIso = new Date().toISOString().slice(0, 10)
   const validDates = !checkIn || !checkOut ? true : nights > 0
 
@@ -358,9 +332,7 @@ function ContactSection() {
         >
           <input type="hidden" name="form-name" value="contact" />
           <p className="hidden">
-            <label>
-              Don’t fill this out if you’re human <input name="bot-field" />
-            </label>
+            <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
@@ -372,46 +344,21 @@ function ContactSection() {
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
 
-          {/* NEW: Check-in / Check-out dates */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="flex flex-col gap-1">
               <label className="text-sm text-neutral-700">Check-in</label>
-              <input
-                type="date"
-                name="Check-in"
-                required
-                min={todayIso}
-                value={checkIn}
-                onChange={(e) => setCheckIn(e.target.value)}
-                className="border rounded-lg px-3 py-2 w-full"
-              />
+              <input type="date" name="Check-in" required min={todayIso} value={checkIn} onChange={(e) => setCheckIn(e.target.value)} className="border rounded-lg px-3 py-2 w-full" />
             </div>
             <div className="flex flex-col gap-1">
               <label className="text-sm text-neutral-700">Check-out</label>
-              <input
-                type="date"
-                name="Check-out"
-                required
-                min={checkIn || todayIso}
-                value={checkOut}
-                onChange={(e) => setCheckOut(e.target.value)}
-                className="border rounded-lg px-3 py-2 w-full"
-              />
+              <input type="date" name="Check-out" required min={checkIn || todayIso} value={checkOut} onChange={(e) => setCheckOut(e.target.value)} className="border rounded-lg px-3 py-2 w-full" />
             </div>
           </div>
 
-          {/* Hidden computed nights so your email still includes it */}
           <input type="hidden" name="Number of Nights" value={nights > 0 ? String(nights) : ""} />
+          {checkIn && checkOut && nights <= 0 && (<p className="text-sm text-red-600">Check-out must be after check-in.</p>)}
 
-          {checkIn && checkOut && nights <= 0 && (
-            <p className="text-sm text-red-600">Check-out must be after check-in.</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={!validDates}
-            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed"
-          >
+          <button type="submit" disabled={!validDates} className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition disabled:opacity-50 disabled:cursor-not-allowed">
             Submit Inquiry
           </button>
         </form>
@@ -422,7 +369,7 @@ function ContactSection() {
   )
 }
 
-/* Info page with mobile-friendly sticky subnav */
+/* Small UI helpers */
 function Chevron({ open }) {
   return (
     <svg className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -430,20 +377,13 @@ function Chevron({ open }) {
     </svg>
   )
 }
-
 function Pill({ children, href }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noreferrer"
-      className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs hover:bg-black hover:text-white transition"
-    >
+    <a href={href} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs hover:bg-black hover:text-white transition">
       {children}
     </a>
   )
 }
-
 function AccordionCard({ title, open, onClick, children }) {
   return (
     <div className="rounded-2xl border shadow-sm bg-white">
@@ -456,6 +396,7 @@ function AccordionCard({ title, open, onClick, children }) {
   )
 }
 
+/* Info Page */
 function InfoPage() {
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
   const gmaps = (dest) =>
@@ -472,7 +413,6 @@ function InfoPage() {
     { name: "Tiana Beach", desc: "Family friendly ocean spot with pavilion area and gentle surf", info: "https://www.southamptontownny.gov/facilities/facility/details/tianabeachandpavilion-36", dest: "Tiana Beach, Dune Rd, Hampton Bays, NY" },
     { name: "Meschutt Beach County Park", desc: "Bay beach with calmer water and easy food options", info: "https://suffolkcountyny.gov/Departments/Parks/Our-Parks/Meschutt-Beach-County-Park", dest: "Meschutt Beach County Park, Hampton Bays, NY" },
   ]
-
   const restaurants = [
     { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water" },
     { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood and steaks with canal views" },
@@ -484,7 +424,6 @@ function InfoPage() {
     const el = document.getElementById(id)
     if (el) el.scrollIntoView({ behavior: "smooth", block: "start" })
   }
-
   useEffect(() => {
     const handle = () => {
       const h = window.location.hash || ""
@@ -543,9 +482,7 @@ function InfoPage() {
           <section id="beaches" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Beaches</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {[
-                ...beaches
-              ].map((b) => (
+              {beaches.map((b) => (
                 <div key={b.name} className="rounded-2xl border shadow-sm bg-white p-4 hover:shadow-md transition">
                   <p className="font-medium">{b.name}</p>
                   <p className="text-sm text-neutral-700 mt-1">{b.desc}</p>
@@ -593,6 +530,131 @@ function InfoPage() {
   )
 }
 
+/* Reviews Page (shows approved reviews from /reviews.json + submission form to Netlify) */
+function ReviewsPage() {
+  const [reviews, setReviews] = useState([])
+  const [rating, setRating] = useState(5) // default selected stars
+  const [ci, setCi] = useState("")
+  const [co, setCo] = useState("")
+  const todayIso = new Date().toISOString().slice(0, 10)
+
+  useEffect(() => {
+    let cancelled = false
+    ;(async () => {
+      try {
+        const res = await fetch(`/reviews.json?v=${Date.now()}`)
+        if (!res.ok) throw new Error("missing reviews.json")
+        const data = await res.json()
+        const list = Array.isArray(data?.reviews) ? data.reviews : []
+        if (!cancelled) setReviews(list)
+      } catch {
+        if (!cancelled) setReviews([])
+      }
+    })()
+    return () => { cancelled = true }
+  }, [])
+
+  return (
+    <section className="px-4 sm:px-6 md:px-10 py-8 sm:py-12">
+      <div className="max-w-5xl mx-auto">
+        <h2 className="text-xl sm:text-2xl font-semibold mb-4">Guest Reviews</h2>
+
+        {/* Approved reviews */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+          {reviews.length === 0 ? (
+            <div className="text-sm text-neutral-600">
+              No reviews yet—be the first to share your experience!
+            </div>
+          ) : reviews.map((r, i) => (
+            <div key={i} className="rounded-2xl border bg-white p-4 shadow-sm">
+              <div className="flex items-center justify-between">
+                <p className="font-medium">{r.name || "Guest"}</p>
+                <div className="text-yellow-500" aria-label={`${r.rating} out of 5 stars`}>
+                  {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
+                </div>
+              </div>
+              {r.dates && <p className="text-xs text-neutral-500 mt-0.5">{r.dates}</p>}
+              <p className="text-sm text-neutral-800 mt-2 whitespace-pre-wrap">{r.comment}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Submission form (goes to Netlify, default Status = Pending) */}
+        <div className="max-w-2xl">
+          <h3 className="text-lg sm:text-xl font-semibold mb-3">Leave a review</h3>
+          <p className="text-sm text-neutral-600 mb-4">
+            Your review will be submitted for approval before it appears on this page.
+          </p>
+
+          <form
+            name="reviews"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/thanks.html"
+            className="space-y-3 sm:space-y-4"
+          >
+            <input type="hidden" name="form-name" value="reviews" />
+            <input type="hidden" name="Status" value="Pending" />
+            <p className="hidden">
+              <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
+            </p>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
+              <input type="email" name="Email" placeholder="Your Email (not published)" className="border rounded-lg px-3 py-2 w-full" />
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-neutral-700">Check-in</label>
+                <input type="date" name="Check-in" required min={todayIso} value={ci} onChange={(e)=>setCi(e.target.value)} className="border rounded-lg px-3 py-2 w-full" />
+              </div>
+              <div className="flex flex-col gap-1">
+                <label className="text-sm text-neutral-700">Check-out</label>
+                <input type="date" name="Check-out" required min={ci || todayIso} value={co} onChange={(e)=>setCo(e.target.value)} className="border rounded-lg px-3 py-2 w-full" />
+              </div>
+            </div>
+
+            {/* Star rating */}
+            <div className="flex items-center gap-2">
+              <span className="text-sm text-neutral-700">Rating:</span>
+              <input type="hidden" name="Rating" value={rating} />
+              {[1,2,3,4,5].map(n => (
+                <button
+                  key={n}
+                  type="button"
+                  onClick={() => setRating(n)}
+                  aria-label={`${n} star${n>1?"s":""}`}
+                  className="text-2xl leading-none"
+                >
+                  {n <= rating ? "★" : "☆"}
+                </button>
+              ))}
+              <span className="text-sm text-neutral-500 ml-1">{rating}/5</span>
+            </div>
+
+            <textarea
+              name="Comment"
+              placeholder="Share a few words about your stay…"
+              required
+              rows={5}
+              className="border rounded-lg px-3 py-2 w-full"
+            />
+
+            {/* Store a human-readable date range in one field for convenience */}
+            <input type="hidden" name="Dates" value={ci && co ? `${ci} to ${co}` : ""} />
+
+            <button type="submit" className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+              Submit Review
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 /* App Router (hash) */
 export default function App() {
   const [route, setRoute] = useState(window.location.hash || "#/")
@@ -602,11 +664,12 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
   const isInfo = route.startsWith("#/info")
+  const isReviews = route.startsWith("#/reviews")
 
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      {isInfo ? <InfoPage /> : <HomeSections />}
+      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
       <footer className="px-4 sm:px-6 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
           © {new Date().getFullYear()} Hamptons Rental
