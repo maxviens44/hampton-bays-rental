@@ -415,3 +415,4 @@ function ContactSection() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="email" name="Email" className="w-full border border-gray-300 rounded p-2" placeholder="Your email" />
 
+
