@@ -2,88 +2,36 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#ffffff" />
+    <title>2 Hubbard Street • Hampton Bays</title>
 
-    <!-- Page Title -->
-    <title>Luxury Hamptons Rental | Hampton Bays Cedar Shingle Home with Pool</title>
+    <!-- Inter font (nice on mobile) -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-    <!-- Meta Description -->
-    <meta name="description" content="Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom rental with saltwater pool, bay views, and modern finishes. Short term rental near Hamptons beaches and dining." />
-
-    <!-- Keywords -->
-    <meta name="keywords" content="Hamptons cedar shingle house, Hampton Bays rental, Hamptons vacation home, short term rental Hamptons, house with pool Hamptons, luxury rental Hamptons, Hampton Bays Airbnb, Hampton Bays VRBO" />
-
-    <!-- Canonical -->
-    <link rel="canonical" href="https://staythehamptons.com/" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Luxury Hamptons Rental | Hampton Bays House with Pool" />
-    <meta property="og:description" content="Classic cedar shingle Hamptons home with 4BR 5BA, saltwater pool, bay views, and modern style. Book your luxury Hamptons getaway today." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://staythehamptons.com/" />
-    <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />
-    <meta property="og:image:alt" content="Luxury Hamptons cedar shingle home with saltwater pool" />
-
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Luxury Hamptons Rental | Hampton Bays House with Pool" />
-    <meta name="twitter:description" content="Book a classic Hamptons cedar shingle home in Hampton Bays with 4BR 5BA, saltwater pool, bay views, and access to Hamptons beaches." />
-    <meta name="twitter:image" content="https://staythehamptons.com/images/top.webp" />
-
-    <!-- Structured Data -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "VacationRental",
-      "name": "Luxury Hamptons Cedar Shingle Rental",
-      "description": "Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom short term rental with saltwater pool, bay views, and modern amenities.",
-      "image": "https://staythehamptons.com/images/pool1.webp",
-      "url": "https://staythehamptons.com/",
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "2 Hubbard Street",
-        "addressLocality": "Hampton Bays",
-        "addressRegion": "NY",
-        "postalCode": "11946",
-        "addressCountry": "US"
-      },
-      "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Saltwater Pool", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Bay Views", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Cedar Shingle Exterior", "value": true }
-      ]
-    }
+    <!-- Tailwind via CDN (simple + mobile-friendly out of the box) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      // Tailwind config tweaks (optional)
+      tailwind.config = {
+        theme: {
+          extend: { fontFamily: { sans: ["Inter", "ui-sans-serif", "system-ui"] } }
+        }
+      }
     </script>
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#ffffff" />
-
-    <!-- Icons -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-    <!-- Preload Hero Image -->
-    <link rel="preload" as="image" href="/images/hosue.webp" />
+    <!-- Netlify Identity (safe to keep even if unused) -->
+    <script defer src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   </head>
-
-  <body>
+  <body class="font-sans bg-white text-neutral-900">
     <div id="root"></div>
-
-    <!-- Netlify Identity Widget -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-
-    <!-- Vite Entry -->
     <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Hidden form for Netlify build-time detection -->
-    <form name="contact" netlify netlify-honeypot="bot-field" action="/thanks.html" hidden>
-      <input type="text" name="First Name" />
-      <input type="text" name="Last Name" />
-      <input type="email" name="Email" />
-      <input type="tel" name="Phone" />
-      <input type="date" name="Desired Dates" />
-      <input type="number" name="Number of Nights (7 minimum)" />
-    </form>
   </body>
 </html>
