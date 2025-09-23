@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react"
+import React, { useEffect, useState, useCallback, useMemo } from "react"
 
 /* ────────────────────────────────────────────────────────── *
  * Image list (keeps strict order in the grid)
@@ -316,36 +316,25 @@ function HomeSections() {
 
       {/* Contact + Calendar */}
       <ContactSection />
-
-      {/* Lightbox */}
-      {lightboxOpen && (
-        <div
-          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 md:p-4"
-          role="dialog"
-          aria-modal="true"
-          onClick={close}
-        >
-          <div className="relative w-full max-w-5xl" onClick={(e) => e.stopPropagation()}>
-            <img
-              src={`/images/${images[index].file}`}
-              alt={images[index].label}
-              className="w-full h-[70vh] md:h-[82vh] object-contain rounded-lg"
-            />
-            <div className="absolute inset-x-0 -bottom-12 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-2">
-              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
-              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
-              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   )
 }
 
-/* Admin/Login bar + Contact + Calendar */
+/* Admin/Login bar + Contact + Calendar — now with Check-in/Check-out */
 function ContactSection() {
   const { isOwner, login, logout } = useOwnerIdentity()
+
+  const [checkIn, setCheckIn] = useState("")
+  const [checkOut, setCheckOut] = useState("")
+  const nights = useMemo(() => {
+    if (!checkIn || !checkOut) return 0
+    const d1 = new Date(checkIn)
+    const d2 = new Date(checkOut)
+    const diff = (d2 - d1) / (1000 * 60 * 60 * 24)
+    return diff > 0 ? Math.round(diff) : 0
+  }, [checkIn, checkOut])
+  const todayIso = new Date().toISOString().slice(0, 10)
+  const valid = !checkIn || !checkOut ? true : nights > 0
 
   return (
     <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
@@ -380,27 +369,60 @@ function ContactSection() {
           className="space-y-4"
         >
           <input type="hidden" name="form-name" value="contact" />
+          {/* Keep nights for your inbox convenience */}
+          <input type="hidden" name="Calculated Nights" value={nights} />
+
           <p className="hidden">
-            <label>
-              Don’t fill this out if you’re human
-              <input name="bot-field" />
-            </label>
+            <label>Don’t fill this out if you’re human <input name="bot-field" /></label>
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
           </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
+
+          {/* New: Check-in / Check-out fields */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
+              <input
+                type="date"
+                name="Check-in"
+                min={todayIso}
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+                required
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-neutral-600 mb-1">Check-out</label>
+              <input
+                type="date"
+                name="Check-out"
+                min={checkIn || todayIso}
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+                required
+                className="border rounded-lg px-3 py-2 w-full"
+              />
+            </div>
           </div>
 
-          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+          {!valid && (
+            <div className="text-xs text-red-600">Check-out must be after Check-in.</div>
+          )}
+
+          <button
+            type="submit"
+            disabled={!valid}
+            className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
+          >
             Submit Inquiry
           </button>
         </form>
