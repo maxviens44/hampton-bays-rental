@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react"
 
-/* ────────────────────────────────────────────────────────── *
- * Image list (keeps strict order in the grid)
- * ────────────────────────────────────────────────────────── */
+/* Images shown in the Gallery */
 const images = [
   { file: "top.webp", label: "Aerial View" },
   { file: "hosue.webp", label: "Exterior Front" },
@@ -43,12 +41,12 @@ const images = [
 
 function Header() {
   return (
-    <header id="top" className="px-6 md:px-10 py-6 border-b sticky top-0 bg-white/90 backdrop-blur">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
-        <a href="/" className="text-xl md:text-2xl font-semibold tracking-tight">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+        <a href="/" className="text-base sm:text-xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
         </a>
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="flex items-center gap-4 text-sm">
           <a href="#about" className="hover:underline">About</a>
           <a href="#gallery" className="hover:underline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
@@ -59,9 +57,7 @@ function Header() {
   )
 }
 
-/* ────────────────────────────────────────────────────────── *
- * Availability Calendar (VIEW-ONLY, fed by /availability.json)
- * ────────────────────────────────────────────────────────── */
+/* View-only Availability, fed by /availability.json */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
   const [loaded, setLoaded] = useState(false)
@@ -76,7 +72,7 @@ function AvailabilityCalendar({ months = 12 }) {
         const dates = Array.isArray(data?.booked) ? data.booked : []
         if (!cancelled) setBooked(new Set(dates))
       } catch {
-        if (!cancelled) setBooked(new Set())
+        if (!cancelled) setBooked(new Set()) // default = all available
       } finally {
         if (!cancelled) setLoaded(true)
       }
@@ -87,7 +83,6 @@ function AvailabilityCalendar({ months = 12 }) {
   const today = new Date()
   const startYear = today.getFullYear()
   const startMonth = today.getMonth()
-
   const pad = (n) => (n < 10 ? `0${n}` : `${n}`)
   const toISO = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`
   const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
@@ -106,24 +101,23 @@ function AvailabilityCalendar({ months = 12 }) {
     for (let d = 1; d <= total; d++) cells.push(d)
 
     return (
-      <div className="rounded-2xl border bg-white p-4 shadow-sm">
+      <div className="rounded-xl border bg-white p-3 sm:p-4 shadow-sm">
         <div className="flex items-center justify-between mb-2">
-          <h4 className="font-medium">{name}</h4>
+          <h4 className="font-medium text-sm sm:text-base">{name}</h4>
         </div>
-
-        <div className="grid grid-cols-7 gap-1 text-center text-xs mb-1">
+        <div className="grid grid-cols-7 gap-1 text-center text-[10px] sm:text-xs mb-1">
           {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
             <div key={d} className="py-1 text-neutral-600">{d}</div>
           ))}
         </div>
 
-        <div className="grid grid-cols-7 gap-1 text-sm">
+        <div className="grid grid-cols-7 gap-1 text-xs sm:text-sm">
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
             const iso = toISO(year, month, d)
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
-            const base = "aspect-square flex items-center justify-center rounded-md border transition select-none"
+            const base = "aspect-square flex items-center justify-center rounded-md border select-none"
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
@@ -150,10 +144,10 @@ function AvailabilityCalendar({ months = 12 }) {
   })
 
   return (
-    <section className="mt-10" aria-labelledby="availability-title">
-      <div className="flex items-center justify-between mb-3">
-        <h3 id="availability-title" className="text-lg font-semibold">Availability</h3>
-        <div className="flex items-center gap-3 text-xs">
+    <section className="mt-8 sm:mt-10" aria-labelledby="availability-title">
+      <div className="flex items-center justify-between mb-3 px-4 sm:px-0">
+        <h3 id="availability-title" className="text-base sm:text-lg font-semibold">Availability</h3>
+        <div className="hidden sm:flex items-center gap-3 text-xs">
           <span className="inline-flex items-center gap-1">
             <span className="inline-block w-3 h-3 rounded-sm border bg-white" /> Available
           </span>
@@ -163,9 +157,9 @@ function AvailabilityCalendar({ months = 12 }) {
         </div>
       </div>
 
-      {!loaded && <div className="text-sm text-neutral-500 mb-2">Loading calendar…</div>}
+      {!loaded && <div className="text-sm text-neutral-500 mb-2 px-4 sm:px-0">Loading calendar…</div>}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 px-4 sm:px-0">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
@@ -174,9 +168,7 @@ function AvailabilityCalendar({ months = 12 }) {
   )
 }
 
-/* ────────────────────────────────────────────────────────── *
- * Home (hero, about, gallery, contact + calendar) + LIGHTBOX
- * ────────────────────────────────────────────────────────── */
+/* Home sections + mobile-friendly Lightbox */
 function HomeSections() {
   const [lightboxOpen, setLightboxOpen] = useState(false)
   const [index, setIndex] = useState(0)
@@ -197,7 +189,7 @@ function HomeSections() {
     document.body.style.overflow = "hidden"
     return () => {
       window.removeEventListener("keydown", onKey)
-    document.body.style.overflow = ""
+      document.body.style.overflow = ""
     }
   }, [lightboxOpen, close, next, prev])
 
@@ -210,16 +202,16 @@ function HomeSections() {
             <img
               src="/images/hosue.webp"
               alt="House View"
-              className="w-full h-[46vh] md:h-[62vh] object-cover"
+              className="w-full h-[42vh] sm:h-[56vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
             <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10">
-              <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
+            <div className="absolute bottom-4 left-4 sm:bottom-8 sm:left-8">
+              <h2 className="text-white text-xl sm:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
               </h2>
-              <p className="text-white text-sm md:text-lg drop-shadow">
+              <p className="text-white text-xs sm:text-lg drop-shadow mt-1 sm:mt-2">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
             </div>
@@ -228,31 +220,32 @@ function HomeSections() {
       </section>
 
       {/* About */}
-      <section id="about" className="px-6 md:px-10 py-8 md:py-12 border-t">
+      <section id="about" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-t">
         <div className="max-w-3xl mx-auto">
-          <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
-          <div className="space-y-4 text-neutral-800">
+          <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">About</h3>
+          <div className="space-y-4 text-neutral-800 text-sm sm:text-base">
             <p>
-              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops. With 3,750 sq ft of space, the home comfortably sleeps up to 10 guests across 4 bedrooms and 5 bathrooms, blending elegance with modern convenience.
+              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops.
             </p>
             <ul className="list-disc pl-5 space-y-1">
-              <li>Livingroom with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
-              <li>Chef's kitchen with Viking appliances, Quartzite counters, and island seating.</li>
-              <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
-              <li>The entire north wing of the second floor is devoted to the primary suite, complete with dual walk-in closets, a serene spa bath featuring a walk-in shower and freestanding jacuzzi tub, and a private balcony where you can take in the tranquil bay views.</li>
-              <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
-              <li>Central air, outdoor shower, and workout room.</li>
+              <li>Vaulted living room opening to the patio and pool</li>
+              <li>Chef’s kitchen with Viking appliances and island seating</li>
+              <li>Two oversized en-suite bedrooms on the main level</li>
+              <li>Primary suite upstairs with balcony and spa bath</li>
+              <li>Finished lower level with media room, full bath, laundry</li>
             </ul>
           </div>
         </div>
       </section>
 
-      {/* Gallery (click to open lightbox) */}
-      <section id="gallery" className="px-6 md:px-10 py-8 md:py-12">
+      {/* Gallery */}
+      <section id="gallery" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-          <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
-          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <h3 className="text-lg sm:text-xl font-semibold mb-2 sm:mb-4">Gallery</h3>
+          <p className="text-xs sm:text-sm text-neutral-600 mb-4 sm:mb-6">
+            Tap any photo to view it full screen
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
             {images.map((img, idx) => (
               <button
                 key={img.file}
@@ -265,9 +258,9 @@ function HomeSections() {
                   src={`/images/${img.file}`}
                   alt={img.label}
                   loading={idx < 6 ? "eager" : "lazy"}
-                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                  className="w-full h-40 sm:h-56 object-cover rounded-xl shadow-sm transition-transform duration-200 group-hover:scale-[1.02]"
                 />
-                <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
+                <span className="absolute bottom-1 left-1 sm:bottom-2 sm:left-2 text-[10px] sm:text-xs bg-black/50 text-white px-1.5 py-0.5 sm:px-2 rounded">
                   {img.label}
                 </span>
               </button>
@@ -279,47 +272,49 @@ function HomeSections() {
       {/* Contact + Calendar */}
       <ContactSection />
 
-      {/* Lightbox overlay */}
+      {/* Lightbox (mobile touch friendly) */}
       {lightboxOpen && (
         <div
-          className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4"
+          className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 sm:p-4"
           role="dialog"
           aria-modal="true"
           onClick={close}
         >
           <div
-            className="relative max-w-6xl w-full"
+            className="relative w-full max-w-5xl"
             onClick={(e) => e.stopPropagation()}
           >
             <img
               src={`/images/${images[index].file}`}
               alt={images[index].label}
-              className="w-full h-[72vh] md:h-[82vh] object-contain rounded-xl"
+              className="w-full h-[70vh] sm:h-[82vh] object-contain rounded-lg"
             />
-            <button
-              onClick={close}
-              aria-label="Close"
-              type="button"
-              className="absolute top-3 right-3 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Close
-            </button>
-            <button
-              onClick={prev}
-              aria-label="Previous"
-              type="button"
-              className="absolute left-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Prev
-            </button>
-            <button
-              onClick={next}
-              aria-label="Next"
-              type="button"
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
-            >
-              Next
-            </button>
+            <div className="absolute inset-x-0 -bottom-12 sm:bottom-auto sm:top-3 flex justify-center sm:justify-end gap-2">
+              <button
+                onClick={prev}
+                type="button"
+                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+                aria-label="Previous"
+              >
+                Prev
+              </button>
+              <button
+                onClick={next}
+                type="button"
+                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+                aria-label="Next"
+              >
+                Next
+              </button>
+              <button
+                onClick={close}
+                type="button"
+                className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow"
+                aria-label="Close"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -327,13 +322,15 @@ function HomeSections() {
   )
 }
 
-/* Contact + Calendar (no login UI; calendar is view-only) */
+/* Contact + Calendar (viewers) */
 function ContactSection() {
   return (
-    <section id="contact" className="px-6 md:px-10 py-8 md:py-12 border-t">
+    <section id="contact" className="px-4 sm:px-6 md:px-10 py-8 sm:py-12 border-t">
       <div className="max-w-3xl mx-auto">
-        <h3 className="text-lg md:text-xl font-semibold mb-4">Contact</h3>
-        <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
+        <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Contact</h3>
+        <p className="text-neutral-700 mb-4 sm:mb-6 text-sm sm:text-base">
+          For availability and rates, submit the form below
+        </p>
 
         <form
           name="contact"
@@ -341,51 +338,44 @@ function ContactSection() {
           data-netlify="true"
           netlify-honeypot="bot-field"
           action="/thanks.html"
-          className="space-y-4"
+          className="space-y-3 sm:space-y-4"
         >
           <input type="hidden" name="form-name" value="contact" />
           <p className="hidden">
             <label>
-              Don’t fill this out if you’re human
-              <input name="bot-field" />
+              Don’t fill this out if you’re human <input name="bot-field" />
             </label>
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <input type="date" name="Desired Dates" required className="border rounded-lg px-3 py-2 w-full" />
             <input type="number" name="Number of Nights" placeholder="Number of Nights" min="1" required className="border rounded-lg px-3 py-2 w-full" />
           </div>
 
-          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
+          <button type="submit" className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
             Submit Inquiry
           </button>
         </form>
 
-        {/* Calendar directly under the form */}
         <AvailabilityCalendar months={12} />
       </div>
     </section>
   )
 }
 
-/* ────────────────────────────────────────────────────────── *
- * Info Page (deep-link sections)
- * ────────────────────────────────────────────────────────── */
+/* Info page with mobile-friendly sticky subnav */
 function Chevron({ open }) {
   return (
-    <svg
-      className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`}
-      viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"
-    >
-      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.17l3.71-2.94a.75.75 0 111.04 1.08l-4.24 3.36a.75.75 0 01-.94 0L5.21 8.31a.75.75 0 01.02-1.1z" />
+    <svg className={`h-4 w-4 transition-transform ${open ? "rotate-180" : ""}`} viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+      <path d="M5.23 7.21a.75.75 0 011.06.02L10 10.17l3.71-2.94a.75.75 0 111.04 1.08l-4.24 3.36a.75.75 0 01-.94 0L5.21 8.31a.75.75 0 01.02-1.1z"/>
     </svg>
   )
 }
@@ -410,31 +400,19 @@ function AccordionCard({ title, open, onClick, children }) {
         <span className="font-medium">{title}</span>
         <Chevron open={open} />
       </button>
-      {open && (
-        <div className="px-5 pb-4 text-sm">
-          {children}
-        </div>
-      )}
+      {open && <div className="px-5 pb-4 text-sm">{children}</div>}
     </div>
   )
 }
 
 function InfoPage() {
-  // Define origin here and keep gmaps scoped here to avoid reference errors
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
   const gmaps = (dest) =>
     `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
   const [open, setOpen] = useState({
-    wifi: true,
-    checkin: true,
-    trash: false,
-    lighting: false,
-    outdoor: false,
-    parking: false,
-    office: false,
-    emergency: false,
-    rules: false
+    wifi: true, checkin: true, trash: false, lighting: false,
+    outdoor: false, parking: false, office: false, emergency: false, rules: false
   })
   const toggle = (key) => setOpen((s) => ({ ...s, [key]: !s[key] }))
 
@@ -442,42 +420,12 @@ function InfoPage() {
     { name: "Ponquogue Beach", desc: "Wide ocean beach with soft sand and seasonal facilities", info: "https://www.southamptontownny.gov/facilities/facility/details/Ponquogue-Beach-Pavilion-34", dest: "Ponquogue Beach, Dune Rd, Hampton Bays, NY" },
     { name: "Tiana Beach", desc: "Family friendly ocean spot with pavilion area and gentle surf", info: "https://www.southamptontownny.gov/facilities/facility/details/tianabeachandpavilion-36", dest: "Tiana Beach, Dune Rd, Hampton Bays, NY" },
     { name: "Meschutt Beach County Park", desc: "Bay beach with calmer water and easy food options", info: "https://suffolkcountyny.gov/Departments/Parks/Our-Parks/Meschutt-Beach-County-Park", dest: "Meschutt Beach County Park, Hampton Bays, NY" },
-    { name: "Shinnecock East County Park", desc: "Natural oceanfront near the inlet with fewer structures", info: "https://www.suffolkcountyny.gov/Departments/Parks/Our-Parks/Shinnecock-East-County-Park", dest: "Shinnecock East County Park, Dune Rd, Southampton, NY" },
-    { name: "Coopers Beach", desc: "Southampton flagship beach with services and long shoreline walks", info: "https://www.southamptonvillage.org/Facilities/Facility/Details/Coopers-Beach-6", dest: "Coopers Beach, 268 Meadow Ln, Southampton, NY 11968" },
-    { name: "Old Town Beach", desc: "Quieter option south of the village with classic ocean views", info: "https://www.southamptontownny.gov/Facilities/Facility/Details/Old-Town-Beach-35", dest: "Old Town Beach, 159 Gin Ln, Southampton, NY 11968" },
-    { name: "Flying Point Beach", desc: "Water Mill favorite with a broad beach face and relaxed feel", info: "https://www.southamptontownny.gov/1445/Flying-Point-Comfort-Station", dest: "Flying Point Beach, 1055 Flying Point Rd, Water Mill, NY 11976" },
-    { name: "Foster Memorial Beach Long Beach", desc: "Sag Harbor bay beach with calm water and sunset views", info: "https://www.southamptontownny.gov/facilities/facility/details/Foster-Memorial-Beach-Long-Beach-31", dest: "Foster Memorial Beach, Long Beach Rd, Sag Harbor, NY 11963" },
-    { name: "Havens Beach", desc: "Village bay beach close to town and convenient for families", info: "https://www.sagharborny.gov/parksrec/page/havens-beach", dest: "Havens Beach, Sag Harbor, NY" },
-    { name: "Main Beach East Hampton", desc: "Iconic village ocean beach with lifeguards and dunes", info: "https://easthamptonvillage.org/394/Main-Beach", dest: "Main Beach, 104 Ocean Ave, East Hampton, NY 11937" },
-    { name: "Two Mile Hollow Beach", desc: "Less crowded village beach with wide Atlantic shoreline", info: "https://easthamptonvillage.org/395/Two-Mile-Hollow-Beach", dest: "Two Mile Hollow Beach, East Hampton, NY 11937" },
-    { name: "Georgica Beach", desc: "Beautiful stretch near Georgica Pond with a quieter vibe", info: "https://easthamptonvillage.org/396/Georgica-Beach", dest: "Georgica Beach, 219 Lily Pond Ln, East Hampton, NY 11937" },
-    { name: "Indian Wells Beach", desc: "Amagansett favorite with long open beach and seasonal facilities", info: "https://www.easthamptonny.gov/Facilities/Facility/Details/Indian-Wells-Beach-19", dest: "Indian Wells Beach, Amagansett, NY 11930" }
   ]
 
   const restaurants = [
-    { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water with fish tacos and rum drinks" },
-    { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood, sushi, and steaks with canal views" },
-    { town: "Hampton Bays", name: "Edgewater", url: "https://www.edgewaterrestaurant.com/", desc: "Classic Italian with seafood pastas and a family friendly vibe" },
-    { town: "Hampton Bays", name: "Oakland’s", url: "https://oaklandsrestaurant.net/", desc: "Seasonal marina restaurant for seafood platters and sunsets" },
-    { town: "Hampton Bays", name: "1 North Steakhouse", url: "https://www.1northsteakhouse.com/", desc: "Local steakhouse with hearty cuts and a busy bar scene" },
-
-    { town: "Southampton", name: "75 Main", url: "https://75main.com/", desc: "Trendy American bistro with a Hamptons social vibe" },
-    { town: "Southampton", name: "Sant Ambroeus", url: "https://www.santambroeus.com/pages/location-southampton", desc: "Chic Milan style cafe and upscale Italian classics" },
-    { town: "Southampton", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/southampton/", desc: "Stylish Italian with handmade pastas and garden seating" },
-    { town: "Southampton", name: "Union Burger Bar", url: "https://unionburgerbar.com/", desc: "Casual pub for gourmet burgers and craft beer" },
-    { town: "Southampton", name: "Le Charlot", url: "https://lecharlot.us/", desc: "Elegant French bistro with Provençal dishes" },
-
-    { town: "Sag Harbor", name: "The American Hotel", url: "https://theamericanhotel.com/", desc: "Historic inn with refined French inspired dining and deep wine list" },
-    { town: "Sag Harbor", name: "Le Bilboquet", url: "https://lebilboquetsag.com/", desc: "Upscale waterfront French inspired seafood and lively scene" },
-    { town: "Sag Harbor", name: "Lulu Kitchen & Bar", url: "https://www.lulusagharbor.com/", desc: "Modern Mediterranean with wood fired dishes and tapas" },
-    { town: "Sag Harbor", name: "Page at 63 Main", url: "https://pagesagharbor.com/", desc: "Farm to table American menu with a garden patio" },
-    { town: "Sag Harbor", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/sag-harbor/", desc: "Rustic chic Italian with seasonal coastal dishes" },
-
-    { town: "East Hampton", name: "Nick & Toni’s", url: "https://www.nickandtonis.com/", desc: "Mediterranean inspired menu and wood fired pizzas" },
-    { town: "East Hampton", name: "East Hampton Grill", url: "https://easthamptongrill.com/", desc: "Refined American grill known for rotisserie chicken and steaks" },
-    { town: "East Hampton", name: "Cittanuova", url: "https://www.cittanuova.com/", desc: "Vibrant trattoria for pasta, pizza, and aperitivos" },
-    { town: "East Hampton", name: "Fresno", url: "https://www.fresnorestaurant.com/", desc: "Casual upscale bistro popular for seafood and local wines" },
-    { town: "East Hampton", name: "Serafina", url: "https://www.serafinarestaurant.com/east-hampton", desc: "Lively outpost serving contemporary Italian favorites" }
+    { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water" },
+    { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood and steaks with canal views" },
+    { town: "Southampton", name: "75 Main", url: "https://75main.com/", desc: "Trendy American bistro" },
   ]
 
   // deep links like #/info/house
@@ -499,18 +447,16 @@ function InfoPage() {
 
   return (
     <section className="bg-gradient-to-b from-slate-50 to-white">
-      <div className="px-6 md:px-10 pt-8">
+      <div className="px-4 sm:px-6 md:px-10 pt-6">
         <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-semibold">Local Information</h2>
-          <p className="text-sm text-neutral-700">
-            Everything you need for a smooth stay. Use the quick links below to jump around
-          </p>
+          <h2 className="text-xl sm:text-2xl font-semibold">Local Information</h2>
+          <p className="text-xs sm:text-sm text-neutral-700">Everything you need for a smooth stay.</p>
         </div>
       </div>
 
-      <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
-        <div className="max-w-5xl mx-auto px-6 md:px-10">
-          <nav className="flex items-center gap-4 py-3 text-sm">
+      <div className="sticky top-[56px] sm:top-[64px] z-30 bg-white/85 backdrop-blur border-b mt-3">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-10">
+          <nav className="flex flex-wrap items-center gap-2 sm:gap-4 py-3 text-sm">
             <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
             <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
             <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
@@ -518,81 +464,25 @@ function InfoPage() {
         </div>
       </div>
 
-      <div className="px-6 md:px-10 py-8 md:py-12">
-        <div className="max-w-5xl mx-auto space-y-12">
+      <div className="px-4 sm:px-6 md:px-10 py-8 sm:py-12">
+        <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
           {/* House */}
           <section id="house" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <AccordionCard title="Wi Fi" open={open.wifi} onClick={() => toggle("wifi")}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+              <AccordionCard title="Wi-Fi" open={open.wifi} onClick={() => toggle("wifi")}>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Network name, staythehamptons</li>
-                  <li>Password, provided after booking</li>
-                  <li>Coverage, whole house, office, and pool patio</li>
+                  <li>Network: staythehamptons</li>
+                  <li>Password provided after booking</li>
+                  <li>Coverage: whole house, office, and pool patio</li>
                 </ul>
               </AccordionCard>
 
-              <AccordionCard title="Check in and out" open={open.checkin} onClick={() => toggle("checkin")}>
+              <AccordionCard title="Check-in / Check-out" open={open.checkin} onClick={() => toggle("checkin")}>
                 <ul className="list-disc pl-5 space-y-1">
-                  <li>Check in after 4 pm</li>
-                  <li>Check out by 10 am</li>
-                  <li>Smart lock code sent the morning of arrival</li>
-                  <li>Before leaving, run the dishwasher and take trash to outdoor bins</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Garbage and recycling" open={open.trash} onClick={() => toggle("trash")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Bins on the side of the house near the driveway</li>
-                  <li>Trash pickup Monday and Thursday, recycling Wednesday</li>
-                  <li>Break down boxes and rinse cans and bottles</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Lighting and HVAC" open={open.lighting} onClick={() => toggle("lighting")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Most lights are on dimmers, slide to adjust brightness</li>
-                  <li>Pool and patio lights, switches near the back sliders</li>
-                  <li>Thermostats, keep between 68 and 74 for comfort and efficiency</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Pool and outdoor" open={open.outdoor} onClick={() => toggle("outdoor")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Saltwater pool with weekly service in season</li>
-                  <li>Outdoor shower by the garage walkway</li>
-                  <li>Close umbrellas and secure cushions if windy</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Parking and EV" open={open.parking} onClick={() => toggle("parking")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Driveway fits four cars, garage access only if noted</li>
-                  <li>Street parking rules vary by season, check posted signs</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Home office" open={open.office} onClick={() => toggle("office")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Dedicated desk in a quiet room with natural light</li>
-                  <li>Fast Wi-Fi with strong signal in office and common areas</li>
-                  <li>Several standard outlets and a surge protected power strip</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="Emergency" open={open.emergency} onClick={() => toggle("emergency")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>Dial 911 for emergencies</li>
-                  <li>Urgent home issues, use the host phone number in your arrival email</li>
-                  <li>Nearest hospital, Stony Brook Southampton Hospital, about 20 minutes west</li>
-                </ul>
-              </AccordionCard>
-
-              <AccordionCard title="House rules" open={open.rules} onClick={() => toggle("rules")}>
-                <ul className="list-disc pl-5 space-y-1">
-                  <li>No parties and no smoking</li>
-                  <li>No pets unless approved before booking</li>
-                  <li>Quiet hours after 10 pm per town guidance</li>
+                  <li>Check-in after 4 pm</li>
+                  <li>Check-out by 10 am</li>
+                  <li>Smart lock code sent morning of arrival</li>
                 </ul>
               </AccordionCard>
             </div>
@@ -601,7 +491,7 @@ function InfoPage() {
           {/* Beaches */}
           <section id="beaches" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Beaches</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {beaches.map((b) => (
                 <div key={b.name} className="rounded-2xl border shadow-sm bg-white p-4 hover:shadow-md transition">
                   <p className="font-medium">{b.name}</p>
@@ -613,13 +503,12 @@ function InfoPage() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-neutral-500 mt-3">Parking and permits vary by town and season. Check official pages before you go</p>
           </section>
 
           {/* Restaurants */}
           <section id="restaurants" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Restaurants</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {restaurants.map(r => (
                 <div key={r.name} className="rounded-2xl border shadow-sm bg-white p-4 hover:shadow-md transition">
                   <div className="flex items-center justify-between">
@@ -636,7 +525,7 @@ function InfoPage() {
           </section>
 
           {/* Back to top */}
-          <div className="pt-4">
+          <div className="pt-2">
             <a
               href="#top"
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
@@ -645,16 +534,13 @@ function InfoPage() {
               Back to top
             </a>
           </div>
-
         </div>
       </div>
     </section>
   )
 }
 
-/* ────────────────────────────────────────────────────────── *
- * App router
- * ────────────────────────────────────────────────────────── */
+/* App Router (hash) */
 export default function App() {
   const [route, setRoute] = useState(window.location.hash || "#/")
   useEffect(() => {
@@ -668,7 +554,7 @@ export default function App() {
     <main className="min-h-screen bg-white">
       <Header />
       {isInfo ? <InfoPage /> : <HomeSections />}
-      <footer className="px-6 md:px-10 py-8 border-t">
+      <footer className="px-4 sm:px-6 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
           © {new Date().getFullYear()} Hamptons Rental
         </div>
