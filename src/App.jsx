@@ -42,13 +42,14 @@ const images = [
 ]
 
 /* ────────────────────────────────────────────────────────── *
- * Header with full-screen opaque mobile menu
+ * Header with mobile dropdown menu under the sticky bar
  * ────────────────────────────────────────────────────────── */
 function Header() {
   const [open, setOpen] = useState(false)
 
+  // Keep page scrollable when menu is open
   useEffect(() => {
-    document.body.style.overflow = open ? "hidden" : ""
+    document.body.style.overflow = ""
     return () => { document.body.style.overflow = "" }
   }, [open])
 
@@ -66,7 +67,7 @@ function Header() {
   )
 
   return (
-    <header id="top" className="px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white md:bg-white/90 backdrop-blur md:backdrop-blur z-40">
+    <header id="top" className="relative px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white md:bg-white/90 backdrop-blur md:backdrop-blur z-40">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         <a href="/" className="text-base sm:text-lg md:text-2xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
@@ -86,30 +87,24 @@ function Header() {
         <button
           type="button"
           aria-label="Open menu"
+          aria-expanded={open ? "true" : "false"}
           className="md:hidden inline-flex items-center justify-center rounded-lg border px-3 py-2 bg-white shadow-sm"
-          onClick={() => setOpen(true)}
+          onClick={() => setOpen((v) => !v)}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            {open ? (
+              <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            )}
           </svg>
         </button>
       </div>
 
-      {/* Full-screen opaque mobile menu */}
+      {/* Mobile dropdown, anchored to header, solid white */}
       {open && (
-        <div className="fixed inset-0 z-50 bg-white">
-          <div className="flex items-center justify-between px-4 py-3 border-b">
-            <span className="text-base font-semibold">Menu</span>
-            <button
-              type="button"
-              className="rounded-lg border px-3 py-2 bg-white"
-              onClick={() => setOpen(false)}
-              aria-label="Close menu"
-            >
-              ✕
-            </button>
-          </div>
-          <nav className="px-4 py-4 grid gap-2 text-lg">
+        <div className="md:hidden absolute left-0 right-0 top-full bg-white border-b shadow-lg">
+          <nav className="px-4 py-3 grid gap-1 text-base">
             <Link href="#about" className="px-2 py-2 rounded-lg hover:bg-neutral-100">About</Link>
             <Link href="#gallery" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Gallery</Link>
             <Link href="#/info" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Info</Link>
@@ -946,7 +941,7 @@ function USOpenPage() {
         <div className="relative w-full max-w-5xl mx-auto px-4 md:px-10 py-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-white drop-shadow">Stay for the U.S. Open 2026</h1>
           <p className="text-white/90 text-sm md:text-base mt-1 drop-shadow">
-            Minutes from Shinnecock Hills — Your home base for tournament week.
+            Minutes from Shinnecock Hills, your home base for tournament week.
           </p>
           <div className="mt-4">
             <Countdown target={EVENT_START} />
@@ -987,19 +982,19 @@ function USOpenPage() {
             <div className="rounded-2xl border bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Getting There</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
-                <li>Drive: ~10 minutes</li>
-                <li>Ride-share: Uber/Lyft widely available in Southampton/Hampton Bays</li>
-                <li>Local car services available (book ahead during event week)</li>
-                <li>Parking & shuttle details typically provided by USGA. Follow official guidance</li>
+                <li>Drive, ~10 minutes</li>
+                <li>Ride-share, Uber or Lyft are available in Southampton and Hampton Bays</li>
+                <li>Local car services are available, book ahead during event week</li>
+                <li>Parking and shuttle details are provided by USGA, follow official guidance</li>
               </ul>
             </div>
             <div className="rounded-2xl border bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
                 <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
-                <li>4 en-suite bedrooms — ideal for groups — Sleeps 10</li>
-                <li>Chef’s kitchen and indoor/outdoor entertaining</li>
-                <li>Dedicated office + fast Wi-Fi for work on the go</li>
+                <li>4 en-suite bedrooms, sleeps 10</li>
+                <li>Chef’s kitchen and indoor or outdoor entertaining</li>
+                <li>Dedicated office with fast Wi-Fi</li>
                 <li>Minutes from the golf course</li>
                 <li>Great dining nearby</li>
               </ul>
@@ -1010,13 +1005,13 @@ function USOpenPage() {
           <div className="rounded-2xl border bg-white p-5 shadow-sm">
             <h3 className="text-lg font-semibold mb-2">US Open Schedule</h3>
             <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
-              <li>Monday Jun 15: Practice Day 1</li>
-              <li>Tuesday Jun 16: Practice Day 2</li>
-              <li>Wednesday Jun 17: Practice Day 3</li>
-              <li>Thursday Jun 18: Round 1</li>
-              <li>Friday Jun 19: Round 2</li>
-              <li>Saturday Jun 20: Round 3</li>
-              <li>Sunday Jun 21: Final Round</li>
+              <li>Monday Jun 15, Practice Day 1</li>
+              <li>Tuesday Jun 16, Practice Day 2</li>
+              <li>Wednesday Jun 17, Practice Day 3</li>
+              <li>Thursday Jun 18, Round 1</li>
+              <li>Friday Jun 19, Round 2</li>
+              <li>Saturday Jun 20, Round 3</li>
+              <li>Sunday Jun 21, Final Round</li>
             </ol>
             <div className="mt-4">
               <a href="#/contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
