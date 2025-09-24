@@ -787,7 +787,7 @@ function ReviewsPage() {
 
         <h3 className="text-lg font-semibold mb-3">Share Your Stay</h3>
         <p className="text-sm text-neutral-700 mb-4">
-          Submit your review below. We’ll publish approved reviews to this page.
+          Submit your review below.
         </p>
 
         <form
