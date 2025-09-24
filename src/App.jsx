@@ -42,32 +42,31 @@ const images = [
 ]
 
 /* ────────────────────────────────────────────────────────── *
- * Header with mobile menu
+ * Header with full-screen opaque mobile menu
  * ────────────────────────────────────────────────────────── */
 function Header() {
   const [open, setOpen] = useState(false)
 
   useEffect(() => {
-    // prevent background scroll when mobile menu is open
     document.body.style.overflow = open ? "hidden" : ""
     return () => { document.body.style.overflow = "" }
   }, [open])
 
-  const Link = ({ href, children, onClick }) => (
+  const Link = ({ href, children, onClick, className = "" }) => (
     <a
       href={href}
       onClick={(e) => {
         setOpen(false)
         onClick?.(e)
       }}
-      className="hover:underline px-2 py-1"
+      className={`hover:underline ${className}`}
     >
       {children}
     </a>
   )
 
   return (
-    <header id="top" className="px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white/90 backdrop-blur z-40">
+    <header id="top" className="px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white md:bg-white/90 backdrop-blur md:backdrop-blur z-40">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         <a href="/" className="text-base sm:text-lg md:text-2xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
@@ -75,19 +74,19 @@ function Header() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-5 text-sm">
-          <Link href="#about">About</Link>
-          <Link href="#gallery">Gallery</Link>
-          <Link href="#/info">Info</Link>
-          <Link href="#/reviews">Reviews</Link>
-          <Link href="#/usopen">US Open 2026</Link>
-          <Link href="#/contact">Contact</Link>
+          <Link href="#about" className="px-2 py-1">About</Link>
+          <Link href="#gallery" className="px-2 py-1">Gallery</Link>
+          <Link href="#/info" className="px-2 py-1">Info</Link>
+          <Link href="#/reviews" className="px-2 py-1">Reviews</Link>
+          <Link href="#/usopen" className="px-2 py-1">US Open 2026</Link>
+          <Link href="#/contact" className="px-2 py-1">Contact</Link>
         </nav>
 
         {/* Mobile hamburger */}
         <button
           type="button"
           aria-label="Open menu"
-          className="md:hidden inline-flex items-center justify-center rounded-lg border px-3 py-2"
+          className="md:hidden inline-flex items-center justify-center rounded-lg border px-3 py-2 bg-white shadow-sm"
           onClick={() => setOpen(true)}
         >
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -96,33 +95,28 @@ function Header() {
         </button>
       </div>
 
-      {/* Mobile sheet */}
+      {/* Full-screen opaque mobile menu */}
       {open && (
-        <div className="md:hidden fixed inset-0 z-50 bg-black/40" onClick={() => setOpen(false)}>
-          <div
-            className="absolute right-0 top-0 h-full w-[82%] max-w-xs bg-white shadow-xl p-4 flex flex-col"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between">
-              <span className="text-base font-semibold">Menu</span>
-              <button
-                type="button"
-                className="rounded-lg border px-3 py-2"
-                onClick={() => setOpen(false)}
-                aria-label="Close menu"
-              >
-                ✕
-              </button>
-            </div>
-            <nav className="mt-4 grid gap-1 text-base">
-              <Link href="#about">About</Link>
-              <Link href="#gallery">Gallery</Link>
-              <Link href="#/info">Info</Link>
-              <Link href="#/reviews">Reviews</Link>
-              <Link href="#/usopen">US Open 2026</Link>
-              <Link href="#/contact">Contact</Link>
-            </nav>
+        <div className="fixed inset-0 z-50 bg-white">
+          <div className="flex items-center justify-between px-4 py-3 border-b">
+            <span className="text-base font-semibold">Menu</span>
+            <button
+              type="button"
+              className="rounded-lg border px-3 py-2 bg-white"
+              onClick={() => setOpen(false)}
+              aria-label="Close menu"
+            >
+              ✕
+            </button>
           </div>
+          <nav className="px-4 py-4 grid gap-2 text-lg">
+            <Link href="#about" className="px-2 py-2 rounded-lg hover:bg-neutral-100">About</Link>
+            <Link href="#gallery" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Gallery</Link>
+            <Link href="#/info" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Info</Link>
+            <Link href="#/reviews" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Reviews</Link>
+            <Link href="#/usopen" className="px-2 py-2 rounded-lg hover:bg-neutral-100">US Open 2026</Link>
+            <Link href="#/contact" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Contact</Link>
+          </nav>
         </div>
       )}
     </header>
