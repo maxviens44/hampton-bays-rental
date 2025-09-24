@@ -43,17 +43,17 @@ const images = [
 
 function Header() {
   return (
-    <header id="top" className="px-4 sm:px-6 md:px-10 py-4 sm:py-6 border-b sticky top-0 bg-white/90 backdrop-blur">
+    <header id="top" className="px-4 md:px-10 py-4 md:py-6 border-b sticky top-0 bg-white/90 backdrop-blur z-40">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-        <a href="/" className="text-lg sm:text-xl md:text-2xl font-semibold tracking-tight truncate">
+        <a href="/" className="text-lg md:text-2xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
         </a>
-        {/* Mobile-friendly nav: tighter gaps + horizontal scroll if needed */}
-        <nav className="flex items-center gap-4 sm:gap-6 text-sm overflow-x-auto whitespace-nowrap">
-          <a href="#about" className="hover:underline">About</a>
-          <a href="#gallery" className="hover:underline">Gallery</a>
+        <nav className="flex items-center gap-3 md:gap-6 text-sm">
+          <a href="#about" className="hover:underline hidden sm:inline">About</a>
+          <a href="#gallery" className="hover:underline hidden sm:inline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
-          <a href="#/reviews" className="hover:underline">Reviews</a>
+          <a href="#/reviews" className="hover:underline hidden sm:inline">Reviews</a>
+          <a href="#/usopen" className="hover:underline font-medium">US Open 2026</a>
           <a href="#contact" className="hover:underline">Contact</a>
         </nav>
       </div>
@@ -91,7 +91,7 @@ function AvailabilityCalendar({ months = 12 }) {
   const startMonth = today.getMonth()
 
   const pad = (n) => (n < 10 ? `0${n}` : `${n}`)
-  const toISO = (y, m, d) => `${y}_${pad(m + 1)}_${pad(d)}`.replace(/_/g, "-")
+  const toISO = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`
   const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
   const startOfMonthWeekday = (y, m) => new Date(y, m, 1).getDay()
   const isPast = (y, m, d) => {
@@ -125,7 +125,7 @@ function AvailabilityCalendar({ months = 12 }) {
             const iso = toISO(year, month, d)
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
-            const base = "w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-[10px] sm:text-xs select-none"
+            const base = "w-7 h-7 flex items-center justify-center rounded border text-xs select-none"
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
@@ -152,7 +152,7 @@ function AvailabilityCalendar({ months = 12 }) {
   })
 
   return (
-    <section className="mt-6 sm:mt-8 md:mt-10" aria-labelledby="availability-title">
+    <section className="mt-8 md:mt-10" aria-labelledby="availability-title">
       <div className="flex items-center justify-between mb-2">
         <h3 id="availability-title" className="text-base md:text-lg font-semibold">Availability</h3>
         <div className="hidden md:flex items-center gap-3 text-xs">
@@ -248,16 +248,16 @@ function HomeSections() {
             <img
               src="/images/hosue.webp"
               alt="House View"
-              className="w-full h-[42vh] sm:h-[46vh] md:h-[62vh] object-cover"
+              className="w-full h-[46vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
             <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
-              <h2 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
+            <div className="absolute bottom-6 left-4 md:bottom-10 md:left-10">
+              <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
               </h2>
-              <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow">
+              <p className="text-white text-sm md:text-lg drop-shadow">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
             </div>
@@ -266,7 +266,7 @@ function HomeSections() {
       </section>
 
       {/* About */}
-      <section id="about" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12 border-t">
+      <section id="about" className="px-4 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
@@ -289,7 +289,7 @@ function HomeSections() {
       </section>
 
       {/* Gallery (keeps strict order via grid-flow-row) */}
-      <section id="gallery" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
+      <section id="gallery" className="px-4 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
           <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
@@ -305,7 +305,7 @@ function HomeSections() {
                   src={`/images/${img.file}`}
                   alt={img.label}
                   loading={idx < 6 ? "eager" : "lazy"}
-                  className="w-full h-44 sm:h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
                 />
                 <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
                   {img.label}
@@ -319,7 +319,7 @@ function HomeSections() {
       {/* Contact + Calendar */}
       <ContactSection />
 
-      {/* Lightbox overlay (click image to open) */}
+      {/* Lightbox overlay */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 md:p-4"
@@ -333,10 +333,10 @@ function HomeSections() {
               alt={images[index].label}
               className="w-full h-[70vh] md:h-[82vh] object-contain rounded-lg"
             />
-            <div className="absolute inset-x-0 bottom-3 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-3 px-3">
-              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Prev</button>
-              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Next</button>
-              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow active:scale-95">Close</button>
+            <div className="absolute inset-x-0 -bottom-12 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-2">
+              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
+              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
+              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
             </div>
           </div>
         </div>
@@ -364,10 +364,10 @@ function ContactSection() {
   const valid = !checkIn || !checkOut ? true : nights > 0
 
   return (
-    <section id="contact" className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12 border-t">
+    <section id="contact" className="px-4 md:px-10 py-8 md:py-12 border-t">
       <div className="max-w-3xl mx-auto">
         {/* Owner toolbar */}
-        <div className="mb-4 flex items-center justify-between gap-2">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
           <div className="flex items-center gap-2 text-xs">
             {window.netlifyIdentity ? (
@@ -396,7 +396,6 @@ function ContactSection() {
           className="space-y-4"
         >
           <input type="hidden" name="form-name" value="contact" />
-          {/* Optional: keep this hidden if you want nights recorded in Netlify */}
           <input type="hidden" name="Calculated Nights" value={nights} />
 
           <p className="hidden">
@@ -404,13 +403,13 @@ function ContactSection() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
-            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
+            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-3 text-base w-full" />
-            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-3 text-base w-full" />
+            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
           </div>
 
           {/* Check-in / Check-out */}
@@ -424,7 +423,7 @@ function ContactSection() {
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-3 text-base w-full"
+                className="border rounded-lg px-3 py-2 w-full"
               />
             </div>
             <div>
@@ -436,7 +435,7 @@ function ContactSection() {
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-3 text-base w-full"
+                className="border rounded-lg px-3 py-2 w-full"
               />
             </div>
           </div>
@@ -448,7 +447,7 @@ function ContactSection() {
           <button
             type="submit"
             disabled={!valid}
-            className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-base font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
+            className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white disabled:opacity-50 transition"
           >
             Submit Inquiry
           </button>
@@ -566,7 +565,7 @@ function InfoPage() {
 
   return (
     <section className="bg-gradient-to-b from-slate-50 to-white">
-      <div className="px-4 sm:px-6 md:px-10 pt-6 sm:pt-8">
+      <div className="px-4 md:px-10 pt-8">
         <div className="max-w-5xl mx-auto">
           <h2 className="text-2xl font-semibold">Local Information</h2>
           <p className="text-sm text-neutral-700">
@@ -576,8 +575,8 @@ function InfoPage() {
       </div>
 
       <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 md:px-10">
-          <nav className="flex items-center gap-3 sm:gap-4 py-2.5 sm:py-3 text-sm overflow-x-auto whitespace-nowrap">
+        <div className="max-w-5xl mx-auto px-4 md:px-10">
+          <nav className="flex items-center gap-2 md:gap-4 py-3 text-sm">
             <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
             <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
             <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
@@ -585,8 +584,8 @@ function InfoPage() {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
-        <div className="max-w-5xl mx-auto space-y-10 sm:space-y-12">
+      <div className="px-4 md:px-10 py-8 md:py-12">
+        <div className="max-w-5xl mx-auto space-y-12">
           {/* House */}
           <section id="house" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
@@ -703,7 +702,7 @@ function InfoPage() {
           </section>
 
           {/* Back to top */}
-          <div className="pt-2 sm:pt-4">
+          <div className="pt-4">
             <a
               href="#top"
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }) }}
@@ -718,6 +717,7 @@ function InfoPage() {
     </section>
   )
 }
+
 /* ────────────────────────────────────────────────────────── *
  * Reviews page: shows approved reviews (from /reviews.json)
  * above a Netlify “review-pending” form for new submissions.
@@ -739,11 +739,9 @@ function ReviewsPage() {
     let cancelled = false
     ;(async () => {
       try {
-        // Cache-bust so edits to reviews.json show up immediately
         const res = await fetch(`/reviews.json?v=${Date.now()}`)
         if (!res.ok) throw new Error("Failed to load reviews.json")
         const data = await res.json()
-        // Expecting: { "reviews": [ { name, stars, from, to, comment }, ... ] }
         const list = Array.isArray(data?.reviews) ? data.reviews : []
         if (!cancelled) setReviews(list)
       } catch (e) {
@@ -756,11 +754,10 @@ function ReviewsPage() {
   }, [])
 
   return (
-    <section className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 md:py-12">
+    <section className="px-4 md:px-10 py-8 md:py-12">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-xl md:text-2xl font-semibold mb-4">Guest Reviews</h2>
 
-        {/* Approved reviews */}
         {!loaded && <p className="text-sm text-neutral-600 mb-6">Loading reviews…</p>}
         {error && <p className="text-sm text-red-600 mb-6">{error}</p>}
         {loaded && !error && (
@@ -786,7 +783,6 @@ function ReviewsPage() {
           )
         )}
 
-        {/* Submission form (pending approval) */}
         <h3 className="text-lg font-semibold mb-3">Share Your Stay</h3>
         <p className="text-sm text-neutral-700 mb-4">
           Submit your review below. We’ll publish approved reviews to this page.
@@ -806,8 +802,8 @@ function ReviewsPage() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-3 text-base w-full" />
-            <select name="Stars" required className="border rounded-lg px-3 py-3 text-base w-full">
+            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <select name="Stars" required className="border rounded-lg px-3 py-2 w-full">
               <option value="" disabled>Rating (1–5 stars)</option>
               <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
             </select>
@@ -816,23 +812,141 @@ function ReviewsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed From</label>
-              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-3 text-base w-full" required />
+              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-2 w-full" required />
             </div>
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed To</label>
-              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-3 text-base w-full" required />
+              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-2 w-full" required />
             </div>
           </div>
 
-          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-3 text-base w-full" />
-
-          {/* Optional moderation hint */}
+          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-2 w-full" />
           <input type="hidden" name="Status" value="Pending" />
 
-          <button type="submit" className="w-full sm:w-auto rounded-2xl border px-5 py-3 text-base font-medium hover:bg-black hover:text-white transition">
+          <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
             Submit Review
           </button>
         </form>
+      </div>
+    </section>
+  )
+}
+
+/* ────────────────────────────────────────────────────────── *
+ * US Open 2026 Landing Page
+ * ────────────────────────────────────────────────────────── */
+function Countdown({ target }) {
+  const [now, setNow] = useState(Date.now())
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 1000)
+    return () => clearInterval(t)
+  }, [])
+  const diff = Math.max(0, target - now)
+  const d = Math.floor(diff / (1000 * 60 * 60 * 24))
+  const h = Math.floor((diff / (1000 * 60 * 60)) % 24)
+  const m = Math.floor((diff / (1000 * 60)) % 60)
+  const s = Math.floor((diff / 1000) % 60)
+
+  if (diff <= 0) {
+    return <p className="text-lg md:text-xl font-medium">It’s U.S. Open week!</p>
+  }
+
+  return (
+    <div className="flex flex-wrap items-center gap-3 text-lg md:text-2xl font-semibold">
+      <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{d}d</span>
+      <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{h}h</span>
+      <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{m}m</span>
+      <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{s}s</span>
+      <span className="text-sm md:text-base text-neutral-700">until the U.S. Open</span>
+    </div>
+  )
+}
+
+function USOpenPage() {
+  // Set to the expected tournament week (adjust if official dates change)
+  const EVENT_START = new Date("2026-06-15T08:00:00-04:00").getTime()
+  const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
+  const shinnecock = "Shinnecock Hills Golf Club, 200 Tuckahoe Rd, Southampton, NY 11968"
+  const gmaps = (dest) =>
+    `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
+
+  return (
+    <section className="px-4 md:px-10 py-8 md:py-12 bg-gradient-to-b from-white to-slate-50">
+      <div className="max-w-5xl mx-auto space-y-10">
+        {/* Hero + Countdown */}
+        <div className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-2xl md:text-3xl font-semibold">Stay for the U.S. Open 2026</h1>
+              <p className="text-sm md:text-base text-neutral-700 mt-1">
+                Minutes from Shinnecock Hills — your home base for tournament week.
+              </p>
+            </div>
+            <Countdown target={EVENT_START} />
+          </div>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <a href="#contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+              Reserve Your Stay
+            </a>
+            <a href={gmaps(shinnecock)} target="_blank" rel="noreferrer" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+              Directions to Shinnecock
+            </a>
+          </div>
+        </div>
+
+        {/* Quick facts */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-2xl border bg-white p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-wide text-neutral-500">Event Week</p>
+            <p className="font-medium mt-1">Mid-June 2026 (USGA)</p>
+          </div>
+          <div className="rounded-2xl border bg-white p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-wide text-neutral-500">Distance</p>
+            <p className="font-medium mt-1">~15–20 minutes drive</p>
+            <p className="text-xs text-neutral-600">Traffic dependent</p>
+          </div>
+          <div className="rounded-2xl border bg-white p-4 shadow-sm">
+            <p className="text-xs uppercase tracking-wide text-neutral-500">Guests</p>
+            <p className="font-medium mt-1">Up to 10 guests • 4 bedrooms</p>
+          </div>
+        </div>
+
+        {/* Transport + Why stay */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <h3 className="text-lg font-semibold mb-2">Getting There</h3>
+            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
+              <li><a className="underline" href={gmaps(shinnecock)} target="_blank" rel="noreferrer">Drive: ~15–20 minutes</a></li>
+              <li>Ride-share: Uber/Lyft widely available in Southampton/Hampton Bays</li>
+              <li>Local car services available (book ahead during event week)</li>
+              <li>Parking & shuttle details typically provided by USGA—follow official guidance</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
+            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
+              <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
+              <li>Multiple en-suite bedrooms — ideal for groups</li>
+              <li>Chef’s kitchen and indoor/outdoor entertaining</li>
+              <li>Dedicated office + fast Wi-Fi for work on the go</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Sample itinerary */}
+        <div className="rounded-2xl border bg-white p-5 shadow-sm">
+          <h3 className="text-lg font-semibold mb-2">Sample Itinerary</h3>
+          <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
+            <li>Morning: Head to Shinnecock for practice or round</li>
+            <li>Afternoon: Relax by the pool or beach</li>
+            <li>Evening: Dinner in Southampton Village or Hampton Bays</li>
+          </ol>
+          <div className="mt-4">
+            <a href="#contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+              Inquire for Event Week
+            </a>
+          </div>
+        </div>
       </div>
     </section>
   )
@@ -851,14 +965,15 @@ export default function App() {
 
   const isInfo = route.startsWith("#/info")
   const isReviews = route.startsWith("#/reviews")
+  const isUSOpen = route.startsWith("#/usopen")
 
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
-      <footer className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 border-t">
+      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : isUSOpen ? <USOpenPage /> : <HomeSections />}
+      <footer className="px-4 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
-          © {new Date().getFullYear()} Staythehamptons.com LLC
+          © {new Date().getFullYear()} Hamptons Rental
         </div>
       </footer>
     </main>
