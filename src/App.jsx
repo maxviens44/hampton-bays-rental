@@ -887,7 +887,7 @@ function USOpenPage() {
         <div className="relative w-full max-w-5xl mx-auto px-4 md:px-10 py-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-white drop-shadow">Stay for the U.S. Open 2026</h1>
           <p className="text-white/90 text-sm md:text-base mt-1 drop-shadow">
-            Minutes from Shinnecock Hills — your home base for tournament week.
+            Minutes from Shinnecock Hills - Your home base for tournament week.
           </p>
           <div className="mt-4">
             <Countdown target={EVENT_START} />
@@ -911,7 +911,7 @@ function USOpenPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="rounded-2xl border bg-white p-4 shadow-sm">
               <p className="text-xs uppercase tracking-wide text-neutral-500">Event Week</p>
-              <p className="font-medium mt-1">Mid-June 2026 (USGA)</p>
+              <p className="font-medium mt-1">June 15 - June 21</p>
             </div>
             <div className="rounded-2xl border bg-white p-4 shadow-sm">
               <p className="text-xs uppercase tracking-wide text-neutral-500">Distance</p>
@@ -929,19 +929,22 @@ function USOpenPage() {
             <div className="rounded-2xl border bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Getting There</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
-                <li><a className="underline" href={gmaps(shinnecock)} target="_blank" rel="noreferrer">Drive: ~10 minutes</a></li>
+                <li>Drive: ~10 minutes</li>
                 <li>Ride-share: Uber/Lyft widely available in Southampton/Hampton Bays</li>
                 <li>Local car services available (book ahead during event week)</li>
-                <li>Parking & shuttle details typically provided by USGA—follow official guidance</li>
+                <li>Parking & shuttle details typically provided by USGA. Follow official guidance</li>
               </ul>
             </div>
             <div className="rounded-2xl border bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
                 <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
-                <li>Multiple en-suite bedrooms — ideal for groups</li>
+                <li>4 en-suite bedrooms - ideal for groups - Sleeps 10</li>
                 <li>Chef’s kitchen and indoor/outdoor entertaining</li>
                 <li>Dedicated office + fast Wi-Fi for work on the go</li>
+                <li>Minutes from the golf course</li>
+                <li>Fine dining nearby</li>
+                Fining 
               </ul>
             </div>
           </div>
