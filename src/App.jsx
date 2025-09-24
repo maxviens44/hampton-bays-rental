@@ -993,7 +993,7 @@ function USOpenPage() {
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
                 <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
                 <li>4 en-suite bedrooms, sleeps 10</li>
-                <li>Chef’s kitchen and indoor or outdoor entertaining</li>
+                <li>Chef’s kitchen with state of the art appliances</li>
                 <li>Dedicated office with fast Wi-Fi</li>
                 <li>Minutes from the golf course</li>
                 <li>Great dining nearby</li>
