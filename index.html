@@ -35,23 +35,60 @@
     {
       "@context": "https://schema.org",
       "@type": "VacationRental",
+      "@id": "https://staythehamptons.com/#rental",
       "name": "Luxury Hamptons Cedar Shingle Rental",
-      "description": "Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom short term rental with saltwater pool, bay views, and modern amenities.",
-      "image": "https://staythehamptons.com/images/pool1.webp",
+      "description": "Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom short term rental with heated saltwater pool, bay views, and modern amenities.",
       "url": "https://staythehamptons.com/",
+      "additionalType": "https://schema.org/House",
+
+      "identifier": {
+        "@type": "PropertyValue",
+        "name": "StayTheHamptons",
+        "value": "2-hubbard-street-hampton-bays-11946"
+      },
+
+      "image": [
+        "https://staythehamptons.com/images/hosue.webp",
+        "https://staythehamptons.com/images/top.webp",
+        "https://staythehamptons.com/images/living.webp",
+        "https://staythehamptons.com/images/kitchen1.webp",
+        "https://staythehamptons.com/images/dining.webp",
+        "https://staythehamptons.com/images/pool1.webp",
+        "https://staythehamptons.com/images/primary.webp",
+        "https://staythehamptons.com/images/balcony.webp",
+        "https://staythehamptons.com/images/bathmain.webp"
+      ],
+
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 Hubbard Street",
         "addressLocality": "Hampton Bays",
         "addressRegion": "NY",
         "postalCode": "11946",
-        "addressCountry": "US"
+        "addressCountry": {
+          "@type": "Country",
+          "name": "US"
+        }
       },
+
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.872,
+        "longitude": -72.52
+      },
+
       "amenityFeature": [
-        { "@type": "LocationFeatureSpecification", "name": "Saltwater Pool", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Bay Views", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "WiFi", "value": true },
-        { "@type": "LocationFeatureSpecification", "name": "Cedar Shingle Exterior", "value": true }
+        { "@type": "LocationFeatureSpecification", "name": "Heated saltwater pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Bay views", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Home office", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Central air", "value": true }
+      ],
+
+      "containsPlace": [
+        { "@type": "Place", "name": "Pool area" },
+        { "@type": "Place", "name": "Home office" },
+        { "@type": "Place", "name": "Primary suite balcony" }
       ]
     }
     </script>
@@ -88,26 +125,25 @@
     <script type="module" src="/src/main.jsx"></script>
 
     <!-- Hidden form for Netlify build-time detection -->
-   <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="text" name="First Name" />
-  <input type="text" name="Last Name" />
-  <input type="email" name="Email" />
-  <input type="tel" name="Phone" />
-  <input type="date" name="Check-in" />
-  <input type="date" name="Check-out" />
-  <input type="hidden" name="Calculated Nights" />
-  <input type="text" name="bot-field" />
-</form>
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="First Name" />
+      <input type="text" name="Last Name" />
+      <input type="email" name="Email" />
+      <input type="tel" name="Phone" />
+      <input type="date" name="Check-in" />
+      <input type="date" name="Check-out" />
+      <input type="hidden" name="Calculated Nights" />
+      <input type="text" name="bot-field" />
+    </form>
+
     <!-- Hidden form for Netlify build-time detection -->
-<form name="review-pending" data-netlify="true" netlify-honeypot="bot-field" hidden>
-  <input type="hidden" name="form-name" value="review-pending" />
-  <input type="text" name="Name" />
-  <input type="text" name="Stars" />
-  <input type="text" name="Stayed From" />
-  <input type="text" name="Stayed To" />
-  <textarea name="Comment"></textarea>
-</form>
-
-
+    <form name="review-pending" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="hidden" name="form-name" value="review-pending" />
+      <input type="text" name="Name" />
+      <input type="text" name="Stars" />
+      <input type="text" name="Stayed From" />
+      <input type="text" name="Stayed To" />
+      <textarea name="Comment"></textarea>
+    </form>
   </body>
 </html>
