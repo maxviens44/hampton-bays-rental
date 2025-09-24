@@ -41,24 +41,90 @@ const images = [
   { file: "stairs.webp", label: "Staircase" }
 ]
 
+/* ────────────────────────────────────────────────────────── *
+ * Header with mobile menu
+ * ────────────────────────────────────────────────────────── */
 function Header() {
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    // prevent background scroll when mobile menu is open
+    document.body.style.overflow = open ? "hidden" : ""
+    return () => { document.body.style.overflow = "" }
+  }, [open])
+
+  const Link = ({ href, children, onClick }) => (
+    <a
+      href={href}
+      onClick={(e) => {
+        setOpen(false)
+        onClick?.(e)
+      }}
+      className="hover:underline px-2 py-1"
+    >
+      {children}
+    </a>
+  )
+
   return (
-    <header id="top" className="px-4 md:px-10 py-4 md:py-6 border-b sticky top-0 bg-white/90 backdrop-blur z-40">
+    <header id="top" className="px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white/90 backdrop-blur z-40">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-        <a href="/" className="text-lg md:text-2xl font-semibold tracking-tight">
+        <a href="/" className="text-base sm:text-lg md:text-2xl font-semibold tracking-tight">
           2 Hubbard Street • Hampton Bays
         </a>
-        <nav className="flex items-center gap-3 md:gap-6 text-sm">
-          <a href="#about" className="hover:underline hidden sm:inline">About</a>
-          <a href="#gallery" className="hover:underline hidden sm:inline">Gallery</a>
-          <a href="#/info" className="hover:underline">Info</a>
-          <a href="#/reviews" className="hover:underline hidden sm:inline">Reviews</a>
-          {/* same font style as others (removed font-medium) */}
-          <a href="#/usopen" className="hover:underline">US Open 2026</a>
-          {/* route to #/contact so router can scroll to Contact */}
-          <a href="#/contact" className="hover:underline">Contact</a>
+
+        {/* Desktop nav */}
+        <nav className="hidden md:flex items-center gap-5 text-sm">
+          <Link href="#about">About</Link>
+          <Link href="#gallery">Gallery</Link>
+          <Link href="#/info">Info</Link>
+          <Link href="#/reviews">Reviews</Link>
+          <Link href="#/usopen">US Open 2026</Link>
+          <Link href="#/contact">Contact</Link>
         </nav>
+
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          aria-label="Open menu"
+          className="md:hidden inline-flex items-center justify-center rounded-lg border px-3 py-2"
+          onClick={() => setOpen(true)}
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+          </svg>
+        </button>
       </div>
+
+      {/* Mobile sheet */}
+      {open && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black/40" onClick={() => setOpen(false)}>
+          <div
+            className="absolute right-0 top-0 h-full w-[82%] max-w-xs bg-white shadow-xl p-4 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-base font-semibold">Menu</span>
+              <button
+                type="button"
+                className="rounded-lg border px-3 py-2"
+                onClick={() => setOpen(false)}
+                aria-label="Close menu"
+              >
+                ✕
+              </button>
+            </div>
+            <nav className="mt-4 grid gap-1 text-base">
+              <Link href="#about">About</Link>
+              <Link href="#gallery">Gallery</Link>
+              <Link href="#/info">Info</Link>
+              <Link href="#/reviews">Reviews</Link>
+              <Link href="#/usopen">US Open 2026</Link>
+              <Link href="#/contact">Contact</Link>
+            </nav>
+          </div>
+        </div>
+      )}
     </header>
   )
 }
@@ -104,7 +170,7 @@ function AvailabilityCalendar({ months = 12 }) {
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
     const firstDow = startOfMonthWeekday(year, month)
-       const total = daysInMonth(year, month)
+    const total = daysInMonth(year, month)
     const cells = []
     for (let i = 0; i < firstDow; i++) cells.push(null)
     for (let d = 1; d <= total; d++) cells.push(d)
@@ -127,7 +193,7 @@ function AvailabilityCalendar({ months = 12 }) {
             const iso = toISO(year, month, d)
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
-            const base = "w-7 h-7 flex items-center justify-center rounded border text-xs select-none"
+            const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none"
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
             return (
@@ -148,7 +214,7 @@ function AvailabilityCalendar({ months = 12 }) {
 
   const monthsList = Array.from({ length: months }, (_, i) => {
     const m = startMonth + i
-       const y = startYear + Math.floor(m / 12)
+    const y = startYear + Math.floor(m / 12)
     const mm = m % 12
     return { year: y, month: mm, key: `${y}-${mm}` }
   })
@@ -250,16 +316,16 @@ function HomeSections() {
             <img
               src="/images/hosue.webp"
               alt="House View"
-              className="w-full h-[46vh] md:h-[62vh] object-cover"
+              className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
             <div className="absolute inset-0 bg-black/20" />
-            <div className="absolute bottom-6 left-4 md:bottom-10 md:left-10">
-              <h2 className="text-white text-2xl md:text-4xl font-semibold drop-shadow">
+            <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
+              <h2 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
               </h2>
-              <p className="text-white text-sm md:text-lg drop-shadow">
+              <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow mt-1">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
             </div>
@@ -290,12 +356,12 @@ function HomeSections() {
         </div>
       </section>
 
-      {/* Gallery (keeps strict order via grid-flow-row) */}
+      {/* Gallery */}
       <section id="gallery" className="px-4 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
-          <p className="text-sm text-neutral-600 mb-6">Click any photo to view it full screen</p>
-          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+          <p className="text-sm text-neutral-600 mb-6">Tap any photo to view it full screen</p>
+          <div className="grid grid-flow-row grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {images.map((img, idx) => (
               <button
                 key={img.file}
@@ -307,9 +373,9 @@ function HomeSections() {
                   src={`/images/${img.file}`}
                   alt={img.label}
                   loading={idx < 6 ? "eager" : "lazy"}
-                  className="w-full h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
+                  className="w-full h-56 sm:h-64 md:h-72 object-cover rounded-2xl shadow-sm transform transition-transform duration-200 group-hover:scale-105"
                 />
-                <span className="absolute bottom-2 left-2 text-xs bg-black/50 text-white px-2 py-0.5 rounded">
+                <span className="absolute bottom-2 left-2 text-[11px] sm:text-xs bg-black/50 text-white px-2 py-0.5 rounded">
                   {img.label}
                 </span>
               </button>
@@ -336,9 +402,9 @@ function HomeSections() {
               className="w-full h-[70vh] md:h-[82vh] object-contain rounded-lg"
             />
             <div className="absolute inset-x-0 -bottom-12 md:bottom-auto md:top-3 flex justify-center md:justify-end gap-2">
-              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Prev</button>
-              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Next</button>
-              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-3 py-2 text-sm shadow">Close</button>
+              <button onClick={prev} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow">Prev</button>
+              <button onClick={next} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow">Next</button>
+              <button onClick={close} type="button" className="rounded-full bg-white/90 hover:bg-white px-4 py-3 text-base shadow">Close</button>
             </div>
           </div>
         </div>
@@ -405,13 +471,13 @@ function ContactSection() {
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-2 w-full" />
+            <input type="text" name="First Name" placeholder="First Name" required className="border rounded-lg px-3 py-3 w-full" />
+            <input type="text" name="Last Name" placeholder="Last Name" required className="border rounded-lg px-3 py-3 w-full" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-2 w-full" />
-            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-2 w-full" />
+            <input type="email" name="Email" placeholder="Email" required className="border rounded-lg px-3 py-3 w-full" />
+            <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-3 w-full" />
           </div>
 
           {/* Check-in / Check-out */}
@@ -425,7 +491,7 @@ function ContactSection() {
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-2 w-full"
+                className="border rounded-lg px-3 py-3 w-full"
               />
             </div>
             <div>
@@ -437,7 +503,7 @@ function ContactSection() {
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
                 required
-                className="border rounded-lg px-3 py-2 w-full"
+                className="border rounded-lg px-3 py-3 w-full"
               />
             </div>
           </div>
@@ -578,10 +644,11 @@ function InfoPage() {
 
       <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
         <div className="max-w-5xl mx-auto px-4 md:px-10">
-          <nav className="flex items-center gap-2 md:gap-4 py-3 text-sm">
-            <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">House</a>
-            <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Beaches</a>
-            <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition">Restaurants</a>
+          {/* mobile-friendly horizontal scroll */}
+          <nav className="flex items-center gap-2 md:gap-4 py-3 text-sm overflow-x-auto no-scrollbar">
+            <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition whitespace-nowrap">House</a>
+            <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition whitespace-nowrap">Beaches</a>
+            <a href="#/info/restaurants" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition whitespace-nowrap">Restaurants</a>
           </nav>
         </div>
       </div>
@@ -721,8 +788,7 @@ function InfoPage() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Reviews page: shows approved reviews (from /reviews.json)
- * above a Netlify “review-pending” form for new submissions.
+ * Reviews page: approved reviews + submission form
  * ────────────────────────────────────────────────────────── */
 function StarRating({ value = 5 }) {
   return (
@@ -804,8 +870,8 @@ function ReviewsPage() {
           </p>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-2 w-full" />
-            <select name="Stars" required className="border rounded-lg px-3 py-2 w-full">
+            <input type="text" name="Name" placeholder="Your Name" required className="border rounded-lg px-3 py-3 w-full" />
+            <select name="Stars" required className="border rounded-lg px-3 py-3 w-full">
               <option value="" disabled>Rating (1–5 stars)</option>
               <option>5</option><option>4</option><option>3</option><option>2</option><option>1</option>
             </select>
@@ -814,15 +880,15 @@ function ReviewsPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed From</label>
-              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-2 w-full" required />
+              <input type="date" name="Stayed From" className="border rounded-lg px-3 py-3 w-full" required />
             </div>
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Stayed To</label>
-              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-2 w-full" required />
+              <input type="date" name="Stayed To" className="border rounded-lg px-3 py-3 w-full" required />
             </div>
           </div>
 
-          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-2 w-full" />
+          <textarea name="Comment" placeholder="Tell us about your stay…" rows="5" required className="border rounded-lg px-3 py-3 w-full" />
           <input type="hidden" name="Status" value="Pending" />
 
           <button type="submit" className="rounded-2xl border px-5 py-3 text-sm font-medium hover:bg-black hover:text-white transition">
@@ -865,7 +931,6 @@ function Countdown({ target }) {
 }
 
 function USOpenPage() {
-  // Set to the expected tournament week (adjust if official dates change)
   const EVENT_START = new Date("2026-06-15T08:00:00-04:00").getTime()
   const origin = encodeURIComponent("2 Hubbard Street, Hampton Bays, NY 11946")
   const shinnecock = "Shinnecock Hills Golf Club, 200 Tuckahoe Rd, Southampton, NY 11968"
@@ -874,7 +939,7 @@ function USOpenPage() {
 
   return (
     <section className="bg-gradient-to-b from-white to-slate-50">
-      {/* Background hero with overlay (image only used on this page) */}
+      {/* Background hero with overlay */}
       <div
         className="relative min-h-[42vh] md:min-h-[50vh] flex items-end"
         style={{
@@ -887,13 +952,12 @@ function USOpenPage() {
         <div className="relative w-full max-w-5xl mx-auto px-4 md:px-10 py-8">
           <h1 className="text-3xl md:text-4xl font-semibold text-white drop-shadow">Stay for the U.S. Open 2026</h1>
           <p className="text-white/90 text-sm md:text-base mt-1 drop-shadow">
-            Minutes from Shinnecock Hills - Your home base for tournament week.
+            Minutes from Shinnecock Hills — Your home base for tournament week.
           </p>
           <div className="mt-4">
             <Countdown target={EVENT_START} />
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            {/* Route to #/contact to ensure correct scroll to form */}
             <a href="#/contact" className="rounded-full border px-4 py-2 text-sm bg-white/90 hover:bg-white transition">
               Reserve Your Stay
             </a>
@@ -939,28 +1003,27 @@ function USOpenPage() {
               <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
               <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
                 <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
-                <li>4 en-suite bedrooms - ideal for groups - Sleeps 10</li>
+                <li>4 en-suite bedrooms — ideal for groups — Sleeps 10</li>
                 <li>Chef’s kitchen and indoor/outdoor entertaining</li>
                 <li>Dedicated office + fast Wi-Fi for work on the go</li>
                 <li>Minutes from the golf course</li>
-                <li>Fine dining nearby</li>
-                Fining 
+                <li>Great dining nearby</li>
               </ul>
             </div>
           </div>
 
           {/* Schedule */}
-        <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">US Open Schedule</h3>
-          <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
-            <li>Monday June 15: Practice Day 1</li>
-            <li>Tuesday June 16: Practice Day 2</li>
-            <li>Wednesday June 17: Practice Day 3</li>
-            <li>Thursday June 18: Round 1</li>
-            <li>Friday June 19: Round 2</li>
-            <li>Saturday June 20: Round 3</li>
-            <li>Sunday June 21: Final Round</li>
-          </ol>
+          <div className="rounded-2xl border bg-white p-5 shadow-sm">
+            <h3 className="text-lg font-semibold mb-2">US Open Schedule</h3>
+            <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
+              <li>Monday Jun 15: Practice Day 1</li>
+              <li>Tuesday Jun 16: Practice Day 2</li>
+              <li>Wednesday Jun 17: Practice Day 3</li>
+              <li>Thursday Jun 18: Round 1</li>
+              <li>Friday Jun 19: Round 2</li>
+              <li>Saturday Jun 20: Round 3</li>
+              <li>Sunday Jun 21: Final Round</li>
+            </ol>
             <div className="mt-4">
               <a href="#/contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
                 Inquire for Event Week
@@ -984,11 +1047,9 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
 
-  // When visiting #/info/<section>, InfoPage handles its own scroll.
-  // For #/contact, render Home and auto-scroll to the contact section.
+  // Auto-scroll to Contact when #/contact is used
   useEffect(() => {
     if (route === "#/contact") {
-      // wait for HomeSections to mount, then scroll
       setTimeout(() => {
         document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })
       }, 0)
@@ -998,21 +1059,11 @@ export default function App() {
   const isInfo = route.startsWith("#/info")
   const isReviews = route.startsWith("#/reviews")
   const isUSOpen = route.startsWith("#/usopen")
-  const isContact = route === "#/contact"
 
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      {isInfo ? (
-        <InfoPage />
-      ) : isReviews ? (
-        <ReviewsPage />
-      ) : isUSOpen ? (
-        <USOpenPage />
-      ) : (
-        /* Home also renders when isContact, then effect scrolls to contact */
-        <HomeSections />
-      )}
+      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : isUSOpen ? <USOpenPage /> : <HomeSections />}
       <footer className="px-4 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
           © {new Date().getFullYear()} Staythehamptons.com
