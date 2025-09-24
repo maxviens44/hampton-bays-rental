@@ -636,7 +636,7 @@ function InfoPage() {
         </div>
       </div>
 
-      <div className="sticky top-[64px] z-30 bg-white/80 backdrop-blur border-b mt-4">
+      <div className="sticky top-[64px] z-30 bg-white md:bg-white/80 backdrop-blur border-b mt-4">
         <div className="max-w-5xl mx-auto px-4 md:px-10">
           {/* mobile-friendly horizontal scroll */}
           <nav className="flex items-center gap-2 md:gap-4 py-3 text-sm overflow-x-auto no-scrollbar">
