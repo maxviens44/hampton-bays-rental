@@ -859,7 +859,7 @@ function Countdown({ target }) {
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{h}h</span>
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{m}m</span>
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{s}s</span>
-      <span className="text-sm md:text-base text-neutral-100 md:text-neutral-700">until the U.S. Open</span>
+      <span className="text-sm md:text-base text-white drop-shadow">Until the U.S. Open</span>
     </div>
   )
 }
