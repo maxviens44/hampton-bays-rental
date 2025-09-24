@@ -926,20 +926,24 @@ function USOpenPage() {
             <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
             <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
               <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
-              <li>Multiple en-suite bedrooms — ideal for groups</li>
+              <li>4 en-suite bedrooms - ideal for groups - Sleeps 10</li>
               <li>Chef’s kitchen and indoor/outdoor entertaining</li>
               <li>Dedicated office + fast Wi-Fi for work on the go</li>
             </ul>
           </div>
         </div>
 
-        {/* Sample itinerary */}
+        {/* Schedule */}
         <div className="rounded-2xl border bg-white p-5 shadow-sm">
           <h3 className="text-lg font-semibold mb-2">Sample Itinerary</h3>
           <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
-            <li>Morning: Head to Shinnecock for practice or round</li>
-            <li>Afternoon: Relax by the pool or beach</li>
-            <li>Evening: Dinner in Southampton Village or Hampton Bays</li>
+            <li>Monday June 15: Practice Day 1</li>
+            <li>Tuesday June 16: Practice Day 2</li>
+            <li>Wednesday June 17: Practice Day 3</li>
+            <li>Thursday June 18: Round 1</li>
+            <li>Friday June 19: Round 2</li>
+            <li>Saturday June 20: Round 3</li>
+            <li>Sunday June 21: Final Round</li>
           </ol>
           <div className="mt-4">
             <a href="#contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
