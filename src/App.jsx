@@ -1015,7 +1015,7 @@ export default function App() {
       )}
       <footer className="px-4 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
-          © {new Date().getFullYear()} Hamptons Rental
+          © {new Date().getFullYear()} Staythehamptons.com
         </div>
       </footer>
     </main>
