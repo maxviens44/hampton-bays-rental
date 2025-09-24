@@ -39,14 +39,7 @@
       "name": "Luxury Hamptons Cedar Shingle Rental",
       "description": "Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom short term rental with heated saltwater pool, bay views, and modern amenities.",
       "url": "https://staythehamptons.com/",
-      "additionalType": "https://schema.org/House",
-
-      "identifier": {
-        "@type": "PropertyValue",
-        "name": "StayTheHamptons",
-        "value": "2-hubbard-street-hampton-bays-11946"
-      },
-
+      "identifier": "staythehamptons-2-hubbard-street-hampton-bays-11946",
       "image": [
         "https://staythehamptons.com/images/hosue.webp",
         "https://staythehamptons.com/images/top.webp",
@@ -58,37 +51,25 @@
         "https://staythehamptons.com/images/balcony.webp",
         "https://staythehamptons.com/images/bathmain.webp"
       ],
-
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 Hubbard Street",
         "addressLocality": "Hampton Bays",
         "addressRegion": "NY",
         "postalCode": "11946",
-        "addressCountry": {
-          "@type": "Country",
-          "name": "US"
-        }
+        "addressCountry": "US"
       },
-
       "geo": {
         "@type": "GeoCoordinates",
         "latitude": 40.872,
         "longitude": -72.52
       },
-
       "amenityFeature": [
         { "@type": "LocationFeatureSpecification", "name": "Heated saltwater pool", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Bay views", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Home office", "value": true },
         { "@type": "LocationFeatureSpecification", "name": "Central air", "value": true }
-      ],
-
-      "containsPlace": [
-        { "@type": "Place", "name": "Pool area" },
-        { "@type": "Place", "name": "Home office" },
-        { "@type": "Place", "name": "Primary suite balcony" }
       ]
     }
     </script>
@@ -114,10 +95,10 @@
         window.netlifyIdentity.on('init', function (user) {
           // If we came from an invite link and not logged in yet, open signup
           if (!user && /\binvite_token=/.test(window.location.hash)) {
-            window.netlifyIdentity.open('signup');
+            window.netlifyIdentity.open('signup')
           }
-        });
-        window.netlifyIdentity.init();
+        })
+        window.netlifyIdentity.init()
       }
     </script>
 
