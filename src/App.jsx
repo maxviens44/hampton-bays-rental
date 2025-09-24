@@ -53,8 +53,10 @@ function Header() {
           <a href="#gallery" className="hover:underline hidden sm:inline">Gallery</a>
           <a href="#/info" className="hover:underline">Info</a>
           <a href="#/reviews" className="hover:underline hidden sm:inline">Reviews</a>
-          <a href="#/usopen" className="hover:underline font-medium">US Open 2026</a>
-          <a href="#contact" className="hover:underline">Contact</a>
+          {/* same font style as others (removed font-medium) */}
+          <a href="#/usopen" className="hover:underline">US Open 2026</a>
+          {/* route to #/contact so router can scroll to Contact */}
+          <a href="#/contact" className="hover:underline">Contact</a>
         </nav>
       </div>
     </header>
@@ -102,7 +104,7 @@ function AvailabilityCalendar({ months = 12 }) {
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
     const firstDow = startOfMonthWeekday(year, month)
-    const total = daysInMonth(year, month)
+       const total = daysInMonth(year, month)
     const cells = []
     for (let i = 0; i < firstDow; i++) cells.push(null)
     for (let d = 1; d <= total; d++) cells.push(d)
@@ -146,7 +148,7 @@ function AvailabilityCalendar({ months = 12 }) {
 
   const monthsList = Array.from({ length: months }, (_, i) => {
     const m = startMonth + i
-    const y = startYear + Math.floor(m / 12)
+       const y = startYear + Math.floor(m / 12)
     const mm = m % 12
     return { year: y, month: mm, key: `${y}-${mm}` }
   })
@@ -833,7 +835,7 @@ function ReviewsPage() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * US Open 2026 Landing Page
+ * US Open 2026 Landing Page (with background image)
  * ────────────────────────────────────────────────────────── */
 function Countdown({ target }) {
   const [now, setNow] = useState(Date.now())
@@ -857,7 +859,7 @@ function Countdown({ target }) {
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{h}h</span>
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{m}m</span>
       <span className="rounded-xl border px-3 py-1 bg-white shadow-sm">{s}s</span>
-      <span className="text-sm md:text-base text-neutral-700">until the U.S. Open</span>
+      <span className="text-sm md:text-base text-neutral-100 md:text-neutral-700">until the U.S. Open</span>
     </div>
   )
 }
@@ -871,71 +873,82 @@ function USOpenPage() {
     `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${encodeURIComponent(dest)}`
 
   return (
-    <section className="px-4 md:px-10 py-8 md:py-12 bg-gradient-to-b from-white to-slate-50">
-      <div className="max-w-5xl mx-auto space-y-10">
-        {/* Hero + Countdown */}
-        <div className="rounded-2xl border bg-white p-5 md:p-7 shadow-sm">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-            <div>
-              <h1 className="text-2xl md:text-3xl font-semibold">Stay for the U.S. Open 2026</h1>
-              <p className="text-sm md:text-base text-neutral-700 mt-1">
-                Minutes from Shinnecock Hills — your home base for tournament week.
-              </p>
-            </div>
+    <section className="bg-gradient-to-b from-white to-slate-50">
+      {/* Background hero with overlay (image only used on this page) */}
+      <div
+        className="relative min-h-[42vh] md:min-h-[50vh] flex items-end"
+        style={{
+          backgroundImage: "url('/images/shinnecock.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center"
+        }}
+      >
+        <div className="absolute inset-0 bg-black/35 md:bg-black/30" />
+        <div className="relative w-full max-w-5xl mx-auto px-4 md:px-10 py-8">
+          <h1 className="text-3xl md:text-4xl font-semibold text-white drop-shadow">Stay for the U.S. Open 2026</h1>
+          <p className="text-white/90 text-sm md:text-base mt-1 drop-shadow">
+            Minutes from Shinnecock Hills — your home base for tournament week.
+          </p>
+          <div className="mt-4">
             <Countdown target={EVENT_START} />
           </div>
           <div className="mt-4 flex flex-wrap gap-2">
-            <a href="#contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+            {/* Route to #/contact to ensure correct scroll to form */}
+            <a href="#/contact" className="rounded-full border px-4 py-2 text-sm bg-white/90 hover:bg-white transition">
               Reserve Your Stay
             </a>
-            <a href={gmaps(shinnecock)} target="_blank" rel="noreferrer" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+            <a href={gmaps(shinnecock)} target="_blank" rel="noreferrer" className="rounded-full border px-4 py-2 text-sm bg-white/90 hover:bg-white transition">
               Directions to Shinnecock
             </a>
           </div>
         </div>
+      </div>
 
-        {/* Quick facts */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-2xl border bg-white p-4 shadow-sm">
-            <p className="text-xs uppercase tracking-wide text-neutral-500">Event Week</p>
-            <p className="font-medium mt-1">Mid-June 2026 (USGA)</p>
+      {/* Content cards */}
+      <div className="px-4 md:px-10 py-8 md:py-12">
+        <div className="max-w-5xl mx-auto space-y-10">
+          {/* Quick facts */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="rounded-2xl border bg-white p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-wide text-neutral-500">Event Week</p>
+              <p className="font-medium mt-1">Mid-June 2026 (USGA)</p>
+            </div>
+            <div className="rounded-2xl border bg-white p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-wide text-neutral-500">Distance</p>
+              <p className="font-medium mt-1">~10 minutes drive</p>
+              <p className="text-xs text-neutral-600">Traffic dependent</p>
+            </div>
+            <div className="rounded-2xl border bg-white p-4 shadow-sm">
+              <p className="text-xs uppercase tracking-wide text-neutral-500">Guests</p>
+              <p className="font-medium mt-1">Up to 10 guests • 4 bedrooms</p>
+            </div>
           </div>
-          <div className="rounded-2xl border bg-white p-4 shadow-sm">
-            <p className="text-xs uppercase tracking-wide text-neutral-500">Distance</p>
-            <p className="font-medium mt-1">~15–20 minutes drive</p>
-            <p className="text-xs text-neutral-600">Traffic dependent</p>
-          </div>
-          <div className="rounded-2xl border bg-white p-4 shadow-sm">
-            <p className="text-xs uppercase tracking-wide text-neutral-500">Guests</p>
-            <p className="font-medium mt-1">Up to 10 guests • 4 bedrooms</p>
-          </div>
-        </div>
 
-        {/* Transport + Why stay */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold mb-2">Getting There</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
-              <li><a className="underline" href={gmaps(shinnecock)} target="_blank" rel="noreferrer">Drive: ~15–20 minutes</a></li>
-              <li>Ride-share: Uber/Lyft widely available in Southampton/Hampton Bays</li>
-              <li>Local car services available (book ahead during event week)</li>
-              <li>Parking & shuttle details typically provided by USGA—follow official guidance</li>
-            </ul>
+          {/* Transport + Why stay */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div className="rounded-2xl border bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-semibold mb-2">Getting There</h3>
+              <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
+                <li><a className="underline" href={gmaps(shinnecock)} target="_blank" rel="noreferrer">Drive: ~10 minutes</a></li>
+                <li>Ride-share: Uber/Lyft widely available in Southampton/Hampton Bays</li>
+                <li>Local car services available (book ahead during event week)</li>
+                <li>Parking & shuttle details typically provided by USGA—follow official guidance</li>
+              </ul>
+            </div>
+            <div className="rounded-2xl border bg-white p-5 shadow-sm">
+              <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
+              <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
+                <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
+                <li>Multiple en-suite bedrooms — ideal for groups</li>
+                <li>Chef’s kitchen and indoor/outdoor entertaining</li>
+                <li>Dedicated office + fast Wi-Fi for work on the go</li>
+              </ul>
+            </div>
           </div>
-          <div className="rounded-2xl border bg-white p-5 shadow-sm">
-            <h3 className="text-lg font-semibold mb-2">Why Our Home</h3>
-            <ul className="list-disc pl-5 space-y-1 text-sm text-neutral-800">
-              <li>Luxury 3,750 sq ft home with heated saltwater pool</li>
-              <li>4 en-suite bedrooms - ideal for groups - Sleeps 10</li>
-              <li>Chef’s kitchen and indoor/outdoor entertaining</li>
-              <li>Dedicated office + fast Wi-Fi for work on the go</li>
-            </ul>
-          </div>
-        </div>
 
-        {/* Schedule */}
+          {/* Schedule */}
         <div className="rounded-2xl border bg-white p-5 shadow-sm">
-          <h3 className="text-lg font-semibold mb-2">Sample Itinerary</h3>
+          <h3 className="text-lg font-semibold mb-2">US Open Schedule</h3>
           <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
             <li>Monday June 15: Practice Day 1</li>
             <li>Tuesday June 16: Practice Day 2</li>
@@ -945,10 +958,11 @@ function USOpenPage() {
             <li>Saturday June 20: Round 3</li>
             <li>Sunday June 21: Final Round</li>
           </ol>
-          <div className="mt-4">
-            <a href="#contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
-              Inquire for Event Week
-            </a>
+            <div className="mt-4">
+              <a href="#/contact" className="rounded-full border px-4 py-2 text-sm hover:bg-black hover:text-white transition">
+                Inquire for Event Week
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -967,14 +981,35 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
 
+  // When visiting #/info/<section>, InfoPage handles its own scroll.
+  // For #/contact, render Home and auto-scroll to the contact section.
+  useEffect(() => {
+    if (route === "#/contact") {
+      // wait for HomeSections to mount, then scroll
+      setTimeout(() => {
+        document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })
+      }, 0)
+    }
+  }, [route])
+
   const isInfo = route.startsWith("#/info")
   const isReviews = route.startsWith("#/reviews")
   const isUSOpen = route.startsWith("#/usopen")
+  const isContact = route === "#/contact"
 
   return (
     <main className="min-h-screen bg-white">
       <Header />
-      {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : isUSOpen ? <USOpenPage /> : <HomeSections />}
+      {isInfo ? (
+        <InfoPage />
+      ) : isReviews ? (
+        <ReviewsPage />
+      ) : isUSOpen ? (
+        <USOpenPage />
+      ) : (
+        /* Home also renders when isContact, then effect scrolls to contact */
+        <HomeSections />
+      )}
       <footer className="px-4 md:px-10 py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
           © {new Date().getFullYear()} Hamptons Rental
