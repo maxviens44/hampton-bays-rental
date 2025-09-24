@@ -858,7 +858,7 @@ export default function App() {
       {isInfo ? <InfoPage /> : isReviews ? <ReviewsPage /> : <HomeSections />}
       <footer className="px-4 sm:px-6 md:px-10 py-6 sm:py-8 border-t">
         <div className="max-w-7xl mx-auto text-sm text-neutral-600">
-          © {new Date().getFullYear()} Stay The Hamptons LLC
+          © {new Date().getFullYear()} Staythehamptons.com LLC
         </div>
       </footer>
     </main>
