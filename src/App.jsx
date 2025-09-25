@@ -305,17 +305,22 @@ function HomeSections() {
             <img
               src="/images/house.webp"
               alt="House View"
-              className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
+              width="2400"
+              height="1600"
+className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
             <div className="absolute inset-0 bg-black/20" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
-              <h2 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
+              <h1 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
                 Luxury Hamptons Retreat
-              </h2>
+              </h1>
               <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow mt-1">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
+              </p>
+              <p className="text-white text-[11px] sm:text-xs md:text-sm drop-shadow mt-1">
+                Hamptons house rental in Hampton Bays near Shinnecock Hills, ideal for U.S. Open 2026 week.
               </p>
             </div>
           </div>
@@ -1048,6 +1053,26 @@ export default function App() {
   const isInfo = route.startsWith("#/info")
   const isReviews = route.startsWith("#/reviews")
   const isUSOpen = route.startsWith("#/usopen")
+
+
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="description"]')
+    const setDesc = (t) => { if (meta) meta.setAttribute("content", t) }
+
+    if (isUSOpen) {
+      document.title = "U.S. Open 2026 Housing near Shinnecock Hills | Hampton Bays Rental"
+      setDesc("Private Hampton Bays home minutes from Shinnecock Hills. 4BR, 5BA, heated pool. Ideal base for U.S. Open 2026 week.")
+    } else if (isReviews) {
+      document.title = "Guest Reviews | Hampton Bays Luxury Rental"
+      setDesc("Read guest reviews for our Hampton Bays luxury rental with heated pool and bay views.")
+    } else if (isInfo) {
+      document.title = "Local Info | Beaches, Restaurants, House Details | Hampton Bays Rental"
+      setDesc("Everything you need for a smooth stay in our Hampton Bays house rental near Shinnecock Hills.")
+    } else {
+      document.title = "Luxury Hamptons Rental in Hampton Bays | Heated Pool, Sleeps 10"
+      setDesc("Classic cedar shingle Hamptons house rental with heated saltwater pool, 4BR/5BA, near Shinnecock Hills.")
+    }
+  }, [isUSOpen, isReviews, isInfo])
 
   return (
     <main className="min-h-screen bg-white">
