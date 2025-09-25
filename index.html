@@ -1,56 +1,42 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
 
-    <!-- Page Title -->
-    <title>Luxury Hamptons Rental | Hampton Bays Cedar Shingle Home with Pool</title>
+    <!-- Updated Title and Description -->
+    <title>Luxury Hamptons House Rental in Hampton Bays | Heated Pool near Shinnecock Hills</title>
+    <meta
+      name="description"
+      content="Hamptons house rental in Hampton Bays with 4 bedrooms and a heated saltwater pool. Sleeps 10 and minutes from Shinnecock Hills. Perfect for families, golf weeks, and U.S. Open 2026 housing."
+    />
 
-    <!-- Meta Description -->
-    <meta name="description" content="Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom rental with saltwater pool, bay views, and modern finishes. Short term rental near Hamptons beaches and dining." />
-
-    <!-- Optional SEO -->
-    <meta name="robots" content="index,follow" />
-
-    <!-- Canonical -->
-    <link rel="canonical" href="https://staythehamptons.com/" />
-
-    <!-- Open Graph -->
-    <meta property="og:title" content="Luxury Hamptons Rental | Hampton Bays House with Pool" />
-    <meta property="og:description" content="Classic cedar shingle Hamptons home with 4BR 5BA, saltwater pool, bay views, and modern style. Book your luxury Hamptons getaway today." />
-    <meta property="og:type" content="website" />
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:title" content="Luxury Hamptons House Rental in Hampton Bays" />
+    <meta property="og:description" content="Hamptons house rental in Hampton Bays with 4 bedrooms and a heated saltwater pool. Sleeps 10 and minutes from Shinnecock Hills. Perfect for U.S. Open 2026 housing." />
+    <meta property="og:image" content="https://staythehamptons.com/images/house.webp" />
     <meta property="og:url" content="https://staythehamptons.com/" />
-    <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />
-    <meta property="og:image:alt" content="Luxury Hamptons cedar shingle home with saltwater pool" />
+    <meta property="og:type" content="website" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Luxury Hamptons Rental | Hampton Bays House with Pool" />
-    <meta name="twitter:description" content="Book a classic Hamptons cedar shingle home in Hampton Bays with 4BR 5BA, saltwater pool, bay views, and access to Hamptons beaches." />
-    <meta name="twitter:image" content="https://staythehamptons.com/images/top.webp" />
+    <meta name="twitter:title" content="Luxury Hamptons House Rental in Hampton Bays" />
+    <meta name="twitter:description" content="Hamptons house rental in Hampton Bays with 4 bedrooms, heated pool, and close to Shinnecock Hills. Ideal for U.S. Open 2026." />
+    <meta name="twitter:image" content="https://staythehamptons.com/images/house.webp" />
 
-    <!-- Structured Data -->
+    <!-- Preload hero image -->
+    <link rel="preload" as="image" href="/images/house.webp" />
+
+    <!-- VacationRental schema (extended with offers + map) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "VacationRental",
       "@id": "https://staythehamptons.com/#rental",
       "name": "Luxury Hamptons Cedar Shingle Rental",
-      "description": "Classic Hamptons-style cedar shingle home in Hampton Bays. Luxurious 4 bedroom, 5 bathroom short term rental with heated saltwater pool, bay views, and modern amenities.",
       "url": "https://staythehamptons.com/",
-      "identifier": "staythehamptons-2-hubbard-street-hampton-bays-11946",
-      "image": [
-        "https://staythehamptons.com/images/house.webp",
-        "https://staythehamptons.com/images/top.webp",
-        "https://staythehamptons.com/images/living.webp",
-        "https://staythehamptons.com/images/kitchen1.webp",
-        "https://staythehamptons.com/images/dining.webp",
-        "https://staythehamptons.com/images/pool1.webp",
-        "https://staythehamptons.com/images/primary.webp",
-        "https://staythehamptons.com/images/balcony.webp",
-        "https://staythehamptons.com/images/bathmain.webp"
-      ],
+      "hasMap": "https://www.google.com/maps/place/2+Hubbard+St,+Hampton+Bays,+NY+11946",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 Hubbard Street",
@@ -59,86 +45,80 @@
         "postalCode": "11946",
         "addressCountry": "US"
       },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 40.872,
-        "longitude": -72.52
+      "geo": { "@type": "GeoCoordinates", "latitude": 40.872, "longitude": -72.52 },
+      "numberOfRooms": 8,
+      "numberOfBedrooms": 4,
+      "numberOfBathroomsTotal": 5,
+      "occupancy": { "@type": "QuantitativeValue", "value": 10 },
+      "amenityFeature": [
+        { "@type": "LocationFeatureSpecification", "name": "Heated saltwater pool", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Bay views", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Home office", "value": true },
+        { "@type": "LocationFeatureSpecification", "name": "Central air", "value": true }
+      ],
+      "offers": {
+        "@type": "Offer",
+        "url": "https://staythehamptons.com/#/contact"
       },
-      "containsPlace": {
-        "@type": "Accommodation",
-        "name": "Entire home",
-        "numberOfRooms": 4,
-        "numberOfBedrooms": 4,
-        "numberOfBathroomsTotal": 5,
-        "bed": "5 beds",
-        "occupancy": {
-          "@type": "QuantitativeValue",
-          "value": 10,
-          "maxValue": 10,
-          "unitCode": "C62"
-        },
-        "amenityFeature": [
-          { "@type": "LocationFeatureSpecification", "name": "Heated saltwater pool", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Bay views", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Home office", "value": true },
-          { "@type": "LocationFeatureSpecification", "name": "Central air", "value": true }
-        ]
-      }
+      "image": [
+        "https://staythehamptons.com/images/house.webp",
+        "https://staythehamptons.com/images/top.webp",
+        "https://staythehamptons.com/images/living.webp",
+        "https://staythehamptons.com/images/kitchen1.webp",
+        "https://staythehamptons.com/images/pool1.webp"
+      ],
+      "description": "Luxury Hampton Bays vacation rental near Shinnecock Hills with heated saltwater pool. 4BR, 5BA, sleeps 10."
     }
     </script>
 
-    <!-- Theme Color -->
-    <meta name="theme-color" content="#ffffff" />
-
-    <!-- Icons -->
-    <link rel="icon" type="image/png" href="/favicon.png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-
-    <!-- Preload Hero Image -->
-    <link rel="preload" as="image" href="/images/house.webp" />
-  </head>
-
-  <body>
-    <div id="root"></div>
-
-    <!-- Netlify Identity -->
-    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-    <script>
-      if (window.netlifyIdentity) {
-        window.netlifyIdentity.on('init', function (user) {
-          // If we came from an invite link and not logged in yet, open signup
-          if (!user && /\binvite_token=/.test(window.location.hash)) {
-            window.netlifyIdentity.open('signup')
-          }
-        })
-        window.netlifyIdentity.init()
-      }
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How many guests can the home accommodate",
+          "acceptedAnswer": { "@type": "Answer", "text": "Up to 10 guests across 4 bedrooms and 5 bathrooms." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is the pool heated",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, the pool is a heated saltwater in-ground pool." }
+        },
+        {
+          "@type": "Question",
+          "name": "How close is the home to Shinnecock Hills",
+          "acceptedAnswer": { "@type": "Answer", "text": "About a 10 minute drive depending on traffic." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you offer U.S. Open 2026 housing",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. Contact us for U.S. Open week availability, minimum stay, and pricing." }
+        }
+      ]
+    }
     </script>
 
-    <!-- React App -->
-    <script type="module" src="/src/main.jsx"></script>
-
-    <!-- Hidden form for Netlify build-time detection -->
-    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="text" name="First Name" />
-      <input type="text" name="Last Name" />
-      <input type="email" name="Email" />
-      <input type="tel" name="Phone" />
-      <input type="date" name="Check-in" />
-      <input type="date" name="Check-out" />
-      <input type="hidden" name="Calculated Nights" />
-      <input type="text" name="bot-field" />
-    </form>
-
-    <!-- Hidden form for Netlify build-time detection -->
-    <form name="review-pending" data-netlify="true" netlify-honeypot="bot-field" hidden>
-      <input type="hidden" name="form-name" value="review-pending" />
-      <input type="text" name="Name" />
-      <input type="text" name="Stars" />
-      <input type="text" name="Stayed From" />
-      <input type="text" name="Stayed To" />
-      <textarea name="Comment"></textarea>
-    </form>
+    <!-- WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "url": "https://staythehamptons.com/",
+      "name": "Stay The Hamptons",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://staythehamptons.com/?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
   </body>
 </html>
