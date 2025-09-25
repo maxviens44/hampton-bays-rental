@@ -5,7 +5,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react"
  * ────────────────────────────────────────────────────────── */
 const images = [
   { file: "top.webp", label: "Aerial View" },
-  { file: "hosue.webp", label: "Exterior Front" },
+  { file: "house.webp", label: "Exterior Front" },
   { file: "living.webp", label: "Living Room" },
   { file: "living2.webp", label: "Living Room View" },
   { file: "living3.webp", label: "Living Room Detail" },
@@ -303,7 +303,7 @@ function HomeSections() {
         <div className="max-w-7xl mx-auto">
           <div className="relative">
             <img
-              src="/images/hosue.webp"
+              src="/images/house.webp"
               alt="House View"
               className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
               loading="eager"
