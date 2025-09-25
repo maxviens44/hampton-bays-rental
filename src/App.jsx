@@ -311,9 +311,9 @@ function HomeSections() {
             />
             <div className="absolute inset-0 bg-black/20" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
-              <h1 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow"">
-                Luxury Hamptons Home
-              </h1>
+              <h2 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
+                Luxury Hamptons Retreat
+              </h2>
               <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow mt-1">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
