@@ -5,34 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>Luxury Hamptons House Rental in Hampton Bays | Heated Pool near Shinnecock Hills</title>
-    <meta name="description" content="Hamptons house rental in Hampton Bays with 4 bedrooms and a heated saltwater pool. Sleeps 10 and minutes from Shinnecock Hills. Perfect for families, golf weeks, and U.S. Open 2026 housing.">
+    <meta
+      name="description"
+      content="Hamptons house rental in Hampton Bays with 4 bedrooms and a heated saltwater pool. Sleeps 10 and minutes from Shinnecock Hills. Perfect for families, golf weeks, and U.S. Open 2026 housing."
+    />
 
     <!-- Social previews -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Luxury Hamptons House Rental in Hampton Bays">
-    <meta property="og:description" content="4BR house with heated saltwater pool near Shinnecock Hills. Ideal for U.S. Open 2026 housing.">
-    <meta property="og:url" content="https://staythehamptons.com/">
-    <meta property="og:image" content="https://staythehamptons.com/images/house.webp">
-    <meta property="og:image:alt" content="Hampton Bays luxury rental with heated pool">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Luxury Hamptons House Rental in Hampton Bays">
-    <meta name="twitter:description" content="4BR house with heated saltwater pool near Shinnecock Hills. Ideal for U.S. Open 2026 housing.">
-    <meta name="twitter:image" content="https://staythehamptons.com/images/house.webp">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Luxury Hamptons House Rental in Hampton Bays" />
+    <meta property="og:description" content="4BR house with heated saltwater pool near Shinnecock Hills. Ideal for U.S. Open 2026 housing." />
+    <meta property="og:url" content="https://staythehamptons.com/" />
+    <meta property="og:image" content="https://staythehamptons.com/images/house.webp" />
+    <meta property="og:image:alt" content="Hampton Bays luxury rental with heated pool" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Luxury Hamptons House Rental in Hampton Bays" />
+    <meta name="twitter:description" content="4BR house with heated saltwater pool near Shinnecock Hills. Ideal for U.S. Open 2026 housing." />
+    <meta name="twitter:image" content="https://staythehamptons.com/images/house.webp" />
 
-    <!-- Favicon for Vite -->
-    <link rel="icon" href="/favicon.ico">
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.ico" />
 
     <!-- Preload hero image -->
-    <link rel="preload" as="image" href="/images/house.webp">
+    <link rel="preload" as="image" href="/images/house.webp" />
 
-    <!-- Minimal VacationRental schema only -->
+    <!-- Fixed VacationRental schema with containsPlace, geo, identifier -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "VacationRental",
       "@id": "https://staythehamptons.com/#rental",
+      "identifier": "https://staythehamptons.com/#rental",
       "name": "Luxury Hamptons Cedar Shingle Rental",
       "url": "https://staythehamptons.com/",
+      "containsPlace": {
+        "@type": "Place",
+        "name": "Luxury Hamptons House Rental",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "2 Hubbard Street",
+          "addressLocality": "Hampton Bays",
+          "addressRegion": "NY",
+          "postalCode": "11946",
+          "addressCountry": "US"
+        }
+      },
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 Hubbard Street",
@@ -40,6 +56,11 @@
         "addressRegion": "NY",
         "postalCode": "11946",
         "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 40.872,
+        "longitude": -72.52
       },
       "numberOfBedrooms": 4,
       "numberOfBathroomsTotal": 5,
