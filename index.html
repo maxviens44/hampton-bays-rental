@@ -10,6 +10,9 @@
       content="Hamptons house rental in Hampton Bays with 4 bedrooms and a heated saltwater pool. Sleeps 10 and minutes from Shinnecock Hills. Perfect for families, golf weeks, and U.S. Open 2026 housing."
     />
 
+    <!-- Canonical to avoid redirect based exclusions -->
+    <link rel="canonical" href="https://staythehamptons.com/" />
+
     <!-- Social previews -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Luxury Hamptons House Rental in Hampton Bays" />
@@ -28,7 +31,7 @@
     <!-- Preload hero image -->
     <link rel="preload" as="image" href="/images/house.webp" />
 
-    <!-- Fixed VacationRental schema with containsPlace, geo, identifier -->
+    <!-- Corrected VacationRental schema: containsPlace must be Accommodation and include occupancy -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -37,18 +40,12 @@
       "identifier": "https://staythehamptons.com/#rental",
       "name": "Luxury Hamptons Cedar Shingle Rental",
       "url": "https://staythehamptons.com/",
-      "containsPlace": {
-        "@type": "Place",
-        "name": "Luxury Hamptons House Rental",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "2 Hubbard Street",
-          "addressLocality": "Hampton Bays",
-          "addressRegion": "NY",
-          "postalCode": "11946",
-          "addressCountry": "US"
-        }
-      },
+      "description": "Luxury Hampton Bays vacation rental near Shinnecock Hills with heated saltwater pool. 4BR, 5BA, sleeps 10.",
+      "image": [
+        "https://staythehamptons.com/images/house.webp",
+        "https://staythehamptons.com/images/top.webp",
+        "https://staythehamptons.com/images/pool1.webp"
+      ],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "2 Hubbard Street",
@@ -64,12 +61,21 @@
       },
       "numberOfBedrooms": 4,
       "numberOfBathroomsTotal": 5,
-      "description": "Luxury Hampton Bays vacation rental near Shinnecock Hills with heated saltwater pool. 4BR, 5BA, sleeps 10.",
-      "image": [
-        "https://staythehamptons.com/images/house.webp",
-        "https://staythehamptons.com/images/top.webp",
-        "https://staythehamptons.com/images/pool1.webp"
-      ]
+      "containsPlace": {
+        "@type": "Accommodation",
+        "name": "Luxury Hamptons House",
+        "numberOfRooms": 4,
+        "numberOfBathroomsTotal": 5,
+        "occupancy": {
+          "@type": "QuantitativeValue",
+          "value": 10
+        },
+        "amenityFeature": [
+          { "@type": "LocationFeatureSpecification", "name": "Heated saltwater pool", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Air conditioning", "value": true },
+          { "@type": "LocationFeatureSpecification", "name": "Wi-Fi", "value": true }
+        ]
+      }
     }
     </script>
 
@@ -118,20 +124,22 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
     <!-- Vite entry -->
     <script type="module" src="/src/main.jsx"></script>
+
     <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/68d6ce61043cac19512f628c/1j63hcb7h';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
+    <script type="text/javascript">
+      var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+      (function() {
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = "https://embed.tawk.to/68d6ce61043cac19512f628c/1j63hcb7h";
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        s0.parentNode.insertBefore(s1, s0);
+      })();
+    </script>
+    <!--End of Tawk.to Script-->
   </body>
 </html>
