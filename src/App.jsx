@@ -115,33 +115,40 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar with price hover
- * Reads /availability.json and /prices.json
+ * Availability Calendar with working availability + hover price
+ * Reads /availability.json  {"booked": ["YYYY-MM-DD", ...]}
+ * Reads /prices.json        {"YYYY-MM-DD": 1234, ...}
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
   const [prices, setPrices] = useState({})
   const [loaded, setLoaded] = useState(false)
 
+  // simple tooltip state so hover works everywhere
+  const [tip, setTip] = useState({ open: false, text: "", x: 0, y: 0 })
+
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
+        // cache busters to avoid stale files in Netlify
         const [availRes, priceRes] = await Promise.all([
           fetch(`/availability.json?v=${Date.now()}`),
           fetch(`/prices.json?v=${Date.now()}`)
         ])
 
-        if (!availRes.ok) throw new Error("Failed to load availability.json")
+        // availability is required
+        if (!availRes.ok) throw new Error("availability.json failed")
         const availData = await availRes.json()
-        const dates = Array.isArray(availData?.booked) ? availData.booked : []
-        if (!cancelled) setBooked(new Set(dates))
+        const bookedArr = Array.isArray(availData?.booked) ? availData.booked : []
+        if (!cancelled) setBooked(new Set(bookedArr))
 
+        // prices are optional
         if (priceRes.ok) {
           const priceData = await priceRes.json()
           if (!cancelled) setPrices(priceData || {})
-        } else {
-          if (!cancelled) setPrices({})
+        } else if (!cancelled) {
+          setPrices({})
         }
       } catch {
         if (!cancelled) {
@@ -168,6 +175,20 @@ function AvailabilityCalendar({ months = 12 }) {
     return date < new Date(today.getFullYear(), today.getMonth(), today.getDate())
   }
 
+  const handleEnter = (e, iso, isBooked) => {
+    const price = prices?.[iso]
+    const label = isBooked ? "Booked" : price ? `Nightly price $${price}` : "Available"
+    const rect = e.currentTarget.getBoundingClientRect()
+    setTip({
+      open: true,
+      text: label,
+      x: rect.left + rect.width / 2,
+      y: rect.top - 8
+    })
+  }
+
+  const handleLeave = () => setTip({ open: false, text: "", x: 0, y: 0 })
+
   const Month = ({ year, month }) => {
     const name = new Date(year, month, 1).toLocaleString(undefined, { month: "long", year: "numeric" })
     const firstDow = startOfMonthWeekday(year, month)
@@ -192,20 +213,21 @@ function AvailabilityCalendar({ months = 12 }) {
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
             const iso = toISO(year, month, d)
-            const isBooked = booked.has(iso)
+            const isBookedDay = booked.has(iso)
             const past = isPast(year, month, d)
             const price = prices?.[iso]
-            const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none"
-            const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
+
+            const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none relative"
+            const stateCls = isBookedDay ? "bg-neutral-200 line-through text-neutral-500 cursor-not-allowed" : "bg-white cursor-default"
             const pastCls = past ? "opacity-40" : ""
-            const title = isBooked ? "Booked" : price ? `Nightly price $${price}` : "Available"
 
             return (
               <div
                 key={iso}
                 className={`${base} ${stateCls} ${pastCls}`}
-                aria-label={`${name} ${d}${isBooked ? " booked" : price ? ` price $${price}` : ""}`}
-                title={title}
+                onMouseEnter={(e) => handleEnter(e, iso, isBookedDay)}
+                onMouseLeave={handleLeave}
+                aria-label={`${name} ${d}${isBookedDay ? " booked" : price ? ` price $${price}` : ""}`}
               >
                 {d}
               </div>
@@ -238,13 +260,31 @@ function AvailabilityCalendar({ months = 12 }) {
       </div>
 
       {!loaded && <div className="text-xs text-neutral-500 mb-2">Loading calendar…</div>}
-      <p className="text-[11px] text-neutral-500 mb-2">Hover a date to see the nightly price when available</p>
+      <p className="text-[11px] text-neutral-500 mb-2">Hover a date to see the nightly price or status</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-3">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
       </div>
+
+      {/* lightweight tooltip */}
+      {tip.open && (
+        <div
+          style={{
+            position: "fixed",
+            left: tip.x,
+            top: tip.y,
+            transform: "translate(-50%, -100%)",
+            pointerEvents: "none",
+            zIndex: 9999
+          }}
+          className="px-2 py-1 text-[11px] rounded bg-black text-white shadow"
+          role="tooltip"
+        >
+          {tip.text}
+        </div>
+      )}
     </section>
   )
 }
