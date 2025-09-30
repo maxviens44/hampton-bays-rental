@@ -47,7 +47,6 @@ const images = [
 function Header() {
   const [open, setOpen] = useState(false)
 
-  // Keep page scrollable when menu is open
   useEffect(() => {
     document.body.style.overflow = ""
     return () => { document.body.style.overflow = "" }
@@ -73,7 +72,6 @@ function Header() {
           2 Hubbard Street • Hampton Bays
         </a>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-5 text-sm">
           <Link href="#about" className="px-2 py-1">About</Link>
           <Link href="#gallery" className="px-2 py-1">Gallery</Link>
@@ -83,7 +81,6 @@ function Header() {
           <Link href="#/contact" className="px-2 py-1">Contact</Link>
         </nav>
 
-        {/* Mobile hamburger */}
         <button
           type="button"
           aria-label="Open menu"
@@ -101,7 +98,6 @@ function Header() {
         </button>
       </div>
 
-      {/* Mobile dropdown, anchored to header, solid white */}
       {open && (
         <div className="md:hidden absolute left-0 right-0 top-full bg-white border-b shadow-lg">
           <nav className="px-4 py-3 grid gap-1 text-base">
@@ -119,23 +115,39 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar (reads /availability.json)
+ * Availability Calendar with price hover
+ * Reads /availability.json and /prices.json
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
+  const [prices, setPrices] = useState({})
   const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const res = await fetch(`/availability.json?v=${Date.now()}`)
-        if (!res.ok) throw new Error("Failed to load availability.json")
-        const data = await res.json()
-        const dates = Array.isArray(data?.booked) ? data.booked : []
+        const [availRes, priceRes] = await Promise.all([
+          fetch(`/availability.json?v=${Date.now()}`),
+          fetch(`/prices.json?v=${Date.now()}`)
+        ])
+
+        if (!availRes.ok) throw new Error("Failed to load availability.json")
+        const availData = await availRes.json()
+        const dates = Array.isArray(availData?.booked) ? availData.booked : []
         if (!cancelled) setBooked(new Set(dates))
+
+        if (priceRes.ok) {
+          const priceData = await priceRes.json()
+          if (!cancelled) setPrices(priceData || {})
+        } else {
+          if (!cancelled) setPrices({})
+        }
       } catch {
-        if (!cancelled) setBooked(new Set())
+        if (!cancelled) {
+          setBooked(new Set())
+          setPrices({})
+        }
       } finally {
         if (!cancelled) setLoaded(true)
       }
@@ -182,15 +194,18 @@ function AvailabilityCalendar({ months = 12 }) {
             const iso = toISO(year, month, d)
             const isBooked = booked.has(iso)
             const past = isPast(year, month, d)
+            const price = prices?.[iso]
             const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none"
             const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
             const pastCls = past ? "opacity-40" : ""
+            const title = isBooked ? "Booked" : price ? `Nightly price $${price}` : "Available"
+
             return (
               <div
                 key={iso}
                 className={`${base} ${stateCls} ${pastCls}`}
-                aria-label={`${name} ${d}${isBooked ? " (booked)" : ""}`}
-                title={isBooked ? "Booked" : "Available"}
+                aria-label={`${name} ${d}${isBooked ? " booked" : price ? ` price $${price}` : ""}`}
+                title={title}
               >
                 {d}
               </div>
@@ -223,6 +238,7 @@ function AvailabilityCalendar({ months = 12 }) {
       </div>
 
       {!loaded && <div className="text-xs text-neutral-500 mb-2">Loading calendar…</div>}
+      <p className="text-[11px] text-neutral-500 mb-2">Hover a date to see the nightly price when available</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-3">
         {monthsList.map(({ year, month, key }) => (
@@ -298,7 +314,6 @@ function HomeSections() {
 
   return (
     <>
-      {/* Hero */}
       <section className="px-0 py-0">
         <div className="max-w-7xl mx-auto">
           <div className="relative">
@@ -307,7 +322,7 @@ function HomeSections() {
               alt="House View"
               width="2400"
               height="1600"
-className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
+              className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
               loading="eager"
               fetchpriority="high"
             />
@@ -327,7 +342,6 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
         </div>
       </section>
 
-      {/* About */}
       <section id="about" className="px-4 md:px-10 py-8 md:py-12 border-t">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
@@ -350,7 +364,6 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
         </div>
       </section>
 
-      {/* Gallery */}
       <section id="gallery" className="px-4 md:px-10 py-8 md:py-12">
         <div className="max-w-7xl mx-auto">
           <h3 className="text-lg md:text-xl font-semibold mb-4">Gallery</h3>
@@ -378,10 +391,9 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
         </div>
       </section>
 
-      {/* Contact + Calendar */}
       <ContactSection />
 
-      {/* Lightbox overlay */}
+      {/* Lightbox */}
       {lightboxOpen && (
         <div
           className="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-2 md:p-4"
@@ -408,7 +420,7 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Contact + compact calendar (Check-in/Check-out + hidden nights)
+ * Contact + compact calendar
  * ────────────────────────────────────────────────────────── */
 function ContactSection() {
   const { isOwner, login, logout } = useOwnerIdentity()
@@ -428,7 +440,6 @@ function ContactSection() {
   return (
     <section id="contact" className="px-4 md:px-10 py-8 md:py-12 border-t">
       <div className="max-w-3xl mx-auto">
-        {/* Owner toolbar */}
         <div className="mb-4 flex items-center justify-between">
           <h3 className="text-lg md:text-xl font-semibold">Contact</h3>
           <div className="flex items-center gap-2 text-xs">
@@ -474,7 +485,6 @@ function ContactSection() {
             <input type="tel" name="Phone" placeholder="Phone" className="border rounded-lg px-3 py-3 w-full" />
           </div>
 
-          {/* Check-in / Check-out */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs text-neutral-600 mb-1">Check-in</label>
@@ -515,7 +525,6 @@ function ContactSection() {
           </button>
         </form>
 
-        {/* Compact calendar under the form */}
         <AvailabilityCalendar months={12} />
       </div>
     </section>
@@ -523,7 +532,7 @@ function ContactSection() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Info Page (deep-link sections)
+ * Info Page
  * ────────────────────────────────────────────────────────── */
 function Chevron({ open }) {
   return (
@@ -638,7 +647,6 @@ function InfoPage() {
 
       <div className="sticky top-[64px] z-30 bg-white md:bg-white/80 backdrop-blur border-b mt-4">
         <div className="max-w-5xl mx-auto px-4 md:px-10">
-          {/* mobile-friendly horizontal scroll */}
           <nav className="flex items-center gap-2 md:gap-4 py-3 text-sm overflow-x-auto no-scrollbar">
             <a href="#/info/house" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition whitespace-nowrap">House</a>
             <a href="#/info/beaches" className="px-3 py-1 rounded-full border hover:bg-black hover:text-white transition whitespace-nowrap">Beaches</a>
@@ -649,7 +657,6 @@ function InfoPage() {
 
       <div className="px-4 md:px-10 py-8 md:py-12">
         <div className="max-w-5xl mx-auto space-y-12">
-          {/* House */}
           <section id="house" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">House Information</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -727,7 +734,6 @@ function InfoPage() {
             </div>
           </section>
 
-          {/* Beaches */}
           <section id="beaches" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Beaches</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -745,7 +751,6 @@ function InfoPage() {
             <p className="text-xs text-neutral-500 mt-3">Parking and permits vary by town and season. Check official pages before you go</p>
           </section>
 
-          {/* Restaurants */}
           <section id="restaurants" className="scroll-mt-28">
             <h3 className="text-lg font-semibold mb-3">Restaurants</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -764,7 +769,6 @@ function InfoPage() {
             </div>
           </section>
 
-          {/* Back to top */}
           <div className="pt-4">
             <a
               href="#top"
@@ -782,7 +786,7 @@ function InfoPage() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Reviews page: approved reviews + submission form
+ * Reviews page
  * ────────────────────────────────────────────────────────── */
 function StarRating({ value = 5 }) {
   return (
@@ -895,7 +899,7 @@ function ReviewsPage() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * US Open 2026 Landing Page (with background image)
+ * US Open 2026 Landing Page
  * ────────────────────────────────────────────────────────── */
 function Countdown({ target }) {
   const [now, setNow] = useState(Date.now())
@@ -933,7 +937,6 @@ function USOpenPage() {
 
   return (
     <section className="bg-gradient-to-b from-white to-slate-50">
-      {/* Background hero with overlay */}
       <div
         className="relative min-h-[42vh] md:min-h-[50vh] flex items-end"
         style={{
@@ -962,10 +965,8 @@ function USOpenPage() {
         </div>
       </div>
 
-      {/* Content cards */}
       <div className="px-4 md:px-10 py-8 md:py-12">
         <div className="max-w-5xl mx-auto space-y-10">
-          {/* Quick facts */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="rounded-2xl border bg-white p-4 shadow-sm">
               <p className="text-xs uppercase tracking-wide text-neutral-500">Event Week</p>
@@ -982,7 +983,6 @@ function USOpenPage() {
             </div>
           </div>
 
-          {/* Transport + Why stay */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <div className="rounded-2xl border bg-white p-5 shadow-sm">
               <h3 className="text-lg font-semibold mb-2">Getting There</h3>
@@ -1006,7 +1006,6 @@ function USOpenPage() {
             </div>
           </div>
 
-          {/* Schedule */}
           <div className="rounded-2xl border bg-white p-5 shadow-sm">
             <h3 className="text-lg font-semibold mb-2">US Open Schedule</h3>
             <ol className="list-decimal pl-5 space-y-1 text-sm text-neutral-800">
@@ -1041,7 +1040,6 @@ export default function App() {
     return () => window.removeEventListener("hashchange", onHash)
   }, [])
 
-  // Auto-scroll to Contact when #/contact is used
   useEffect(() => {
     if (route === "#/contact") {
       setTimeout(() => {
@@ -1053,7 +1051,6 @@ export default function App() {
   const isInfo = route.startsWith("#/info")
   const isReviews = route.startsWith("#/reviews")
   const isUSOpen = route.startsWith("#/usopen")
-
 
   useEffect(() => {
     const meta = document.querySelector('meta[name="description"]')
