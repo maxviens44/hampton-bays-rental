@@ -130,11 +130,36 @@ function AvailabilityCalendar({ months = 12 }) {
 
   // pricing state
   const [currency, setCurrency] = useState("USD")
-  const [defaultPrice, setDefaultPrice] = useState(1000) // code fallback as requested
+  const [defaultPrice, setDefaultPrice] = useState(1000)
   const [overrides, setOverrides] = useState({})
 
   // lightweight tooltip
   const [tip, setTip] = useState({ open: false, text: "", x: 0, y: 0 })
+
+  // hide helper reused by many events
+  const hideTip = useCallback(() => {
+    setTip(t => t.open ? { open: false, text: "", x: 0, y: 0 } : t)
+  }, [])
+
+  // close tooltip on scroll, wheel, touch and Escape
+  useEffect(() => {
+    const hideOnScroll = () => hideTip()
+    const onKey = e => { if (e.key === "Escape") hideTip() }
+
+    window.addEventListener("scroll", hideOnScroll, { passive: true })
+    window.addEventListener("wheel", hideOnScroll, { passive: true })
+    window.addEventListener("touchstart", hideOnScroll, { passive: true })
+    window.addEventListener("touchmove", hideOnScroll, { passive: true })
+    window.addEventListener("keydown", onKey)
+
+    return () => {
+      window.removeEventListener("scroll", hideOnScroll)
+      window.removeEventListener("wheel", hideOnScroll)
+      window.removeEventListener("touchstart", hideOnScroll)
+      window.removeEventListener("touchmove", hideOnScroll)
+      window.removeEventListener("keydown", onKey)
+    }
+  }, [hideTip])
 
   useEffect(() => {
     let cancelled = false
@@ -145,13 +170,11 @@ function AvailabilityCalendar({ months = 12 }) {
           fetch(`/pricing.json?v=${Date.now()}`)
         ])
 
-        // availability
         if (!availRes.ok) throw new Error("availability.json failed")
         const a = await availRes.json()
         const dates = Array.isArray(a?.booked) ? a.booked : []
         if (!cancelled) setBooked(new Set(dates))
 
-        // pricing optional
         if (priceRes.ok) {
           const p = await priceRes.json()
           const cur = typeof p?.currency === "string" ? p.currency : "USD"
@@ -166,7 +189,6 @@ function AvailabilityCalendar({ months = 12 }) {
       } catch {
         if (!cancelled) {
           setBooked(new Set())
-          // keep code defaults for pricing when file is missing or invalid
           setCurrency("USD")
           setDefaultPrice(1000)
           setOverrides({})
@@ -196,13 +218,12 @@ function AvailabilityCalendar({ months = 12 }) {
     const r = e.currentTarget.getBoundingClientRect()
     setTip({ open: true, text, x: r.left + r.width / 2, y: r.top - 8 })
   }, [])
-  const hideTip = useCallback(() => setTip({ open: false, text: "", x: 0, y: 0 }), [])
 
   const today = new Date()
   const startYear = today.getFullYear()
   const startMonth = today.getMonth()
 
-  const pad = (n) => (n < 10 ? `0${n}` : `${n}`)
+  const pad = n => (n < 10 ? `0${n}` : `${n}`)
   const toISO = (y, m, d) => `${y}-${pad(m + 1)}-${pad(d)}`
   const daysInMonth = (y, m) => new Date(y, m + 1, 0).getDate()
   const startOfMonthWeekday = (y, m) => new Date(y, m, 1).getDay()
@@ -248,8 +269,10 @@ function AvailabilityCalendar({ months = 12 }) {
               <div
                 key={iso}
                 className={`${base} ${stateCls} ${pastCls}`}
-                onMouseEnter={(e) => showTip(e, label)}
-                onMouseLeave={hideTip}
+                onPointerEnter={(e) => showTip(e, label)}
+                onPointerLeave={hideTip}
+                onPointerCancel={hideTip}
+                onTouchStart={hideTip}
                 title={label}
                 aria-label={`${name} ${d}${isBookedDay ? " booked" : ` price ${fmt.format(price)}`}`}
               >
@@ -304,6 +327,7 @@ function AvailabilityCalendar({ months = 12 }) {
           }}
           className="px-2 py-1 text-[11px] rounded bg-black text-white shadow"
           role="tooltip"
+          aria-hidden={!tip.open}
         >
           {tip.text}
         </div>
@@ -311,6 +335,7 @@ function AvailabilityCalendar({ months = 12 }) {
     </section>
   )
 }
+
 
 /* ────────────────────────────────────────────────────────── *
  * Netlify Identity helper (checks if current user is the owner)
