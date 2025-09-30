@@ -119,29 +119,84 @@ function Header() {
 }
 
 /* ────────────────────────────────────────────────────────── *
- * Availability Calendar (reads /availability.json)
+ * Availability Calendar with pricing hover
+ * - availability.json: { "booked": ["YYYY-MM-DD", ...] }
+ * - pricing.json: { "currency":"USD","default":1000,"prices":{ "YYYY-MM-DD":2400 } }
+ * Fallback default if pricing.json missing: 1000 USD
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
   const [loaded, setLoaded] = useState(false)
 
+  // pricing state
+  const [currency, setCurrency] = useState("USD")
+  const [defaultPrice, setDefaultPrice] = useState(1000) // code fallback as requested
+  const [overrides, setOverrides] = useState({})
+
+  // lightweight tooltip
+  const [tip, setTip] = useState({ open: false, text: "", x: 0, y: 0 })
+
   useEffect(() => {
     let cancelled = false
     ;(async () => {
       try {
-        const res = await fetch(`/availability.json?v=${Date.now()}`)
-        if (!res.ok) throw new Error("Failed to load availability.json")
-        const data = await res.json()
-        const dates = Array.isArray(data?.booked) ? data.booked : []
+        const [availRes, priceRes] = await Promise.all([
+          fetch(`/availability.json?v=${Date.now()}`),
+          fetch(`/pricing.json?v=${Date.now()}`)
+        ])
+
+        // availability
+        if (!availRes.ok) throw new Error("availability.json failed")
+        const a = await availRes.json()
+        const dates = Array.isArray(a?.booked) ? a.booked : []
         if (!cancelled) setBooked(new Set(dates))
+
+        // pricing optional
+        if (priceRes.ok) {
+          const p = await priceRes.json()
+          const cur = typeof p?.currency === "string" ? p.currency : "USD"
+          const def = typeof p?.default === "number" ? p.default : defaultPrice
+          const map = p?.prices && typeof p.prices === "object" ? p.prices : {}
+          if (!cancelled) {
+            setCurrency(cur)
+            setDefaultPrice(def)
+            setOverrides(map)
+          }
+        }
       } catch {
-        if (!cancelled) setBooked(new Set())
+        if (!cancelled) {
+          setBooked(new Set())
+          // keep code defaults for pricing when file is missing or invalid
+          setCurrency("USD")
+          setDefaultPrice(1000)
+          setOverrides({})
+        }
       } finally {
         if (!cancelled) setLoaded(true)
       }
     })()
     return () => { cancelled = true }
   }, [])
+
+  const fmt = useMemo(() => {
+    try {
+      return new Intl.NumberFormat(undefined, { style: "currency", currency })
+    } catch {
+      return new Intl.NumberFormat(undefined, { style: "currency", currency: "USD" })
+    }
+  }, [currency])
+
+  const priceFor = useCallback((iso) => {
+    const v = overrides?.[iso]
+    if (typeof v === "number") return v
+    return defaultPrice
+  }, [overrides, defaultPrice])
+
+  const showTip = useCallback((e, text) => {
+    const r = e.currentTarget.getBoundingClientRect()
+    setTip({ open: true, text, x: r.left + r.width / 2, y: r.top - 8 })
+  }, [])
+  const hideTip = useCallback(() => setTip({ open: false, text: "", x: 0, y: 0 }), [])
 
   const today = new Date()
   const startYear = today.getFullYear()
@@ -180,17 +235,23 @@ function AvailabilityCalendar({ months = 12 }) {
           {cells.map((d, idx) => {
             if (d === null) return <div key={`b-${idx}`} />
             const iso = toISO(year, month, d)
-            const isBooked = booked.has(iso)
+            const isBookedDay = booked.has(iso)
             const past = isPast(year, month, d)
-            const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none"
-            const stateCls = isBooked ? "bg-neutral-200 line-through text-neutral-500" : "bg-white"
+            const price = priceFor(iso)
+
+            const base = "w-8 h-8 sm:w-7 sm:h-7 flex items-center justify-center rounded border text-xs select-none relative"
+            const stateCls = isBookedDay ? "bg-neutral-200 line-through text-neutral-500 cursor-not-allowed" : "bg-white cursor-default"
             const pastCls = past ? "opacity-40" : ""
+            const label = isBookedDay ? "Booked" : `Nightly price ${fmt.format(price)}`
+
             return (
               <div
                 key={iso}
                 className={`${base} ${stateCls} ${pastCls}`}
-                aria-label={`${name} ${d}${isBooked ? " (booked)" : ""}`}
-                title={isBooked ? "Booked" : "Available"}
+                onMouseEnter={(e) => showTip(e, label)}
+                onMouseLeave={hideTip}
+                title={label}
+                aria-label={`${name} ${d}${isBookedDay ? " booked" : ` price ${fmt.format(price)}`}`}
               >
                 {d}
               </div>
@@ -223,12 +284,30 @@ function AvailabilityCalendar({ months = 12 }) {
       </div>
 
       {!loaded && <div className="text-xs text-neutral-500 mb-2">Loading calendar…</div>}
+      <p className="text-[11px] text-neutral-500 mb-2">Hover a date to see the nightly price or status</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-2 md:gap-3">
         {monthsList.map(({ year, month, key }) => (
           <Month key={key} year={year} month={month} />
         ))}
       </div>
+
+      {tip.open && (
+        <div
+          style={{
+            position: "fixed",
+            left: tip.x,
+            top: tip.y,
+            transform: "translate(-50%, -100%)",
+            pointerEvents: "none",
+            zIndex: 9999
+          }}
+          className="px-2 py-1 text-[11px] rounded bg-black text-white shadow"
+          role="tooltip"
+        >
+          {tip.text}
+        </div>
+      )}
     </section>
   )
 }
