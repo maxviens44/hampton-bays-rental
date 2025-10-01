@@ -70,7 +70,7 @@ function Header() {
     <header id="top" className="relative px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white md:bg-white/90 backdrop-blur md:backdrop-blur z-40">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
         <a href="/" className="text-base sm:text-lg md:text-2xl font-semibold tracking-tight">
-          2 Hubbard Street • Hampton Bays
+          Hampton Bays
         </a>
 
         {/* Desktop nav */}
