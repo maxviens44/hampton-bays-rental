@@ -1,53 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://sitemaps.org/schemas/sitemap/0.9">
-
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <!-- Homepage -->
   <url>
     <loc>https://staythehamptons.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-
   <!-- About section -->
   <url>
     <loc>https://staythehamptons.com/#about</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- Gallery section -->
   <url>
     <loc>https://staythehamptons.com/#gallery</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <!-- Info page -->
   <url>
     <loc>https://staythehamptons.com/#/info</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
-
   <!-- Reviews page -->
   <url>
     <loc>https://staythehamptons.com/#/reviews</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
   <!-- US Open 2026 event page -->
   <url>
     <loc>https://staythehamptons.com/#/usopen</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
-
   <!-- Contact section -->
   <url>
     <loc>https://staythehamptons.com/#/contact</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
 </urlset>
