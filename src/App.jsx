@@ -6,6 +6,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react"
 const images = [
   { file: "top.webp", label: "Aerial View" },
   { file: "house.webp", label: "Exterior Front" },
+  { file: "map.png", label: "Location" },
   { file: "living.webp", label: "Living Room" },
   { file: "living2.webp", label: "Living Room View" },
   { file: "living3.webp", label: "Living Room Detail" },
