@@ -39,7 +39,7 @@
       .ownerrez-widget { width: 100% }
       .ownerrez-widget iframe { width: 100% !important; border: 0; display: block }
 
-      /* Keep calendar from overtaking the page while we still show enough content */
+      /* Keep calendar and rates from overtaking the page */
       .ownerrez-widget[data-widget-type*="Yearly"] iframe,
       .ownerrez-widget[data-widget-type*="Calendar"] iframe {
         height: 80vh !important;
@@ -51,7 +51,6 @@
         max-height: 900px
       }
 
-      /* Booking and Rates */
       .ownerrez-widget[data-widget-type*="Rates"] iframe {
         height: 70vh !important;
         max-height: 800px
@@ -111,17 +110,7 @@
         </div>
       </section>
 
-      <!-- RATES moved above CALENDAR -->
-      <section id="rates" class="section">
-        <h2>Rates</h2>
-        <div class="card">
-          <div class="ownerrez-widget"
-               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
-               data-widget-type="Rates - Rates"
-               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
-        </div>
-      </section>
-
+      <!-- CALENDAR before RATES again -->
       <section id="calendar" class="section">
         <h2>Availability Calendar</h2>
         <div class="card">
@@ -130,6 +119,16 @@
                data-widget-type="Yearly - Multiple Month Calendar"
                data-widgetId="446daf1d6a224fce8fa842019bd1d382"
                data-months="12"></div>
+        </div>
+      </section>
+
+      <section id="rates" class="section">
+        <h2>Rates</h2>
+        <div class="card">
+          <div class="ownerrez-widget"
+               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
+               data-widget-type="Rates - Rates"
+               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
         </div>
       </section>
 
