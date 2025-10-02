@@ -7,75 +7,72 @@
     <meta name="description" content="Check availability, send a booking inquiry, and view rates for Luxury Hamptons Retreat." />
     <link rel="icon" href="/favicon.png" />
     <style>
-      :root { --maxw: 1100px; --pad: 16px; }
-      * { box-sizing: border-box; }
-      body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #111; background: #fff; }
-      header { position: sticky; top: 0; background: rgba(255,255,255,.95); border-bottom: 1px solid #eee; backdrop-filter: saturate(150%) blur(6px); z-index: 10; }
-      .wrap { max-width: var(--maxw); margin: 0 auto; padding: 10px var(--pad); }
-      .brand { font-weight: 600; font-size: 16px; text-decoration: none; color: #111; }
-      nav a { text-decoration: none; color: #111; padding: 8px 10px; border-radius: 8px; }
-      nav a:hover { background: #f4f4f5; }
+      :root { --maxw: 1100px; --pad: 16px }
+      * { box-sizing: border-box }
+      body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; color: #111; background: #fff }
+      header { position: sticky; top: 0; background: rgba(255,255,255,.95); border-bottom: 1px solid #eee; backdrop-filter: saturate(150%) blur(6px); z-index: 10 }
+      .wrap { max-width: var(--maxw); margin: 0 auto; padding: 10px var(--pad) }
+      .brand { font-weight: 600; font-size: 16px; text-decoration: none; color: #111 }
+      nav a { text-decoration: none; color: #111; padding: 8px 10px; border-radius: 8px }
+      nav a:hover { background: #f4f4f5 }
 
-      /* Hero section */
+      /* Hero */
       .hero {
-        position: relative;
-        width: 100%;
-        height: 300px;
+        position: relative; width: 100%; height: 300px;
         background: url('/images/beach.png') center/cover no-repeat;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+        display: flex; align-items: center; justify-content: center; text-align: center
       }
-      .hero::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: rgba(0,0,0,0.4);
+      .hero::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.4) }
+      .hero-content { position: relative; color: #fff; z-index: 1; padding: 0 16px }
+      .hero-content h1 { font-size: 32px; margin: 0 0 10px }
+      .hero-content p { font-size: 18px; margin: 0 }
+
+      h2 { font-size: 18px; margin: 22px 0 10px }
+      .section { padding: 12px 0 24px; border-top: 1px solid #eee }
+      .card { border: 1px solid #eee; border-radius: 14px; padding: 14px; background: #fff }
+      footer { border-top: 1px solid #eee; margin-top: 24px }
+      .note { font-size: 13px; color: #666 }
+      .top-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px }
+      .links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap }
+
+      /* OwnerRez base */
+      .ownerrez-widget { width: 100% }
+      .ownerrez-widget iframe { width: 100% !important; border: 0; display: block }
+
+      /* Keep calendar from overtaking the page while we still show enough content */
+      .ownerrez-widget[data-widget-type*="Yearly"] iframe,
+      .ownerrez-widget[data-widget-type*="Calendar"] iframe {
+        height: 80vh !important;
+        max-height: 900px
       }
-      .hero-content {
-        position: relative;
-        color: #fff;
-        z-index: 1;
-        padding: 0 16px;
-      }
-      .hero-content h1 {
-        font-size: 32px;
-        margin: 0 0 10px;
-      }
-      .hero-content p {
-        font-size: 18px;
-        margin: 0;
+      .ownerrez-widget[data-widget-type*="Yearly"],
+      .ownerrez-widget[data-widget-type*="Calendar"] {
+        min-height: 80vh;
+        max-height: 900px
       }
 
-      h2 { font-size: 18px; margin: 22px 0 10px; }
-      p.lead { color: #444; }
-      .section { padding: 12px 0 24px; border-top: 1px solid #eee; }
-      .card { border: 1px solid #eee; border-radius: 14px; padding: 14px; background: #fff; overflow: visible; }
-      footer { border-top: 1px solid #eee; margin-top: 24px; }
-      .note { font-size: 13px; color: #666; }
-      .top-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-      .links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
-
-      /* OwnerRez widgets base */
-      .ownerrez-widget { width: 100%; }
-      .ownerrez-widget iframe {
-        width: 100% !important;
-        border: 0;
-        display: block;
+      /* Booking and Rates */
+      .ownerrez-widget[data-widget-type*="Rates"] iframe {
+        height: 70vh !important;
+        max-height: 800px
       }
-
-      /* Yearly calendar: fixed height with internal scroll */
-      .ownerrez-widget[data-widget-type*="Yearly"] iframe {
-        height: 600px !important;
+      .ownerrez-widget[data-widget-type*="Rates"] {
+        min-height: 70vh;
+        max-height: 800px
       }
 
       @media (max-width: 640px) {
-        .hero { height: 200px; }
-        .hero-content h1 { font-size: 24px; }
-        .hero-content p { font-size: 14px; }
-        .ownerrez-widget[data-widget-type*="Yearly"] iframe {
-          height: 500px !important;
+        .hero { height: 200px }
+        .hero-content h1 { font-size: 24px }
+        .hero-content p { font-size: 14px }
+        .ownerrez-widget[data-widget-type*="Yearly"] iframe,
+        .ownerrez-widget[data-widget-type*="Calendar"] iframe {
+          height: 70vh !important;
+          max-height: 700px
+        }
+        .ownerrez-widget[data-widget-type*="Rates"] iframe {
+          height: 65vh !important;
+          max-height: 650px
         }
       }
     </style>
@@ -107,7 +104,6 @@
       <section id="booking" class="section">
         <h2>Bookings and Inquiry</h2>
         <div class="card">
-          <!-- OwnerRez Booking/Inquiry widget -->
           <div class="ownerrez-widget"
                data-propertyId="1e98a72325d64e558e7deaf03bac1280"
                data-widget-type="Booking/Inquiry"
@@ -115,10 +111,20 @@
         </div>
       </section>
 
+      <!-- RATES moved above CALENDAR -->
+      <section id="rates" class="section">
+        <h2>Rates</h2>
+        <div class="card">
+          <div class="ownerrez-widget"
+               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
+               data-widget-type="Rates - Rates"
+               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
+        </div>
+      </section>
+
       <section id="calendar" class="section">
         <h2>Availability Calendar</h2>
         <div class="card">
-          <!-- OwnerRez Multiple Month Calendar widget -->
           <div class="ownerrez-widget"
                data-propertyId="1e98a72325d64e558e7deaf03bac1280"
                data-widget-type="Yearly - Multiple Month Calendar"
@@ -127,18 +133,7 @@
         </div>
       </section>
 
-      <section id="rates" class="section">
-        <h2>Rates</h2>
-        <div class="card">
-          <!-- OwnerRez Rates widget -->
-          <div class="ownerrez-widget"
-               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
-               data-widget-type="Rates - Rates"
-               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
-        </div>
-      </section>
-
-      <p class="note">Calendar height is fixed to keep the page compact. Scroll inside the calendar to view additional months.</p>
+      <p class="note">Calendar shows multiple months in a compact window. Scroll inside it if needed</p>
     </main>
 
     <footer>
@@ -151,11 +146,13 @@
     <script>
       document.getElementById('y').textContent = new Date().getFullYear()
       try {
-        window.OwnerRez && window.OwnerRez.Widgets && typeof window.OwnerRez.Widgets.init === 'function' && window.OwnerRez.Widgets.init()
+        if (window.OwnerRez && window.OwnerRez.Widgets && typeof window.OwnerRez.Widgets.init === 'function') {
+          window.OwnerRez.Widgets.init()
+        }
       } catch (e) {}
     </script>
     <noscript>
-      <div class="wrap" style="color:#b91c1c; padding: 8px 0 20px;">
+      <div class="wrap" style="color:#b91c1c; padding: 8px 0 20px">
         JavaScript is disabled. Enable it to view booking, calendar, and rates widgets.
       </div>
     </noscript>
