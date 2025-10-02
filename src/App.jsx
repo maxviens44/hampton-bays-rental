@@ -530,7 +530,7 @@ function ContactSection() {
             ) : (
             
             )=>
-          </div>
+          
         </div>
 
         <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
