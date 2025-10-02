@@ -20,7 +20,7 @@
       .hero {
         position: relative;
         width: 100%;
-        height: 300px; /* adjust height as needed */
+        height: 300px; 
         background: url('/images/beach.png') center/cover no-repeat;
         display: flex;
         align-items: center;
@@ -31,7 +31,7 @@
         content: "";
         position: absolute;
         top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(0,0,0,0.4); /* dark overlay for text contrast */
+        background: rgba(0,0,0,0.4);
       }
       .hero-content {
         position: relative;
@@ -59,17 +59,28 @@
 
       /* OwnerRez widgets */
       .ownerrez-widget { width: 100%; }
+      /* dynamically size the yearly calendar */
       .ownerrez-widget[data-widget-type*="Yearly"] iframe {
         width: 100% !important;
-        height: 2200px !important;  
+        height: 80vh !important; /* use 80% of viewport height */
+        max-height: 900px;
         border: 0;
         display: block;
       }
-      .ownerrez-widget[data-widget-type*="Yearly"] { min-height: 2200px; }
+      .ownerrez-widget[data-widget-type*="Yearly"] {
+        min-height: 80vh;
+        max-height: 900px;
+      }
 
       @media (max-width: 640px) {
-        .ownerrez-widget[data-widget-type*="Yearly"] iframe { height: 2600px !important; }
-        .ownerrez-widget[data-widget-type*="Yearly"] { min-height: 2600px; }
+        .ownerrez-widget[data-widget-type*="Yearly"] iframe {
+          height: 70vh !important;
+          max-height: 700px;
+        }
+        .ownerrez-widget[data-widget-type*="Yearly"] {
+          min-height: 70vh;
+          max-height: 700px;
+        }
         .hero { height: 200px; }
         .hero-content h1 { font-size: 24px; }
         .hero-content p { font-size: 14px; }
