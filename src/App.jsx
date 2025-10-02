@@ -528,9 +528,9 @@ function ContactSection() {
                 <button onClick={login} className="rounded-full border px-3 py-1 hover:bg-black hover:text-white transition">Owner log in</button>
               )
             ) : (
-            
-            )=>
-          
+              <span className="text-neutral-500">Identity not loaded</span>
+            )}
+          </div>
         </div>
 
         <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
