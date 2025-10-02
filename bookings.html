@@ -16,11 +16,11 @@
       nav a { text-decoration: none; color: #111; padding: 8px 10px; border-radius: 8px; }
       nav a:hover { background: #f4f4f5; }
 
-      /* Hero section styles */
+      /* Hero section */
       .hero {
         position: relative;
         width: 100%;
-        height: 300px; 
+        height: 300px;
         background: url('/images/beach.png') center/cover no-repeat;
         display: flex;
         align-items: center;
@@ -30,7 +30,7 @@
       .hero::after {
         content: "";
         position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
+        inset: 0;
         background: rgba(0,0,0,0.4);
       }
       .hero-content {
@@ -57,33 +57,26 @@
       .top-nav { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
       .links { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
 
-      /* OwnerRez widgets */
+      /* OwnerRez widgets base */
       .ownerrez-widget { width: 100%; }
-      /* dynamically size the yearly calendar */
-      .ownerrez-widget[data-widget-type*="Yearly"] iframe {
+      .ownerrez-widget iframe {
         width: 100% !important;
-        height: 80vh !important; /* use 80% of viewport height */
-        max-height: 900px;
         border: 0;
         display: block;
       }
-      .ownerrez-widget[data-widget-type*="Yearly"] {
-        min-height: 80vh;
-        max-height: 900px;
+
+      /* Yearly calendar: fixed height with internal scroll */
+      .ownerrez-widget[data-widget-type*="Yearly"] iframe {
+        height: 600px !important;
       }
 
       @media (max-width: 640px) {
-        .ownerrez-widget[data-widget-type*="Yearly"] iframe {
-          height: 70vh !important;
-          max-height: 700px;
-        }
-        .ownerrez-widget[data-widget-type*="Yearly"] {
-          min-height: 70vh;
-          max-height: 700px;
-        }
         .hero { height: 200px; }
         .hero-content h1 { font-size: 24px; }
         .hero-content p { font-size: 14px; }
+        .ownerrez-widget[data-widget-type*="Yearly"] iframe {
+          height: 500px !important;
+        }
       }
     </style>
   </head>
@@ -145,7 +138,7 @@
         </div>
       </section>
 
-      <p class="note">If any widget looks cut off, this page forces a taller calendar iframe. Adjust the height if needed.</p>
+      <p class="note">Calendar height is fixed to keep the page compact. Scroll inside the calendar to view additional months.</p>
     </main>
 
     <footer>
