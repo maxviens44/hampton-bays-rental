@@ -65,7 +65,7 @@
         display: block;
       }
 
-      /* Yearly calendar height is clamped by JS, but keep a default for first paint */
+      /* Yearly calendar: fixed height with internal scroll */
       .ownerrez-widget[data-widget-type*="Yearly"] iframe {
         height: 600px !important;
       }
@@ -149,43 +149,10 @@
 
     <script src="https://app.ownerrez.com/widget.js" data-ownerrez-script="true"></script>
     <script>
-      document.getElementById('y').textContent = new Date().getFullYear();
-
-      function clampOwnerRezCalendarHeight(px) {
-        document.querySelectorAll('.ownerrez-widget[data-widget-type*="Yearly"] iframe')
-          .forEach(function(ifr) {
-            ifr.style.height = px + 'px';
-            ifr.style.maxHeight = px + 'px';
-          });
-      }
-
-      function observeAndClamp(px) {
-        // Initial clamp
-        clampOwnerRezCalendarHeight(px);
-
-        // Re-clamp on resize
-        window.addEventListener('resize', function() {
-          clampOwnerRezCalendarHeight(px);
-        });
-
-        // MutationObserver to catch OwnerRez resizing the iframe
-        document.querySelectorAll('.ownerrez-widget[data-widget-type*="Yearly"]').forEach(function(node) {
-          var obs = new MutationObserver(function() {
-            clampOwnerRezCalendarHeight(px);
-          });
-          obs.observe(node, { subtree: true, childList: true, attributes: true });
-        });
-      }
-
-      // Wait a moment for OwnerRez to inject iframes, then clamp
-      window.addEventListener('load', function() {
-        try {
-          if (window.OwnerRez && window.OwnerRez.Widgets && typeof window.OwnerRez.Widgets.init === 'function') {
-            window.OwnerRez.Widgets.init();
-          }
-        } catch (e) {}
-        setTimeout(function() { observeAndClamp(600); }, 1000);
-      });
+      document.getElementById('y').textContent = new Date().getFullYear()
+      try {
+        window.OwnerRez && window.OwnerRez.Widgets && typeof window.OwnerRez.Widgets.init === 'function' && window.OwnerRez.Widgets.init()
+      } catch (e) {}
     </script>
     <noscript>
       <div class="wrap" style="color:#b91c1c; padding: 8px 0 20px;">
