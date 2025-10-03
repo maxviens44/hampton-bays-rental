@@ -533,7 +533,8 @@ function ContactSection() {
           </div>
         </div>
 
-        <p className="text-neutral-700 mb-6">For availability and rates, submit the form below</p>
+        <p className="text-neutral-700 mb-6">For availability and rates, submit the form below.</p>
+        <p className="text-neutral-700 mb-6">Stays longer than 21 nights may qualify for discounted rates. Please contact us for details.</p>
 
         <form
           name="contact"
