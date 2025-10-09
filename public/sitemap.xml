@@ -45,4 +45,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+        <!-- Contact section -->
+  <url>
+    <loc>https://staythehamptons.com/bookings.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
 </urlset>
