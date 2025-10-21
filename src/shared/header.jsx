@@ -9,10 +9,8 @@ export default function Header() {
     setOpen(false)
   }, [location.pathname])
 
-  // Helper for hash anchors that scroll on the home page
   function Anchor({ hash, children, className = "" }) {
     const onClick = (e) => {
-      // If we are already on home, just scroll
       if (location.pathname === "/") {
         e.preventDefault()
         const id = hash.replace("#", "")
@@ -37,7 +35,6 @@ export default function Header() {
           Hampton Bays
         </Link>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center gap-5 text-sm">
           <Anchor hash="#about" className={base}>About</Anchor>
           <Anchor hash="#gallery" className={base}>Gallery</Anchor>
@@ -47,7 +44,6 @@ export default function Header() {
           <NavLink to="/contact" className={base}>Contact</NavLink>
         </nav>
 
-        {/* Mobile hamburger */}
         <button
           type="button"
           aria-label="Open menu"
@@ -65,7 +61,6 @@ export default function Header() {
         </button>
       </div>
 
-      {/* Mobile dropdown */}
       {open && (
         <div className="md:hidden absolute left-0 right-0 top-full bg-white border-b shadow-lg">
           <nav className="px-4 py-3 grid gap-1 text-base">
