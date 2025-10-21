@@ -1,3 +1,4 @@
+import images from "./data/images.js"
 import React, { useEffect, useState, useCallback, useMemo } from "react"
 import Header from "./shared/Header.jsx"
 
