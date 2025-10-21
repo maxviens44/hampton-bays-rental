@@ -9,6 +9,10 @@ import USOpen2026 from './pages/USOpen2026.jsx'
 import Gallery from './pages/Gallery.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
+import Info from './pages/Info.jsx'
+<Route path='/info' element={<Info />} />
+
+
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
