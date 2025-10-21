@@ -1,4 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react"
+import Header from "./shared/Header.jsx"
+
 
 /* ────────────────────────────────────────────────────────── *
  * Image list (keeps strict order in the grid)
@@ -41,83 +43,6 @@ const images = [
   { file: "restroom.webp", label: "Half Bath" },
   { file: "stairs.webp", label: "Staircase" }
 ]
-
-/* ────────────────────────────────────────────────────────── *
- * Header with mobile dropdown menu under the sticky bar
- * ────────────────────────────────────────────────────────── */
-function Header() {
-  const [open, setOpen] = useState(false)
-
-  // Keep page scrollable when menu is open
-  useEffect(() => {
-    document.body.style.overflow = ""
-    return () => { document.body.style.overflow = "" }
-  }, [open])
-
-  const Link = ({ href, children, onClick, className = "" }) => (
-    <a
-      href={href}
-      onClick={(e) => {
-        setOpen(false)
-        onClick?.(e)
-      }}
-      className={`hover:underline ${className}`}
-    >
-      {children}
-    </a>
-  )
-
-  return (
-    <header id="top" className="relative px-4 md:px-10 py-3 md:py-5 border-b sticky top-0 bg-white md:bg-white/90 backdrop-blur md:backdrop-blur z-40">
-      <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
-        <a href="/" className="text-base sm:text-lg md:text-2xl font-semibold tracking-tight">
-          Hampton Bays
-        </a>
-
-        {/* Desktop nav */}
-        <nav className="hidden md:flex items-center gap-5 text-sm">
-          <Link href="#about" className="px-2 py-1">About</Link>
-          <Link href="#gallery" className="px-2 py-1">Gallery</Link>
-          <Link href="#/info" className="px-2 py-1">Info</Link>
-          <Link href="#/reviews" className="px-2 py-1">Reviews</Link>
-          <Link href="#/usopen" className="px-2 py-1">US Open 2026</Link>
-          <Link href="#/contact" className="px-2 py-1">Contact</Link>
-        </nav>
-
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          aria-label="Open menu"
-          aria-expanded={open ? "true" : "false"}
-          className="md:hidden inline-flex items-center justify-center rounded-lg border px-3 py-2 bg-white shadow-sm"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {open ? (
-              <path d="M6 6l12 12M6 18L18 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            ) : (
-              <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            )}
-          </svg>
-        </button>
-      </div>
-
-      {/* Mobile dropdown, anchored to header, solid white */}
-      {open && (
-        <div className="md:hidden absolute left-0 right-0 top-full bg-white border-b shadow-lg">
-          <nav className="px-4 py-3 grid gap-1 text-base">
-            <Link href="#about" className="px-2 py-2 rounded-lg hover:bg-neutral-100">About</Link>
-            <Link href="#gallery" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Gallery</Link>
-            <Link href="#/info" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Info</Link>
-            <Link href="#/reviews" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Reviews</Link>
-            <Link href="#/usopen" className="px-2 py-2 rounded-lg hover:bg-neutral-100">US Open 2026</Link>
-            <Link href="#/contact" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Contact</Link>
-          </nav>
-        </div>
-      )}
-    </header>
-  )
-}
 
 /* ────────────────────────────────────────────────────────── *
  * Availability Calendar with pricing hover
