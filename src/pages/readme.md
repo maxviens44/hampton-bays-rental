@@ -1,1 +1,2 @@
 Staythehamtons.com
+Hamptons
