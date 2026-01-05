@@ -123,7 +123,7 @@ function Header() {
  * Availability Calendar with pricing hover
  * - availability.json: { "booked": ["YYYY-MM-DD", ...] }
  * - pricing.json: { "currency":"USD","default":1000,"prices":{ "YYYY-MM-DD":2400 } }
- * Fallback default if pricing.json missing: 1000 USD
+ * Fallback default if pricing.json missing: 1049 USD
  * ────────────────────────────────────────────────────────── */
 function AvailabilityCalendar({ months = 12 }) {
   const [booked, setBooked] = useState(() => new Set())
