@@ -751,7 +751,7 @@ function InfoPage() {
               <AccordionCard title="Check in and out" open={open.checkin} onClick={() => toggle("checkin")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Check in after 4 pm</li>
-                  <li>Check out by 10 am</li>
+                  <li>Check out by 11 am</li>
                   <li>Smart lock code sent the morning of arrival</li>
                   <li>Before leaving, run the dishwasher and take trash to outdoor bins</li>
                 </ul>
