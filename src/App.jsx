@@ -687,8 +687,8 @@ function InfoPage() {
   ]
 
   const restaurants = [
-    { town: "Hampton Bays", name: "Rumba", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water with fish tacos and rum drinks" },
-    { town: "Hampton Bays", name: "Cowfish", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood, sushi, and steaks with canal views" },
+    { town: "Hampton Bays", name: "Rumba (Personal favorite)", url: "https://tasterumba.com/hampton-bays-ny/", desc: "Caribbean inspired spot on the water with fish tacos and rum drinks" },
+    { town: "Hampton Bays", name: "Cowfish (Personal favorite)", url: "https://cowfishrestaurant.com/", desc: "Waterfront seafood, sushi, and steaks with canal views" },
     { town: "Hampton Bays", name: "Edgewater", url: "https://www.edgewaterrestaurant.com/", desc: "Classic Italian with seafood pastas and a family friendly vibe" },
     { town: "Hampton Bays", name: "Oakland’s", url: "https://oaklandsrestaurant.net/", desc: "Seasonal marina restaurant for seafood platters and sunsets" },
     { town: "Hampton Bays", name: "1 North Steakhouse", url: "https://www.1northsteakhouse.com/", desc: "Local steakhouse with hearty cuts and a busy bar scene" },
@@ -696,11 +696,11 @@ function InfoPage() {
     { town: "Southampton", name: "75 Main", url: "https://75main.com/", desc: "Trendy American bistro with a Hamptons social vibe" },
     { town: "Southampton", name: "Sant Ambroeus", url: "https://www.santambroeus.com/pages/location-southampton", desc: "Chic Milan style cafe and upscale Italian classics" },
     { town: "Southampton", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/southampton/", desc: "Stylish Italian with handmade pastas and garden seating" },
-    { town: "Southampton", name: "Union Burger Bar", url: "https://unionburgerbar.com/", desc: "Casual pub for gourmet burgers and craft beer" },
+    { town: "Southampton", name: "Union Burger Bar (Personal favorite)", url: "https://unionburgerbar.com/", desc: "Casual pub for gourmet burgers and craft beer. Very kids friendly" },
     { town: "Southampton", name: "Le Charlot", url: "https://lecharlot.us/", desc: "Elegant French bistro with Provençal dishes" },
 
     { town: "Sag Harbor", name: "The American Hotel", url: "https://theamericanhotel.com/", desc: "Historic inn with refined French inspired dining and deep wine list" },
-    { town: "Sag Harbor", name: "Le Bilboquet", url: "https://lebilboquetsag.com/", desc: "Upscale waterfront French inspired seafood and lively scene" },
+    { town: "Sag Harbor", name: "Le Bilboquet (Personal favorite)", url: "https://lebilboquetsag.com/", desc: "Upscale waterfront French inspired seafood and lively scene" },
     { town: "Sag Harbor", name: "Lulu Kitchen & Bar", url: "https://www.lulusagharbor.com/", desc: "Modern Mediterranean with wood fired dishes and tapas" },
     { town: "Sag Harbor", name: "Page at 63 Main", url: "https://pagesagharbor.com/", desc: "Farm to table American menu with a garden patio" },
     { town: "Sag Harbor", name: "Tutto Il Giorno", url: "https://www.tuttoilgiorno.com/location/sag-harbor/", desc: "Rustic chic Italian with seasonal coastal dishes" },
