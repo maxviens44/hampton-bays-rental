@@ -784,7 +784,7 @@ function InfoPage() {
               <AccordionCard title="Parking" open={open.parking} onClick={() => toggle("parking")}>
                 <ul className="list-disc pl-5 space-y-1">
                   <li>Driveway fits 5 cars, garage access only if noted</li>
-                  <li>avoid street parking if possible. signs</li>
+                  <li>Avoid street parking if possible. signs</li>
                 </ul>
               </AccordionCard>
 
