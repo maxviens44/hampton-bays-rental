@@ -36,7 +36,7 @@ const images = [
   { file: "basementlivingroom2.webp", label: "Basement Lounge" },
   { file: "bath2.webp", label: "Bathroom" },
   { file: "office.png", label: "Home Office" },
-  { file: "stairs.png", label: "Detached Garage" },
+  { file: "stairs.png", label: "Stairs" },
   { file: "laundry.webp", label: "Laundry Room" },
   { file: "restroom.webp", label: "Half Bath" },
 ]
