@@ -39,6 +39,7 @@ const images = [
   { file: "stairs.png", label: "Stairs" },
   { file: "laundry.webp", label: "Laundry Room" },
   { file: "restroom.webp", label: "Half Bath" },
+  { file: "aerialview.png", label: "Aerial View" },
 ]
 
 /* ────────────────────────────────────────────────────────── *
