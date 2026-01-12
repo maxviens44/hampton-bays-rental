@@ -28,7 +28,7 @@ const images = [
   { file: "room1.webp", label: "Bedroom 2" },
   { file: "bath1.webp", label: "Guest Bath" },
   { file: "bedroom1.webp", label: "Bedroom 3" },
-  { file: "bedroom1.webp", label: "Bedroom 3" },
+  { file: "bedroom2.webp", label: "Bedroom 3" },
   { file: "bath4.webp", label: "Full Bathroom" },
   { file: "basementbedroom1.webp", label: "Bedroom 4" },
   { file: "basementbedroom2.webp", label: "Bedroom 4" },
