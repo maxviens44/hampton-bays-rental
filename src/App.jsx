@@ -424,7 +424,7 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
             <ul className="list-disc pl-5 space-y-1">
               <li>Livingroom with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
               <li>Chef's kitchen with Viking appliances, Quartzite counters, and island seating.</li>
-              <li>Main level includes two oversized en-suite bedrooms with direct patio access.</li>
+              <li>Main level includes two en-suite bedrooms with direct patio access and pool.</li>
               <li>The entire north wing of the second floor is devoted to the primary suite, complete with dual walk-in closets, a spa bathroom featuring a walk-in shower, jacuzzi tub, and a private balcony where you can take in the tranquil bay views.</li>
               <li>Fully finished walk-out lower level with 9 ft ceilings, media room, full bath, and laundry.</li>
               <li>Central air, outdoor shower, and workout room.</li>
