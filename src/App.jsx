@@ -8,7 +8,7 @@ const images = [
   { file: "house.webp", label: "Exterior Front" },
   { file: "map.png", label: "Location" },
   { file: "living.webp", label: "Living Room" },
-  { file: "livingroom1.png", label: "Living Room" },
+  { file: "livingroom1.webp", label: "Living Room" },
   { file: "living2.webp", label: "Living Room View" },
   { file: "living3.webp", label: "Living Room Detail" },
   { file: "kitchen1.webp", label: "Chef's Kitchen" },
