@@ -811,6 +811,7 @@ function InfoPage() {
                   <li>No parties and no smoking</li>
                   <li>No pets unless approved before booking</li>
                   <li>Quiet hours after 10 pm per town guidance</li>
+                  <li>Only plastic glasses, cups, plates, and dishes are permitted in the pool and patio area</li>
                 </ul>
               </AccordionCard>
             </div>
