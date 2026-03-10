@@ -402,13 +402,13 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
             <div className="absolute inset-0 bg-black/20" />
             <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 md:bottom-10 md:left-10">
               <h1 className="text-white text-xl sm:text-2xl md:text-4xl font-semibold drop-shadow">
-                Luxury Hamptons Retreat
+                Luxury Hamptons Vacation Rental in Hampton Bays
               </h1>
               <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow mt-1">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
               </p>
               <p className="text-white text-[11px] sm:text-xs md:text-sm drop-shadow mt-1">
-                Hamptons house rental in Hampton Bays near Shinnecock Hills, ideal for U.S. Open 2026 week.
+                Luxury vacation rental in Hampton Bays near Shinnecock Hills, Hamptons beaches, and Southampton, US Open 2026.
               </p>
             </div>
           </div>
@@ -421,7 +421,7 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
           <h3 className="text-lg md:text-xl font-semibold mb-4">About</h3>
           <div className="space-y-4 text-neutral-800">
             <p>
-              Welcome to your Hamptons getaway. A classic cedar shingle home that captures the timeless Hamptons style of luxury living. Located in Hampton Bays with bay views, this spacious retreat features a heated saltwater in-ground pool and easy access to beaches, restaurants, and shops. With 3,750 sq ft of space, the home comfortably sleeps up to 10 guests across 4 bedrooms, 5 beds and 5 bathrooms, blending elegance with modern convenience.
+              Welcome to our luxury Hamptons vacation rental in Hampton Bays, New York. This classic cedar shingle home offers 3,750 square feet of living space, 4 bedrooms, 5 beds, 5 bathrooms, bay views, and a heated saltwater pool. Located near Shinnecock Hills, Southampton, and some of the best Hamptons beaches, this home is ideal for families, golf trips, summer stays, and extended getaways.
             </p>
             <ul className="list-disc pl-5 space-y-1">
               <li>Livingroom with vaulted ceilings, oak floors, and a fireplace that opens to the patio and pool.</li>
