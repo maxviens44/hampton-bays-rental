@@ -1124,7 +1124,7 @@ function USOpenPage() {
  * App router
  * ────────────────────────────────────────────────────────── */
 export default function App() {
-  const [route, setRoute] = useState(window.location.hash || "#/")
+  const [route, setRoute] = useState(typeof window !== 'undefined' ? window.location.hash || "#/" : "#/")
   useEffect(() => {
     const onHash = () => setRoute(window.location.hash || "#/")
     window.addEventListener("hashchange", onHash)
