@@ -39,7 +39,7 @@
       .ownerrez-widget { width: 100% }
       .ownerrez-widget iframe { width: 100% !important; border: 0; display: block }
 
-      /* Keep calendar and rates from overtaking the page */
+      /* Keep calendar from overtaking the page while we still show enough content */
       .ownerrez-widget[data-widget-type*="Yearly"] iframe,
       .ownerrez-widget[data-widget-type*="Calendar"] iframe {
         height: 80vh !important;
@@ -51,6 +51,7 @@
         max-height: 900px
       }
 
+      /* Booking and Rates */
       .ownerrez-widget[data-widget-type*="Rates"] iframe {
         height: 70vh !important;
         max-height: 800px
@@ -79,30 +80,17 @@
   <body>
     <header>
       <div class="wrap top-nav">
-        <a class="brand" href="http://staythehamptons.com/">StayTheHamptons</a>
+        <a class="brand" href="https://staythehamptons.com/">StayTheHamptons</a>
         <nav class="links">
-          <a href="http://staythehamptons.com/#about">About</a>
-          <a href="http://staythehamptons.com/#gallery">Gallery</a>
-          <a href="http://staythehamptons.com/#/info">Info</a>
-          <a href="http://staythehamptons.com/#/reviews">Reviews</a>
-          <a href="http://staythehamptons.com/#/usopen">US Open 2026</a>
-          <a href="http://staythehamptons.com/#/contact">Contact</a>
+          <a href="https://staythehamptons.com/#about">About</a>
+          <a href="https://staythehamptons.com/#gallery">Gallery</a>
+          <a href="https://staythehamptons.com/#/info">Info</a>
+          <a href="https://staythehamptons.com/#/reviews">Reviews</a>
+          <a href="https://staythehamptons.com/#/usopen">US Open 2026</a>
+          <a href="https://staythehamptons.com/#/contact">Contact</a>
         </nav>
       </div>
     </header>
-    <!--Start of Tawk.to Script-->
-<script type="text/javascript">
-var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-(function(){
-var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-s1.async=true;
-s1.src='https://embed.tawk.to/697a40e508f7351c35ad8f23/1jg2or093';
-s1.charset='UTF-8';
-s1.setAttribute('crossorigin','*');
-s0.parentNode.insertBefore(s1,s0);
-})();
-</script>
-<!--End of Tawk.to Script-->
 
     <!-- Hero image with overlay text -->
     <section class="hero">
@@ -115,7 +103,6 @@ s0.parentNode.insertBefore(s1,s0);
     <main class="wrap">
       <section id="booking" class="section">
         <h2>Bookings and Inquiry</h2>
-        <p>Stays longer than 21 nights may qualify for discounted rates. Please contact us for details.</p>
         <div class="card">
           <div class="ownerrez-widget"
                data-propertyId="1e98a72325d64e558e7deaf03bac1280"
@@ -124,7 +111,17 @@ s0.parentNode.insertBefore(s1,s0);
         </div>
       </section>
 
-      <!-- CALENDAR before RATES again -->
+      <!-- RATES moved above CALENDAR -->
+      <section id="rates" class="section">
+        <h2>Rates</h2>
+        <div class="card">
+          <div class="ownerrez-widget"
+               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
+               data-widget-type="Rates - Rates"
+               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
+        </div>
+      </section>
+
       <section id="calendar" class="section">
         <h2>Availability Calendar</h2>
         <div class="card">
@@ -133,16 +130,6 @@ s0.parentNode.insertBefore(s1,s0);
                data-widget-type="Yearly - Multiple Month Calendar"
                data-widgetId="446daf1d6a224fce8fa842019bd1d382"
                data-months="12"></div>
-        </div>
-      </section>
-
-      <section id="rates" class="section">
-        <h2>Rates</h2>
-        <div class="card">
-          <div class="ownerrez-widget"
-               data-propertyId="1e98a72325d64e558e7deaf03bac1280"
-               data-widget-type="Rates - Rates"
-               data-widgetId="d749c8e95926472aaef8e70d66da1ed2"></div>
         </div>
       </section>
 
