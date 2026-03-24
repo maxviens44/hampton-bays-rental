@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leave a Review — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .reviews-hero {
+      padding: 160px 48px 80px;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .reviews-layout {
+      display: grid;
+      grid-template-columns: 1fr 480px;
+      gap: 0;
+      min-height: 70vh;
+    }
+
+    .reviews-left {
+      padding: 80px 48px;
+      border-right: 1px solid var(--border);
+    }
+
+    .reviews-right {
+      padding: 80px 40px;
+      background: var(--dark);
+    }
+
+    /* Existing reviews */
+    .existing-reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .review-card-lg {
+      background: var(--dark2);
+      padding: 40px;
+      position: relative;
+    }
+
+    .review-card-lg::before {
+      content: '"';
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px;
+      color: var(--gold-dim);
+      opacity: 0.25;
+      line-height: 1;
+    }
+
+    .review-stars-lg {
+      display: flex;
+      gap: 4px;
+      color: var(--gold);
+      font-size: 16px;
+      margin-bottom: 16px;
+    }
+
+    .review-text-lg {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      font-style: italic;
+      line-height: 1.65;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .review-author-lg {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    /* Overall rating display */
+    .rating-summary {
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .rating-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 72px;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    .rating-stars {
+      font-size: 20px;
+      color: var(--gold);
+      letter-spacing: 4px;
+      margin-bottom: 8px;
+    }
+
+    .rating-count {
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* Submit form */
+    .submit-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .submit-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-textarea {
+      background: var(--dark3);
+      border: 1px solid var(--border-light);
+      color: var(--cream);
+      padding: 12px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus { border-color: var(--gold); }
+
+    .form-textarea { resize: vertical; min-height: 130px; }
+
+    /* Star rating picker */
+    .star-picker {
+      display: flex;
+      gap: 6px;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+
+    .star-picker input { display: none; }
+
+    .star-picker label {
+      font-size: 30px;
+      cursor: pointer;
+      color: var(--border-light);
+      transition: color 0.2s, transform 0.15s;
+      line-height: 1;
+    }
+
+    .star-picker input:checked ~ label,
+    .star-picker label:hover,
+    .star-picker label:hover ~ label {
+      color: var(--gold);
+      transform: scale(1.1);
+    }
+
+    .form-success {
+      display: none;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid var(--gold-dim);
+      padding: 24px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--gold-light);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 900px) {
+      .reviews-layout { grid-template-columns: 1fr; }
+      .reviews-left { border-right: none; padding: 60px 24px; }
+      .reviews-right { padding: 60px 24px; }
+      .reviews-hero { padding: 120px 24px 60px; }
+      .rating-summary { flex-direction: column; align-items: flex-start; gap: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="favicon.png" alt="Stay The Hamptons" />
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="info.html">Info</a></li>
+    <li><a href="book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="reviews-hero fade-in">
+  <div class="section-label">Guest Experiences</div>
+  <h1 class="section-title">Reviews & <em>Stories</em></h1>
+  <p style="color:var(--text-muted); max-width:500px; margin-top:12px; font-size:14px;">Real words from real guests. Stayed with us? We'd love to hear about your experience.</p>
+</div>
+
+<div class="reviews-layout">
+  <!-- LEFT: Existing reviews -->
+  <div class="reviews-left">
+    <div class="rating-summary fade-in">
+      <div class="rating-big">5.0</div>
+      <div>
+        <div class="rating-stars">★★★★★</div>
+        <div class="rating-count">2 reviews · All 5 stars</div>
+      </div>
+    </div>
+
+    <div class="existing-reviews">
+      <div class="review-card-lg fade-in">
+        <div class="review-stars-lg">★★★★★</div>
+        <p class="review-text-lg">Beautiful home and great location! Hosts were easy to deal with and responsive. Thank you!</p>
+        <div class="review-author-lg">— Robert P.</div>
+      </div>
+
+      <div class="review-card-lg fade-in">
+        <div class="review-stars-lg">★★★★★</div>
+        <p class="review-text-lg">This home was perfect for our holiday weekend getaway from the city! Communication with the hosts is super quick and easy, which made everything stress-free. Highly recommend and would definitely come back!</p>
+        <div class="review-author-lg">— Tina R.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: Submit form -->
+  <div class="reviews-right fade-in">
+    <div class="submit-title">Share Your Experience</div>
+    <p class="submit-sub">Your review helps future guests discover this property. All reviews are sent to the host for verification.</p>
+
+    <form id="review-form" action="https://formsubmit.co/admin@staythehamptons.com" method="POST">
+      <input type="hidden" name="_subject" value="New Guest Review — Stay The Hamptons" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_next" value="https://staythehamptons.com/reviews.html?sent=1" />
+
+      <div class="form-group">
+        <label class="form-label">Your Rating *</label>
+        <div class="star-picker">
+          <input type="radio" name="rating" id="s5" value="5 Stars" required /><label for="s5">★</label>
+          <input type="radio" name="rating" id="s4" value="4 Stars" /><label for="s4">★</label>
+          <input type="radio" name="rating" id="s3" value="3 Stars" /><label for="s3">★</label>
+          <input type="radio" name="rating" id="s2" value="2 Stars" /><label for="s2">★</label>
+          <input type="radio" name="rating" id="s1" value="1 Star" /><label for="s1">★</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your Name *</label>
+        <input type="text" name="name" class="form-input" placeholder="First name and last initial" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email (not published) *</label>
+        <input type="email" name="email" class="form-input" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">When Did You Stay?</label>
+        <input type="month" name="stay_date" class="form-input" />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Your Review *</label>
+        <textarea name="review" class="form-textarea" placeholder="Tell us about your stay — what did you love most?" required></textarea>
+      </div>
+
+      <button type="submit" class="btn-gold btn-gold-fill" style="width:100%; justify-content:center; padding:16px;">Submit Review</button>
+    </form>
+
+    <div class="form-success" id="form-success">
+      ✓ &nbsp; Thank you for your review! It has been submitted to our host for verification and will appear on the site shortly.
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="info.html">Info & Rules</a></li>
+        <li><a href="book.html">Book Now</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Also Listed On</h4>
+      <ul>
+        <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
+        <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+    <div class="footer-listing-links">
+      <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
+      <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+  if (location.search.includes('sent=1')) {
+    document.getElementById('form-success').style.display = 'block';
+    document.getElementById('review-form').style.display = 'none';
+  }
+</script>
+</body>
+</html>
