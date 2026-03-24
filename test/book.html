@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Your Stay — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/calendar.css" />
+  <style>
+    .book-hero {
+      padding: 160px 48px 80px;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .book-layout {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+      min-height: 80vh;
+    }
+
+    .book-left {
+      padding: 80px 48px;
+      border-right: 1px solid var(--border);
+    }
+
+    .book-right {
+      padding: 80px 40px;
+      background: var(--dark);
+      position: sticky;
+      top: 0;
+      align-self: start;
+      position: -webkit-sticky;
+      position: sticky;
+      top: 80px;
+    }
+
+    /* Admin toggle */
+    .admin-toggle-bar {
+      background: var(--dark2);
+      border: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 40px;
+      gap: 16px;
+    }
+
+    .admin-toggle-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .admin-toggle-input {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .admin-pw-input {
+      background: var(--dark3);
+      border: 1px solid var(--border-light);
+      color: var(--cream);
+      padding: 8px 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: 13px;
+      outline: none;
+      width: 180px;
+    }
+
+    .admin-pw-input:focus { border-color: var(--gold); }
+
+    .admin-hint {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    .admin-mode-badge {
+      display: none;
+      background: rgba(201,169,110,0.15);
+      border: 1px solid var(--gold-dim);
+      color: var(--gold);
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+    }
+
+    .admin-mode-badge.visible { display: inline-block; }
+
+    /* Bulk tool */
+    .bulk-tool {
+      display: none;
+      background: var(--dark3);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+
+    .bulk-tool.visible { display: block; }
+
+    .bulk-tool-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .bulk-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .bulk-lbl {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .bulk-inp {
+      background: var(--dark2);
+      border: 1px solid var(--border-light);
+      color: var(--cream);
+      padding: 10px 14px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+    }
+
+    .bulk-inp:focus { border-color: var(--gold); }
+
+    /* Inquiry form */
+    .inquiry-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .inquiry-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-textarea, .form-select {
+      background: var(--dark3);
+      border: 1px solid var(--border-light);
+      color: var(--cream);
+      padding: 12px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 14px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus { border-color: var(--gold); }
+
+    .form-textarea { resize: vertical; min-height: 100px; }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .listing-links {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+
+    .listing-links a {
+      color: var(--gold-dim);
+      transition: color 0.2s;
+    }
+
+    .listing-links a:hover { color: var(--gold); }
+
+    .form-success {
+      display: none;
+      background: rgba(201,169,110,0.08);
+      border: 1px solid var(--gold-dim);
+      padding: 20px;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--gold-light);
+    }
+
+    @media (max-width: 900px) {
+      .book-layout { grid-template-columns: 1fr; }
+      .book-left { border-right: none; padding: 60px 24px; }
+      .book-right { padding: 60px 24px; position: static; }
+      .bulk-grid { grid-template-columns: 1fr 1fr; }
+      .book-hero { padding: 120px 24px 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="favicon.png" alt="Stay The Hamptons" />
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="info.html">Info</a></li>
+    <li><a href="book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="book-hero fade-in">
+  <div class="section-label">Reservations</div>
+  <h1 class="section-title">Plan Your <em>Escape</em></h1>
+  <p style="color:var(--text-muted); max-width:520px; margin-top:12px; font-size:14px;">Check availability below and send us an inquiry. We'll confirm your dates and provide all booking details directly.</p>
+</div>
+
+<div class="book-layout">
+  <!-- LEFT: Calendar -->
+  <div class="book-left">
+
+    <!-- Admin mode toggle -->
+    <div class="admin-toggle-bar fade-in">
+      <span class="admin-toggle-label">Owner / Admin Access</span>
+      <div>
+        <div class="admin-toggle-input">
+          <input type="password" class="admin-pw-input" id="admin-pw" placeholder="Enter admin password" />
+          <button class="btn-gold" id="admin-login-btn" style="padding:8px 18px; font-size:10px;">Unlock</button>
+          <span class="admin-mode-badge" id="admin-badge">Admin Mode</span>
+        </div>
+        <div class="admin-hint">Owners: enter password to edit dates and pricing.</div>
+      </div>
+    </div>
+
+    <!-- Bulk pricing tool (admin only) -->
+    <div class="bulk-tool" id="bulk-tool">
+      <div class="bulk-tool-title">Set Price Range</div>
+      <div class="bulk-grid">
+        <div class="bulk-lbl">From Date
+          <input type="date" class="bulk-inp" id="bulk-from" />
+        </div>
+        <div class="bulk-lbl">To Date
+          <input type="date" class="bulk-inp" id="bulk-to" />
+        </div>
+        <div class="bulk-lbl">Price / Night ($)
+          <input type="number" class="bulk-inp" id="bulk-price" placeholder="e.g. 950" min="0" />
+        </div>
+        <button class="btn-gold" id="bulk-apply-btn" style="white-space:nowrap;">Apply</button>
+      </div>
+      <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+        <button class="btn-gold" id="bulk-book-btn" style="border-color:var(--text-dim);color:var(--text-dim); font-size:9px;">Mark Range as Reserved</button>
+        <button class="btn-gold" id="bulk-clear-btn" style="border-color:var(--text-dim);color:var(--text-dim); font-size:9px;">Clear Range</button>
+      </div>
+    </div>
+
+    <div class="section-label fade-in">Availability Calendar</div>
+    <p class="fade-in" style="color:var(--text-muted); font-size:13px; margin-bottom:32px;">Hover over a date to see the nightly rate. Greyed dates are already reserved. <span id="admin-cal-hint" style="display:none; color:var(--gold);">Click any date to edit its price or status.</span></p>
+
+    <div id="admin-calendar" class="fade-in"></div>
+  </div>
+
+  <!-- RIGHT: Inquiry form -->
+  <div class="book-right fade-in">
+    <div class="inquiry-title">Request a Booking</div>
+    <p class="inquiry-sub">Fill out the form and we'll get back to you quickly to confirm availability and next steps.</p>
+
+    <form id="inquiry-form" action="https://formsubmit.co/admin@staythehamptons.com" method="POST">
+      <input type="hidden" name="_subject" value="New Booking Inquiry — Stay The Hamptons" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_next" value="https://staythehamptons.com/book.html?sent=1" />
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">First Name *</label>
+          <input type="text" name="first_name" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name *</label>
+          <input type="text" name="last_name" class="form-input" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email *</label>
+        <input type="email" name="email" class="form-input" required />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Phone</label>
+        <input type="tel" name="phone" class="form-input" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Check In *</label>
+          <input type="date" name="check_in" class="form-input" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Check Out *</label>
+          <input type="date" name="check_out" class="form-input" required />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Number of Guests *</label>
+        <select name="guests" class="form-select" required>
+          <option value="">Select...</option>
+          <option>1–2</option>
+          <option>3–4</option>
+          <option>5–6</option>
+          <option>7–8</option>
+          <option>9–10</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Message</label>
+        <textarea name="message" class="form-textarea" placeholder="Tell us about your group, occasion, or any questions..."></textarea>
+      </div>
+
+      <button type="submit" class="btn-gold btn-gold-fill" style="width:100%; justify-content:center; padding:16px;">Send Inquiry</button>
+    </form>
+
+    <div class="form-success" id="form-success">
+      ✓ &nbsp; Your inquiry has been sent! We'll be in touch soon.
+    </div>
+
+    <div class="listing-links">
+      <p>Prefer to book on a platform? View on <a href="https://airbnb.com/h/staythehamptons" target="_blank" rel="noopener">Airbnb</a> or <a href="https://www.vrbo.com/5031363" target="_blank" rel="noopener">VRBO</a>.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="info.html">Info & Rules</a></li>
+        <li><a href="book.html">Book Now</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Also Listed On</h4>
+      <ul>
+        <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
+        <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+    <div class="footer-listing-links">
+      <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
+      <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script src="js/calendar.js"></script>
+<script>
+  // Admin password (change this to something secure)
+  const ADMIN_PW = 'hamptons2026';
+  let adminMode = false;
+
+  renderCalendar('admin-calendar', false);
+
+  document.getElementById('admin-login-btn').addEventListener('click', () => {
+    const pw = document.getElementById('admin-pw').value;
+    if (pw === ADMIN_PW) {
+      adminMode = true;
+      document.getElementById('admin-badge').classList.add('visible');
+      document.getElementById('bulk-tool').classList.add('visible');
+      document.getElementById('admin-cal-hint').style.display = 'inline';
+      document.getElementById('admin-pw').style.display = 'none';
+      document.getElementById('admin-login-btn').style.display = 'none';
+      renderCalendar('admin-calendar', true);
+    } else {
+      document.getElementById('admin-pw').style.borderColor = '#ff4444';
+      setTimeout(() => document.getElementById('admin-pw').style.borderColor = '', 1000);
+    }
+  });
+
+  // Enter key for admin login
+  document.getElementById('admin-pw').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('admin-login-btn').click();
+  });
+
+  // Bulk apply price
+  document.getElementById('bulk-apply-btn').addEventListener('click', () => {
+    applyBulkAction('price');
+  });
+
+  document.getElementById('bulk-book-btn').addEventListener('click', () => {
+    applyBulkAction('book');
+  });
+
+  document.getElementById('bulk-clear-btn').addEventListener('click', () => {
+    applyBulkAction('clear');
+  });
+
+  function applyBulkAction(action) {
+    const from = new Date(document.getElementById('bulk-from').value);
+    const to = new Date(document.getElementById('bulk-to').value);
+    const price = parseInt(document.getElementById('bulk-price').value);
+    if (isNaN(from.getTime()) || isNaN(to.getTime())) {
+      alert('Please select valid from and to dates.');
+      return;
+    }
+    if (action === 'price' && (!price || isNaN(price))) {
+      alert('Please enter a valid price.');
+      return;
+    }
+    const data = getCalendarData();
+    let d = new Date(from);
+    while (d <= to) {
+      const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      if (action === 'price') data.prices[key] = price;
+      if (action === 'book') { if (!data.booked.includes(key)) data.booked.push(key); }
+      if (action === 'clear') { delete data.prices[key]; data.booked = data.booked.filter(k => k !== key); }
+      d.setDate(d.getDate() + 1);
+    }
+    saveCalendarData(data);
+    renderCalendar('admin-calendar', true);
+  }
+
+  // Show success message if redirected back
+  if (location.search.includes('sent=1')) {
+    document.getElementById('form-success').style.display = 'block';
+  }
+</script>
+</body>
+</html>

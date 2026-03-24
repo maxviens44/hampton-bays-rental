@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .gallery-hero {
+      padding: 160px 48px 80px;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gallery-filters {
+      display: flex;
+      gap: 4px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .gallery-filter {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--text-muted);
+      padding: 8px 20px;
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .gallery-filter:hover,
+    .gallery-filter.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
+    }
+
+    /* Masonry grid */
+    .gallery-grid {
+      columns: 3 280px;
+      column-gap: 3px;
+      padding: 3px;
+      background: var(--black);
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 3px;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .gallery-item:hover img { transform: scale(1.04); }
+
+    .gallery-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      transition: background 0.4s;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+    }
+
+    .gallery-item:hover .gallery-item-overlay {
+      background: rgba(0,0,0,0.35);
+    }
+
+    .gallery-item-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .gallery-item:hover .gallery-item-label { opacity: 1; }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.95);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px;
+      right: 32px;
+      font-size: 32px;
+      color: var(--cream);
+      cursor: pointer;
+      background: none;
+      border: none;
+      line-height: 1;
+      opacity: 0.6;
+      transition: opacity 0.2s;
+    }
+
+    .lightbox-close:hover { opacity: 1; }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid var(--border-light);
+      color: var(--cream);
+      font-size: 22px;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .lightbox-nav:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--black);
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-counter {
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--text-muted);
+      letter-spacing: 0.2em;
+    }
+
+    @media (max-width: 768px) {
+      .gallery-hero { padding: 120px 24px 60px; }
+      .gallery-grid { columns: 2 180px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img src="favicon.png" alt="Stay The Hamptons" />
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="gallery.html">Gallery</a></li>
+    <li><a href="info.html">Info</a></li>
+    <li><a href="book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="gallery-hero">
+  <div class="section-label">Photo Gallery</div>
+  <h1 class="section-title">A Closer <em>Look</em></h1>
+  <p style="color:var(--text-muted); max-width:480px; font-size:14px; margin-top:12px;">Every room, every corner. Explore the spaces that make this Hamptons estate exceptional.</p>
+  <div class="gallery-filters">
+    <button class="gallery-filter active" data-filter="all">All</button>
+    <button class="gallery-filter" data-filter="exterior">Exterior & Pool</button>
+    <button class="gallery-filter" data-filter="living">Living Spaces</button>
+    <button class="gallery-filter" data-filter="kitchen">Kitchen & Dining</button>
+    <button class="gallery-filter" data-filter="bedroom">Bedrooms</button>
+    <button class="gallery-filter" data-filter="bathroom">Bathrooms</button>
+  </div>
+</div>
+
+<div class="gallery-grid" id="gallery-grid">
+  <!-- JS populated -->
+</div>
+
+<div style="padding:80px 48px; background:var(--dark); border-top:1px solid var(--border); text-align:center;">
+  <div class="section-label" style="justify-content:center;">Ready to Stay?</div>
+  <h2 class="section-title" style="text-align:center;">Book Your <em>Getaway</em></h2>
+  <div style="margin-top:32px; display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+    <a href="book.html" class="btn-gold btn-gold-fill">Check Availability</a>
+    <a href="info.html" class="btn-gold">House Info & Rules</a>
+  </div>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lb-close">&times;</button>
+  <button class="lightbox-nav lightbox-prev" id="lb-prev">&#8592;</button>
+  <img class="lightbox-img" id="lb-img" src="" alt="" />
+  <button class="lightbox-nav lightbox-next" id="lb-next">&#8594;</button>
+  <div class="lightbox-counter" id="lb-counter"></div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="info.html">Info & Rules</a></li>
+        <li><a href="book.html">Book Now</a></li>
+        <li><a href="reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Also Listed On</h4>
+      <ul>
+        <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
+        <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+    <div class="footer-listing-links">
+      <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
+      <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+    </div>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+<script>
+const photos = [
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczPpqx8JMNKjxJO1i0mHX5-dYHoJlGLxlG6uT5MR6aSMrwZ3AQxmgVaBQv0m0k2WlFiJxKVVVajVJBMxzJyq_xN0l0j0C5Gu8i5VaZgfxPR6pVJa_Cw=w2400', cat: 'exterior', label: 'Pool & Exterior' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczMhKsxYP_3Rk9nxFmQZaxP9hLIPNn-rJYQkk7JJ38kJFmv3kJAj0EhGY7Iw8VQ4XFWR39a_3YdkFi2KLqKDWqkD6hI1tNl9k2HXlZmEJOq6gn5eEk=w2400', cat: 'exterior', label: 'Exterior' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczNiS6WnkHFqe1VlFJDiCnkd3PFaL7nrCDJ_8l1gkELFJQu6Wl3MWmr3Z7TYxaRwmFjBb4Wz-VelJHRiU-tOPKYvlxWDN2z0h0a96X85OlM6bBxXgE=w2400', cat: 'living', label: 'Living Room' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczP5z7-5YviqsFt9bBGnHpB0BPj8vPnUGSSKp5mSFGAJGcFAzNkmO7-J6H0N1CyvZECz5FzPEqw8XWCi-mq3LPTU9t_i_M0t5aBZ4cj4PMefnI5GRJY=w2400', cat: 'living', label: 'Living Room' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczMxm2aqBTNIE6oWC0kpvFCrCY-aM_BJGAaVGnmqf_e6vFuCcYY6hhzMJpAI7Ts82DgxzxR1GfOrOiEbqjA0r0n3mI8YuCnY64KqVDSSqOm9y5FVkWM=w2400', cat: 'kitchen', label: 'Kitchen' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczNh9qZuBLsK_qxrOHl3IZJ8Pd2uqivmBpjCT7VXgvJDWvEhxrdNRSfZfBwmRWOWBJC4JqJcJv2VlvAPFHBm8Q73X8TW0QolHRRSxV5I4DjCnuRxYMk=w2400', cat: 'bathroom', label: 'Primary Bath' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczP7uZPXhB2J0lgH8fCK2AJfNiUqBqp6-J_Y7b-UQT81QkV7oK3W4GGwgWFobbbNtTjNcIfS2yBb-GrQVT-D1vdT6hOjNYv3mEoFLLEhLgQUDQ8Lc18=w2400', cat: 'bedroom', label: 'Bedroom' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczNqQpkN0fUJbTaJKHEX4gIFVlQJ_y0gY0i6B3aCqe9VifFuAdgAfqD6o4b53V6N-8e8hJn3YzNFfoxsBRUGOHp3WxSjMU3y8IG7Gr-kOoP9pMOKiDEI=w2400', cat: 'bedroom', label: 'Master Suite' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczOiOLmtgAzEEz3O7oXo9vGIxUGaqv9fOWlGkp11B-HMuJUFxEJY7lrWzBZVAGLwYJkZT4Qco5j2_9NmtFjU7u_1U5N0eBH0t8YF6I9jtMU7nRtIhpE=w2400', cat: 'bathroom', label: 'Bathroom' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczPsQH4x4EJE-LlhL_vr6R-g-OlVPL50Mfuaqe5XmVFV7HMluRANJJpOsPQvQRvCF_7NXe6oMpM5uGrJyJrb-7yy0HfhXnNnSGiCZ_q6m0wJRatA2vQ=w2400', cat: 'kitchen', label: 'Dining Area' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczMZZNH7zJsTXm7XzHkxpOcLbCi0GFjgFDCHHJ7sKqEWxEVFRH66wNZ4hIB3-yikLVQMqdJVixhXB5r6rJJhf2YS6Vw0VsEuK1A8AXs1fqoT5mvlF4Q=w2400', cat: 'exterior', label: 'Aerial View' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczO5LvNhGbXvzBF_C71xtQeJMxGWqsNmCd24WCQKb8F1IA-FTDqaqXyJsX_GrNWFiJJt8XCzRpTK2XhEP_sCO2qHPBBaA-PkHfvPqFE9bRDQBJQXP8w=w2400', cat: 'exterior', label: 'House Front' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczMrS5a_x9X1VH5qrN2cRbXE1RpHbXqWkXGqM3V1s-JnGOzOtAcB3Vz_LBEh9jyj6q7H5-M3CjDuEAYfN_pNrXqKHgGAM7vvOK9AVb-B9c1YlQT3ck=w2400', cat: 'bathroom', label: 'En-Suite Bath' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczNS4-5k63OlzlQ1c2tJBJk-wFDu_GZGbkgJJhlOSjT1NPVBUCfYbFi22llj4Jzf0vRnCkV73eVDfE7tppD-Gy9gCT7V5RNX1yb3XblSKPkODdE1JJE=w2400', cat: 'bedroom', label: 'Guest Bedroom' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczO-ZT8QCmOGFpSoZdP0OqXCuAJv1Rg1X7yrXfT0HYe9UrK12f5qCrTAuMbNBNu3kQeq0v5bBtJBqDV9FJMbOqAGJgjWiEbwHv7KHq4VmVf9jqB0Jo=w2400', cat: 'living', label: 'Fireplace' },
+  { src: 'https://lh3.googleusercontent.com/pw/AP1GczNqpVDrFRkT77Kn1xIrF3hPGEaI0dFQ-P_xtfJz3cVYIQNqobxjXRWqe_KdP-IqPKv2M7UMxdHGM7YnNzCDLYhHiF-AiJFPAvLYxd_4dY-I8P0KXc=w2400', cat: 'exterior', label: 'Pool Deck' },
+];
+
+let filteredPhotos = [...photos];
+let currentLbIdx = 0;
+
+function renderGallery(filter = 'all') {
+  filteredPhotos = filter === 'all' ? [...photos] : photos.filter(p => p.cat === filter);
+  const grid = document.getElementById('gallery-grid');
+  grid.innerHTML = filteredPhotos.map((p, i) => `
+    <div class="gallery-item fade-in" data-index="${i}">
+      <img src="${p.src}" alt="${p.label}" loading="lazy" />
+      <div class="gallery-item-overlay">
+        <span class="gallery-item-label">${p.label}</span>
+      </div>
+    </div>
+  `).join('');
+
+  // Re-observe fade-ins
+  grid.querySelectorAll('.fade-in').forEach(el => {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
+    }, { threshold: 0.05 });
+    obs.observe(el);
+  });
+
+  // Click for lightbox
+  grid.querySelectorAll('.gallery-item').forEach(el => {
+    el.addEventListener('click', () => openLightbox(parseInt(el.dataset.index)));
+  });
+}
+
+function openLightbox(idx) {
+  currentLbIdx = idx;
+  document.getElementById('lb-img').src = filteredPhotos[idx].src;
+  document.getElementById('lb-counter').textContent = `${idx + 1} / ${filteredPhotos.length}`;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+document.getElementById('lb-close').addEventListener('click', () => document.getElementById('lightbox').classList.remove('open'));
+document.getElementById('lb-prev').addEventListener('click', () => openLightbox((currentLbIdx - 1 + filteredPhotos.length) % filteredPhotos.length));
+document.getElementById('lb-next').addEventListener('click', () => openLightbox((currentLbIdx + 1) % filteredPhotos.length));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lightbox').classList.remove('open');
+  if (e.key === 'ArrowLeft') document.getElementById('lb-prev').click();
+  if (e.key === 'ArrowRight') document.getElementById('lb-next').click();
+});
+
+document.querySelectorAll('.gallery-filter').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gallery-filter').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderGallery(btn.dataset.filter);
+  });
+});
+
+renderGallery();
+</script>
+</body>
+</html>
