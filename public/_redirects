@@ -1,5 +1,8 @@
 /sitemap.xml /sitemap.xml 200
 /robots.txt /robots.txt 200
+/usopen /usopen2026.html 301
+/us-open /usopen2026.html 301
+/golf /usopen2026.html 301
 /test /test/index.html 200
 /test/* /test/:splat 200
 /* /index.html 200
