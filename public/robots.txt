@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /test/
+Disallow: /index_old.html
 
-Sitemap: https://www.staythehamptons.com/sitemap.xml
+Sitemap: https://staythehamptons.com/sitemap.xml
+
