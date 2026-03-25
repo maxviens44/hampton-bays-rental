@@ -298,3 +298,35 @@
   .cal-day { min-height: 36px; }
   .cal-day-price { display: none; }
 }
+
+/* ── CALENDAR NAVIGATION ── */
+.cal-nav {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.cal-nav-btn {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--cream-dim);
+  padding: 8px 20px;
+  font-family: 'Jost', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cal-nav-btn:hover:not(:disabled) {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--black);
+}
+
+.cal-nav-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
