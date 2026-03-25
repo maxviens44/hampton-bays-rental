@@ -90,8 +90,8 @@
   font-weight: 400;
 }
 
-.cal-day.past .cal-day-num { color: #555; }
-.cal-day.booked .cal-day-num { color: #444; }
+.cal-day.past .cal-day-num { color: #ffffff; }
+.cal-day.booked .cal-day-num { color: #ffffff; }
 
 .cal-day-price {
   font-size: 9px;
