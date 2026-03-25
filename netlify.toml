@@ -1,6 +1,6 @@
 [build]
-  command = "npm install vite-ssg && npm run build"
-  publish = "dist"
+  command = "echo 'Static site - no build needed'"
+  publish = "public"
 
 [functions]
   directory = "netlify/functions"

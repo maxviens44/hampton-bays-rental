@@ -1,22 +1,238 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <title>Thanks</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; padding: 2rem; }
-      .box { max-width: 720px; margin: 0 auto; }
-      a { color: inherit }
-      .btn { display: inline-block; padding: .6rem 1rem; border: 1px solid #000; border-radius: 1rem }
-      .btn:hover { background: #000; color: #fff }
-    </style>
-  </head>
-  <body>
-    <div class="box">
-      <h1>Thank you</h1>
-      <p>Your inquiry was sent. We will get back to you shortly.</p>
-      <p><a class="btn" href="/">Back to home</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .thanks-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      text-align: center;
+      background: var(--black);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thanks-page::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, rgba(201,169,110,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .thanks-icon {
+      font-size: 56px;
+      margin-bottom: 32px;
+      animation: fadeInDown 0.8s ease forwards;
+    }
+
+    .thanks-label {
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      animation: fadeInUp 0.8s ease 0.1s both;
+    }
+
+    .thanks-label::before,
+    .thanks-label::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+
+    .thanks-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      animation: fadeInUp 0.8s ease 0.2s both;
+    }
+
+    .thanks-title em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+
+    .thanks-divider {
+      width: 60px;
+      height: 1px;
+      background: var(--gold-dim);
+      margin: 0 auto 32px;
+      animation: fadeInUp 0.8s ease 0.3s both;
+    }
+
+    .thanks-message {
+      font-size: 16px;
+      color: var(--cream-dim);
+      max-width: 520px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+      animation: fadeInUp 0.8s ease 0.4s both;
+    }
+
+    .thanks-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease 0.5s both;
+    }
+
+    .thanks-detail {
+      margin-top: 64px;
+      background: var(--dark);
+      border: 1px solid var(--border);
+      padding: 32px 48px;
+      max-width: 480px;
+      width: 100%;
+      animation: fadeInUp 0.8s ease 0.6s both;
+    }
+
+    .thanks-detail-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .thanks-detail-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .thanks-detail-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--cream-dim);
+      line-height: 1.6;
+    }
+
+    .thanks-detail-list li::before {
+      content: '—';
+      color: var(--gold-dim);
+      flex-shrink: 0;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .thanks-page { padding: 100px 24px 60px; }
+      .thanks-detail { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/favicon.png" alt="Stay The Hamptons" />
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/gallery.html">Gallery</a></li>
+    <li><a href="/info.html">Info</a></li>
+    <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="/reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="thanks-page">
+  <div class="thanks-icon">✉️</div>
+  <div class="thanks-label">Message Received</div>
+  <h1 class="thanks-title">Thank You for<br><em>Reaching Out</em></h1>
+  <div class="thanks-divider"></div>
+  <p class="thanks-message">
+    Your inquiry has been sent successfully. We typically respond within a few hours and will be in touch shortly to confirm availability and next steps.
+  </p>
+  <div class="thanks-actions">
+    <a href="/" class="btn-gold btn-gold-fill">Back to Home</a>
+    <a href="/gallery.html" class="btn-gold">View Gallery</a>
+  </div>
+
+  <div class="thanks-detail">
+    <div class="thanks-detail-title">What Happens Next</div>
+    <ul class="thanks-detail-list">
+      <li>We'll review your inquiry and check availability for your dates</li>
+      <li>Expect a reply at <strong style="color:var(--cream)">admin@staythehamptons.com</strong> within a few hours</li>
+      <li>We'll confirm pricing, send a rental agreement, and arrange payment</li>
+      <li>Questions? Email us directly at admin@staythehamptons.com</li>
+    </ul>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
     </div>
-  </body>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/gallery.html">Gallery</a></li>
+        <li><a href="/info.html">Info & Rules</a></li>
+        <li><a href="/book.html">Book Now</a></li>
+        <li><a href="/reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Also Listed On</h4>
+      <ul>
+        <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
+        <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+    <div class="footer-listing-links">
+      <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
+      <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
 </html>
+
