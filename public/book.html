@@ -3,19 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Book Your Stay — Stay The Hamptons | Hampton Bays Luxury Rental</title>
-  <meta name="description" content="Check availability and book your stay at our luxury Hampton Bays vacation rental. 4 bedrooms, heated saltwater pool, near Shinnecock Hills. Request your dates today." />
-  <link rel="canonical" href="https://staythehamptons.com/book.html" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Book Your Stay — Stay The Hamptons" />
-  <meta property="og:description" content="Check availability and book your luxury Hamptons getaway. 4BR, heated pool, near Shinnecock Hills. Sleeps 10." />
-  <meta property="og:url" content="https://staythehamptons.com/book.html" />
-  <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="https://staythehamptons.com/images/pool1.webp" />
-  <link rel="stylesheet" href="/css/style.css" />
-  <link rel="stylesheet" href="/css/calendar.css" />
+  <title>Book Your Stay — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="/test/favicon.png" />
+  <link rel="stylesheet" href="/test/css/style.css" />
+  <link rel="stylesheet" href="/test/css/calendar.css" />
   <style>
     .book-hero {
       padding: 160px 48px 80px;
@@ -242,16 +233,16 @@
 <body>
 
 <nav>
-  <a href="/" class="nav-logo">
-    <img src="/favicon.png" alt="Stay The Hamptons" />
+  <a href="/test/index.html" class="nav-logo">
+    <img src="/test/favicon.png" alt="Stay The Hamptons" />
     <span class="nav-logo-text">Stay The Hamptons</span>
   </a>
   <ul class="nav-links">
-    <li><a href="/">Home</a></li>
-    <li><a href="/gallery.html">Gallery</a></li>
-    <li><a href="/info.html">Info</a></li>
-    <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>
-    <li><a href="/reviews.html">Reviews</a></li>
+    <li><a href="/test/index.html">Home</a></li>
+    <li><a href="/test/gallery.html">Gallery</a></li>
+    <li><a href="/test/info.html">Info</a></li>
+    <li><a href="/test/book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="/test/reviews.html">Reviews</a></li>
   </ul>
   <div class="nav-hamburger"><span></span><span></span><span></span></div>
 </nav>
@@ -315,7 +306,7 @@
       <input type="hidden" name="_subject" value="New Booking Inquiry — Stay The Hamptons" />
       <input type="hidden" name="_captcha" value="false" />
       <input type="hidden" name="_template" value="table" />
-      <input type="hidden" name="_next" value="https://staythehamptons.com/thanks.html" />
+      <input type="hidden" name="_next" value="https://staythehamptons.com/test/thanks.html" />
 
       <div class="form-row">
         <div class="form-group">
@@ -383,7 +374,7 @@
   <div class="footer-grid">
     <div>
       <div class="footer-brand">
-        <img src="/favicon.png" alt="" />
+        <img src="/test/favicon.png" alt="" />
         <span class="footer-brand-name">Stay The Hamptons</span>
       </div>
       <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
@@ -391,11 +382,11 @@
     <div class="footer-col">
       <h4>Navigate</h4>
       <ul>
-        <li><a href="/">Home</a></li>
-        <li><a href="/gallery.html">Gallery</a></li>
-        <li><a href="/info.html">Info & Rules</a></li>
-        <li><a href="/book.html">Book Now</a></li>
-        <li><a href="/reviews.html">Reviews</a></li>
+        <li><a href="/test/index.html">Home</a></li>
+        <li><a href="/test/gallery.html">Gallery</a></li>
+        <li><a href="/test/info.html">Info & Rules</a></li>
+        <li><a href="/test/book.html">Book Now</a></li>
+        <li><a href="/test/reviews.html">Reviews</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -419,8 +410,8 @@
   </div>
 </footer>
 
-<script src="/js/main.js"></script>
-<script src="/js/calendar.js"></script>
+<script src="/test/js/main.js"></script>
+<script src="/test/js/calendar.js"></script>
 <script>
   // Admin password (change this to something secure)
   const ADMIN_PW = 'hamptons2026';
@@ -463,8 +454,13 @@
   });
 
   function applyBulkAction(action) {
-    const from = new Date(document.getElementById('bulk-from').value);
-    const to = new Date(document.getElementById('bulk-to').value);
+    const fromStr = document.getElementById('bulk-from').value;
+    const toStr = document.getElementById('bulk-to').value;
+    // Parse as local date (not UTC) to avoid timezone shift
+    const [fy, fm, fd] = fromStr.split('-').map(Number);
+    const [ty, tm, td] = toStr.split('-').map(Number);
+    const from = new Date(fy, fm - 1, fd);
+    const to = new Date(ty, tm - 1, td);
     const price = parseInt(document.getElementById('bulk-price').value);
     if (isNaN(from.getTime()) || isNaN(to.getTime())) {
       alert('Please select valid from and to dates.');
