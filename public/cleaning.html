@@ -1190,7 +1190,7 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-const CLOUDINARY_CLOUD = 'dmzhd1nsb';
+const CLOUDINARY_CLOUD = 'dmzhd1bsb';
 const CLOUDINARY_PRESET = 'sth-cleaning';
 
 let selectedFiles = [];
@@ -1232,8 +1232,11 @@ async function uploadToCloudinary(file, index, total) {
     method: 'POST',
     body: fd
   });
-  if (!res.ok) throw new Error('Upload failed for photo ' + (index + 1));
   const data = await res.json();
+  if (!res.ok) {
+    const msg = data && data.error && data.error.message ? data.error.message : 'HTTP ' + res.status;
+    throw new Error(msg);
+  }
   return data.secure_url;
 }
 
