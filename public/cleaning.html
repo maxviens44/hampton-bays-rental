@@ -570,6 +570,7 @@
   }
   .photo-label span { color: var(--text-light); font-weight: 400; }
   .photo-drop {
+    display: block;
     border: 1.5px dashed var(--sand-dark);
     border-radius: var(--radius-sm);
     padding: 20px;
@@ -680,18 +681,18 @@
     <div class="modal-sub">Add photos to document the house condition before submitting.</div>
 
     <div class="photo-section">
-      <label class="photo-label">Photos <span>(optional — tap to add from camera or library)</span></label>
-      <div class="photo-drop" onclick="document.getElementById('photoInput').click()">
+      <div class="photo-label">Photos <span>(optional — tap to add from camera or library)</span></div>
+      <label for="photoInput" class="photo-drop">
         <div class="photo-drop-icon">📷</div>
         <div class="photo-drop-text"><strong>Tap to add photos</strong><br>Camera or photo library</div>
-      </div>
+      </label>
       <input type="file" id="photoInput" class="photo-input" accept="image/*" multiple onchange="handlePhotos(this)">
       <div class="photo-previews" id="photoPreviews"></div>
       <div class="upload-status" id="uploadStatus"></div>
     </div>
 
     <button class="modal-btn" id="submitBtn" onclick="submitAll()">Submit &amp; Notify Admin</button>
-    <button class="modal-btn-sec" onclick="closeModal()">Go back</button>
+    <button class="modal-btn-sec" id="modalSecBtn" onclick="closeModal()">Go back</button>
   </div>
 </div>
 
@@ -1273,12 +1274,12 @@ async function submitAll() {
     status.textContent = '';
     document.querySelector('.modal-emoji').textContent = '✅';
     document.querySelector('.modal-title').textContent = 'Submitted!';
-    document.querySelector('.modal-sub').textContent = 'Notification sent to admin' + (photoLinks.length > 0 ? ' with ' + photoLinks.length + ' photo' + (photoLinks.length > 1 ? 's' : '') : '') + '. Great work!';
+    document.querySelector('.modal-sub').textContent = 'Notification sent to admin' + (photoLinks.length > 0 ? ' with ' + photoLinks.length + ' photo' + (photoLinks.length > 1 ? 's' : '') : '') + '. Starting a new clean in 3 seconds...';
     document.querySelector('.photo-section').style.display = 'none';
     btn.style.display = 'none';
-    document.querySelector('.modal-btn-sec').textContent = 'Start a new clean';
-    document.querySelector('.modal-btn-sec').onclick = resetAll;
+    document.getElementById('modalSecBtn').style.display = 'none';
     document.getElementById('doneBanner').classList.add('show');
+    setTimeout(() => { resetAll(true); }, 3000);
 
   } catch (err) {
     status.className = 'upload-status error';
@@ -1312,8 +1313,8 @@ function closeModal() {
   document.getElementById('modal').classList.remove('show');
 }
 
-function resetAll() {
-  if (confirm('Reset all tasks? This will clear your progress.')) {
+function resetAll(silent) {
+  if (silent || confirm('Reset all tasks? This will clear your progress.')) {
     state = {};
     saveState();
     location.reload();
