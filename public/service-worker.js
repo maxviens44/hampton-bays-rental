@@ -1,4 +1,4 @@
-const CACHE_NAME = 'sth-cleaning-v1';
+const CACHE_NAME = 'sth-cleaning-v3';
 const ASSETS = [
   '/cleaning.html',
   '/manifest.json',
@@ -23,30 +23,35 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch — serve from cache, fall back to network
+// Fetch — network-first for HTML, cache-first for everything else
 self.addEventListener('fetch', event => {
-  // Only handle GET requests
   if (event.request.method !== 'GET') return;
+  if (event.request.url.includes('netlify') || event.request.url.includes('cloudinary')) return;
 
-  // For Netlify form submissions — always go to network
-  if (event.request.url.includes('netlify') || event.request.method === 'POST') return;
+  const isNavigation = event.request.mode === 'navigate' || event.request.url.endsWith('.html');
 
-  event.respondWith(
-    caches.match(event.request).then(cached => {
-      if (cached) return cached;
-      return fetch(event.request).then(response => {
-        // Cache successful responses for known assets
-        if (response && response.status === 200 && response.type !== 'opaque') {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
-        }
+  if (isNavigation) {
+    // Always try network first for HTML — ensures fresh content on deploy
+    event.respondWith(
+      fetch(event.request).then(response => {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
         return response;
-      }).catch(() => {
-        // Offline fallback for navigation requests
-        if (event.request.mode === 'navigate') {
-          return caches.match('/cleaning.html');
-        }
-      });
-    })
-  );
+      }).catch(() => caches.match(event.request))
+    );
+  } else {
+    // Cache-first for fonts, JS, images etc
+    event.respondWith(
+      caches.match(event.request).then(cached => {
+        if (cached) return cached;
+        return fetch(event.request).then(response => {
+          if (response && response.status === 200) {
+            const clone = response.clone();
+            caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
+          }
+          return response;
+        });
+      })
+    );
+  }
 });
