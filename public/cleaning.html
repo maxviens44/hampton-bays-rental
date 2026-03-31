@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Cleaning Checklist — Stay The Hamptons</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sand: #f5f0e8;
+    --sand-dark: #e8e0d0;
+    --driftwood: #c4a882;
+    --driftwood-dark: #9e8260;
+    --ocean: #2c4a5a;
+    --ocean-mid: #3d6275;
+    --ocean-light: #e8f0f4;
+    --fog: #f9f7f4;
+    --text: #1a2832;
+    --text-mid: #4a5a64;
+    --text-light: #8a9aa4;
+    --white: #ffffff;
+    --success: #4a7c59;
+    --success-bg: #eaf2ec;
+    --warn: #9a6c2c;
+    --warn-bg: #fdf3e3;
+    --radius: 16px;
+    --radius-sm: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fog);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 100px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--ocean);
+    padding: 20px 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(44,74,90,0.15);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 0.03em;
+  }
+  .logo span { color: var(--driftwood); }
+  .date-badge {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    background: rgba(255,255,255,0.1);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-weight: 300;
+  }
+
+  /* PROGRESS BAR */
+  .progress-wrap {
+    margin-bottom: 0;
+    padding-bottom: 18px;
+  }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .progress-pct {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--white);
+  }
+  .progress-sub {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 300;
+  }
+  .progress-track {
+    height: 4px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--driftwood);
+    border-radius: 2px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    background: var(--white);
+    border-bottom: 1px solid var(--sand-dark);
+    overflow-x: auto;
+    scrollbar-width: none;
+    position: sticky;
+    top: 126px;
+    z-index: 99;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    flex: 1;
+    min-width: 90px;
+    padding: 13px 8px;
+    background: none;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-light);
+    cursor: pointer;
+    white-space: nowrap;
+    position: relative;
+    transition: color 0.2s;
+  }
+  .tab-btn.active {
+    color: var(--ocean);
+    font-weight: 500;
+  }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 16px; right: 16px;
+    height: 2px;
+    background: var(--ocean);
+    border-radius: 2px 2px 0 0;
+  }
+  .tab-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    background: var(--sand-dark);
+    border-radius: 9px;
+    font-size: 10px;
+    font-weight: 500;
+    margin-left: 5px;
+    color: var(--text-mid);
+  }
+  .tab-btn.active .tab-count {
+    background: var(--ocean-light);
+    color: var(--ocean);
+  }
+
+  /* SECTIONS */
+  .section { display: none; padding: 16px; }
+  .section.active { display: block; }
+
+  /* INTRO STRIP */
+  .intro-strip {
+    background: var(--ocean-light);
+    border: 1px solid rgba(44,74,90,0.12);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--ocean-mid);
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+  .intro-strip strong { font-weight: 500; }
+
+  /* ROOM CARDS */
+  .room-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    margin-bottom: 10px;
+    overflow: hidden;
+    border: 1px solid var(--sand-dark);
+    transition: box-shadow 0.2s;
+  }
+  .room-card.all-done {
+    border-color: #c8dece;
+    background: #fafffe;
+  }
+
+  .room-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    cursor: pointer;
+    user-select: none;
+    gap: 12px;
+  }
+
+  .room-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--ocean-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .room-card.all-done .room-icon { background: var(--success-bg); }
+
+  .room-info { flex: 1; min-width: 0; }
+  .room-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .room-card.all-done .room-name { color: var(--success); }
+  .room-meta {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 3px;
+  }
+  .floor-tag {
+    font-size: 11px;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+  .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--text-light); }
+  .time-tag {
+    font-size: 11px;
+    color: var(--driftwood-dark);
+    font-weight: 400;
+  }
+  .room-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 5px;
+    flex-shrink: 0;
+  }
+  .mini-prog {
+    font-size: 11px;
+    color: var(--text-light);
+  }
+  .chevron-icon {
+    color: var(--text-light);
+    font-size: 14px;
+    transition: transform 0.25s;
+  }
+  .chevron-icon.open { transform: rotate(180deg); }
+
+  .room-body {
+    display: none;
+    padding: 0 16px 16px;
+  }
+  .room-body.open { display: block; }
+
+  .task-divider {
+    height: 1px;
+    background: var(--sand-dark);
+    margin-bottom: 12px;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--sand);
+    cursor: pointer;
+  }
+  .task-item:last-child { border-bottom: none; }
+
+  .task-check {
+    width: 24px;
+    height: 24px;
+    border-radius: 8px;
+    border: 1.5px solid var(--sand-dark);
+    background: var(--white);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .task-check.checked {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  .task-check.checked::after {
+    content: '';
+    width: 12px;
+    height: 8px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: block;
+  }
+
+  .task-text-wrap { flex: 1; }
+  .task-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--text);
+    transition: color 0.2s;
+  }
+  .task-text.done {
+    color: var(--text-light);
+    text-decoration: line-through;
+    text-decoration-color: var(--text-light);
+  }
+  .task-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 5px;
+    margin-top: 4px;
+  }
+  .badge-must { background: #fde8e8; color: #9a3030; }
+  .badge-check { background: var(--warn-bg); color: var(--warn); }
+
+  /* SUPPLIES */
+  .supply-section { margin-bottom: 20px; }
+  .supply-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ocean);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+  .supply-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 11px 14px;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    border: 1px solid var(--sand-dark);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .supply-item:active { background: var(--sand); }
+  .supply-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--sand-dark);
+    background: var(--white);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .supply-check.checked {
+    background: var(--success);
+    border-color: var(--success);
+  }
+  .supply-check.checked::after {
+    content: '';
+    width: 10px;
+    height: 7px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: block;
+  }
+  .supply-text {
+    font-size: 14px;
+    color: var(--text);
+    transition: color 0.2s;
+    line-height: 1.4;
+  }
+  .supply-text.done { color: var(--text-light); text-decoration: line-through; }
+
+  /* INSPECT */
+  .inspect-section { margin-bottom: 20px; }
+  .inspect-heading {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ocean);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--sand-dark);
+  }
+  .inspect-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 12px 14px;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    margin-bottom: 6px;
+    border: 1px solid var(--sand-dark);
+    cursor: pointer;
+  }
+  .inspect-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    border: 1.5px solid var(--sand-dark);
+    background: var(--white);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    margin-top: 1px;
+  }
+  .inspect-check.checked {
+    background: var(--ocean);
+    border-color: var(--ocean);
+  }
+  .inspect-check.checked::after {
+    content: '';
+    width: 10px;
+    height: 7px;
+    border-left: 2px solid white;
+    border-bottom: 2px solid white;
+    transform: rotate(-45deg) translateY(-1px);
+    display: block;
+  }
+  .inspect-text {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.5;
+    transition: color 0.2s;
+  }
+  .inspect-text.done { color: var(--text-light); text-decoration: line-through; }
+
+  /* RESET BUTTON */
+  .reset-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0; right: 0;
+    padding: 16px;
+    background: var(--fog);
+    border-top: 1px solid var(--sand-dark);
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+  }
+  .btn-reset {
+    flex: 1;
+    padding: 14px;
+    background: var(--white);
+    border: 1.5px solid var(--sand-dark);
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+    cursor: pointer;
+  }
+  .btn-complete {
+    flex: 2;
+    padding: 14px;
+    background: var(--ocean);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white);
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .btn-complete:active { background: var(--ocean-mid); }
+
+  /* DONE STATE */
+  .done-banner {
+    display: none;
+    background: var(--success);
+    color: white;
+    padding: 14px 20px;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+  }
+  .done-banner.show { display: block; }
+
+  /* COMPLETION MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(26,40,50,0.7);
+    z-index: 999;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--white);
+    border-radius: 24px 24px 0 0;
+    padding: 32px 24px 48px;
+    width: 100%;
+    text-align: center;
+  }
+  .modal-emoji { font-size: 48px; margin-bottom: 16px; }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--ocean);
+    margin-bottom: 8px;
+  }
+  .modal-sub { font-size: 14px; color: var(--text-mid); line-height: 1.6; margin-bottom: 28px; }
+  .modal-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--ocean);
+    border: none;
+    border-radius: var(--radius-sm);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .modal-btn-sec {
+    width: 100%;
+    padding: 14px;
+    background: none;
+    border: 1.5px solid var(--sand-dark);
+    border-radius: var(--radius-sm);
+    color: var(--text-mid);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="done-banner" id="doneBanner">House is ready — all tasks complete ✓</div>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Stay the <span>Hamptons</span></div>
+    <div class="date-badge" id="dateLabel"></div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <div class="progress-pct" id="pctLabel">0%</div>
+      <div class="progress-sub" id="countLabel">0 of 0 tasks complete</div>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+  </div>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('rooms',this)">Cleaning <span class="tab-count" id="tc-rooms">0</span></button>
+  <button class="tab-btn" onclick="showTab('supplies',this)">Supplies <span class="tab-count" id="tc-supplies">0</span></button>
+  <button class="tab-btn" onclick="showTab('inspect',this)">Final Check <span class="tab-count" id="tc-inspect">0</span></button>
+</div>
+
+<div id="rooms" class="section active">
+  <div class="intro-strip">
+    <strong>Start laundry first.</strong> Load sheets before anything else — rotate throughout. Work <strong>2nd floor → Main → Lower → Outdoor</strong> last.
+  </div>
+</div>
+
+<div id="supplies" class="section"></div>
+<div id="inspect" class="section"></div>
+
+<div class="reset-bar">
+  <button class="btn-reset" onclick="resetAll()">Reset</button>
+  <button class="btn-complete" onclick="checkComplete()">Mark House Ready</button>
+</div>
+
+<div class="modal-overlay" id="modal">
+  <div class="modal">
+    <div class="modal-emoji">🏡</div>
+    <div class="modal-title">House is ready!</div>
+    <div class="modal-sub">All tasks complete. The Hamptons house is guest-ready.<br>Great work.</div>
+    <button class="modal-btn" onclick="closeModal()">Done</button>
+    <button class="modal-btn-sec" onclick="resetAll()">Start a new clean</button>
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = 'sth_cleaning_v1';
+
+const rooms = [
+  { name: "Laundry — start first", floor: "Lower level", time: "10 min active", icon: "🧺", tasks: [
+    { t: "Strip all 4 beds — sheets, pillowcases, duvet covers", p: "must" },
+    { t: "Gather all used towels and bath mats", p: "must" },
+    { t: "Start first wash load (sheets)", p: "must" },
+    { t: "Rotate loads throughout the clean — don't let them sit", p: "must" },
+  ]},
+  { name: "Primary suite", floor: "2nd floor · north wing", time: "45 min", icon: "🛏️", tasks: [
+    { t: "Strip and remake king bed with fresh linens", p: "must" },
+    { t: "Wipe nightstands, dresser, TV stand" },
+    { t: "Vacuum/mop floor; check under bed" },
+    { t: "Clean walk-in closet — hangers, shelves, corners" },
+    { t: "Jacuzzi tub: scrub interior, jets, handles, drain", p: "must" },
+    { t: "Shower with bench: walls, glass, bench, floor" },
+    { t: "Double sinks: basins, faucets, mirror, counter" },
+    { t: "Replace toiletries, towels, toilet paper" },
+    { t: "Toilet: bowl, seat, lid, base, behind" },
+    { t: "Empty trash and replace liner" },
+    { t: "Clean balcony — wipe furniture, check for items left behind" },
+  ]},
+  { name: "Office", floor: "2nd floor", time: "15 min", icon: "💻", tasks: [
+    { t: "Wipe desk, monitor, keyboard, printer" },
+    { t: "Wipe chair, shelves, check floor" },
+    { t: "Confirm Wi-Fi working from this area" },
+    { t: "Vacuum floor" },
+  ]},
+  { name: "Bedroom 1 (pool access)", floor: "Main floor", time: "30 min", icon: "🛏️", tasks: [
+    { t: "Strip and remake king bed", p: "must" },
+    { t: "Wipe nightstands, TV stand, surfaces" },
+    { t: "Clean patio door glass; verify lock/alarm works" },
+    { t: "Scrub en-suite shower/tub combo" },
+    { t: "Clean sink, mirror, counter" },
+    { t: "Toilet: bowl, seat, base" },
+    { t: "Replace towels, toiletries, TP" },
+    { t: "Vacuum/mop floor" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Bedroom 2 (pool access)", floor: "Main floor", time: "30 min", icon: "🛏️", tasks: [
+    { t: "Strip and remake queen bed", p: "must" },
+    { t: "Wipe nightstands, TV stand, surfaces" },
+    { t: "Clean patio door glass; verify lock/alarm works" },
+    { t: "Scrub en-suite shower/tub combo" },
+    { t: "Clean sink, mirror, counter" },
+    { t: "Toilet: bowl, seat, base" },
+    { t: "Replace towels, toiletries, TP" },
+    { t: "Vacuum/mop floor" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Chef's kitchen", floor: "Main floor", time: "45 min", icon: "🍳", tasks: [
+    { t: "Run dishwasher if needed; unload and put away all dishes", p: "must" },
+    { t: "Wipe quartzite counters — check for stains", p: "must" },
+    { t: "Viking range: grates, burners, surface, knobs", p: "must" },
+    { t: "Oven interior — check for spills" },
+    { t: "Fridge: exterior, handles; clear any leftover food", p: "must" },
+    { t: "Wipe dishwasher exterior" },
+    { t: "Espresso machine: empty grounds, wipe, descale if needed" },
+    { t: "Keurig: empty drip tray, wipe down" },
+    { t: "Wipe cabinet doors, drawer fronts, backsplash" },
+    { t: "Clean sink and faucet" },
+    { t: "Mop floor" },
+    { t: "Restock coffee, pods, paper towels" },
+    { t: "Empty trash and recycling" },
+  ]},
+  { name: "Living room + dining", floor: "Main floor", time: "30 min", icon: "🪵", tasks: [
+    { t: "Wipe dining table and chairs" },
+    { t: "Vacuum sofas — check under cushions for items" },
+    { t: "Dust surfaces, shelves, lamps" },
+    { t: "Fireplace: remove ash, wipe surround", p: "check" },
+    { t: "Wipe patio door glass and handle" },
+    { t: "Vacuum/mop floors" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Half bath", floor: "Main floor", time: "10 min", icon: "🚽", tasks: [
+    { t: "Toilet: bowl, seat, base" },
+    { t: "Sink, faucet, mirror" },
+    { t: "Replace hand towel, soap, TP" },
+    { t: "Wipe counter and walls near sink" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Lower bedroom", floor: "Lower level", time: "25 min", icon: "🛏️", tasks: [
+    { t: "Strip and remake king bed", p: "must" },
+    { t: "Wipe nightstands, TV stand" },
+    { t: "Scrub adjacent bath shower" },
+    { t: "Sink, mirror, counter, toilet" },
+    { t: "Replace towels, toiletries, TP" },
+    { t: "Vacuum/mop floor" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Media room + pull-out", floor: "Lower level", time: "25 min", icon: "📺", tasks: [
+    { t: "Check pull-out couch mattress; replace bedding if used", p: "must" },
+    { t: "Vacuum sofa and check between cushions" },
+    { t: "Fireplace: remove ash, wipe surround", p: "check" },
+    { t: "Wipe TV stand, remotes, surfaces" },
+    { t: "Dust shelves, check for items left behind" },
+    { t: "Vacuum/mop floor" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Gym", floor: "Lower level", time: "15 min", icon: "🏋️", tasks: [
+    { t: "Wipe all equipment with disinfectant", p: "must" },
+    { t: "Check floor — weights or gear left behind" },
+    { t: "Vacuum/mop floor" },
+    { t: "Replace or fold gym towels" },
+  ]},
+  { name: "Outdoor + pool", floor: "Outdoor", time: "30 min", icon: "🏊", tasks: [
+    { t: "Remove trash or items left by pool" },
+    { t: "Wipe outdoor dining table and chairs" },
+    { t: "Arrange 4 chaise lounges, position 3 umbrellas" },
+    { t: "Pool: skim surface, verify heater and pump working", p: "must" },
+    { t: "Outdoor shower: rinse surfaces" },
+    { t: "BBQ grill: grates and exterior" },
+    { t: "Check patio alarms are set if applicable" },
+    { t: "Sweep or hose patio surface" },
+  ]},
+];
+
+const supplies = {
+  "Cleaning agents": [
+    "All-purpose spray",
+    "Bathroom disinfectant spray",
+    "Toilet bowl cleaner",
+    "Glass / mirror cleaner",
+    "Hardwood-safe floor cleaner",
+    "Stainless steel cleaner (Viking appliances)",
+    "Quartzite-safe stone cleaner",
+    "Mold & mildew spray (showers)",
+    "Fireplace ash cleaner",
+    "Outdoor / patio cleaner",
+    "Equipment disinfectant wipes (gym)",
+  ],
+  "Linens staged & ready": [
+    "4 × king sheet sets + pillowcases",
+    "1 × queen sheet set + pillowcases",
+    "Pull-out couch sheet set",
+    "Bath towels ×12 (3 per bath)",
+    "Hand towels ×10",
+    "Bath mats ×5",
+    "Pool towels ×8–10",
+  ],
+  "Restocking items": [
+    "Shampoo, conditioner, body wash (×5 baths)",
+    "Bar or liquid soap (×5 baths)",
+    "Toilet paper ×20+ rolls (2–3 per bath)",
+    "Paper towels (kitchen)",
+    "Dish soap + sponge",
+    "Coffee pods (Keurig) + espresso beans",
+    "Trash bags (all sizes)",
+    "Dishwasher pods",
+  ],
+  "Tools & equipment": [
+    "Vacuum cleaner",
+    "Mop + bucket",
+    "Microfiber cloths ×20+",
+    "Scrub brushes (grout + toilet)",
+    "Squeegee (shower glass)",
+    "Sponges",
+    "Rubber gloves",
+    "Supply caddy for room-to-room",
+    "Laundry detergent + dryer sheets",
+  ],
+};
+
+const inspectGroups = {
+  "Beds & linens": [
+    "All beds made with fresh linens, no wrinkles",
+    "Correct pillow count on each bed",
+    "Extra blankets folded and staged",
+  ],
+  "Bathrooms": [
+    "No hair in drains or on surfaces",
+    "Mirrors streak-free",
+    "Toiletries staged neatly",
+    "Towels hung or folded presentation-style",
+    "Toilet paper stocked with fold",
+    "No odor — jacuzzi area especially",
+  ],
+  "Kitchen": [
+    "Counters spotless and dry",
+    "No dishes in sink or drying rack",
+    "Fridge cleared of past guest food",
+    "Range and oven clean",
+    "Espresso machine ready; Keurig stocked",
+    "Trash empty, new liner in",
+  ],
+  "Tech & amenities": [
+    "All Smart TVs on; remotes working",
+    "Wi-Fi confirmed working (test on phone)",
+    "Espresso machine test run",
+    "Pool heater confirmed on",
+    "Patio alarms tested if applicable",
+  ],
+  "Final walk-through": [
+    "No guest items left behind in any room",
+    "All lights working",
+    "No odors anywhere in the house",
+    "Front door and all locks working",
+    "Welcome guide / house info visible for guests",
+    "Photo of each room for your records",
+  ],
+};
+
+// State
+let state = {};
+
+function loadState() {
+  try { state = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch(e) { state = {}; }
+}
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+function key(scope, idx) { return scope + '_' + idx; }
+
+// Build rooms
+function buildRooms() {
+  const sec = document.getElementById('rooms');
+  let roomIdx = 0;
+  rooms.forEach((room, ri) => {
+    const card = document.createElement('div');
+    card.className = 'room-card';
+    card.id = 'room-card-' + ri;
+
+    const headerDiv = document.createElement('div');
+    headerDiv.className = 'room-header';
+    headerDiv.onclick = () => toggleRoom(ri);
+
+    const taskKeys = room.tasks.map((_, ti) => key('r' + ri, ti));
+    const doneCount = taskKeys.filter(k => state[k]).length;
+    const total = room.tasks.length;
+    const allDone = doneCount === total;
+    if (allDone) card.classList.add('all-done');
+
+    headerDiv.innerHTML = `
+      <div class="room-icon">${room.icon}</div>
+      <div class="room-info">
+        <div class="room-name">${room.name}</div>
+        <div class="room-meta">
+          <span class="floor-tag">${room.floor}</span>
+          <span class="dot"></span>
+          <span class="time-tag">${room.time}</span>
+        </div>
+      </div>
+      <div class="room-right">
+        <span class="mini-prog" id="rp-${ri}">${doneCount}/${total}</span>
+        <span class="chevron-icon" id="ch-${ri}">▾</span>
+      </div>
+    `;
+
+    const bodyDiv = document.createElement('div');
+    bodyDiv.className = 'room-body';
+    bodyDiv.id = 'rb-' + ri;
+
+    const divider = document.createElement('div');
+    divider.className = 'task-divider';
+    bodyDiv.appendChild(divider);
+
+    room.tasks.forEach((task, ti) => {
+      const k = key('r' + ri, ti);
+      const checked = !!state[k];
+      const item = document.createElement('div');
+      item.className = 'task-item';
+      item.onclick = () => toggleTask(k, ri, 'rooms');
+
+      const checkDiv = document.createElement('div');
+      checkDiv.className = 'task-check' + (checked ? ' checked' : '');
+      checkDiv.id = 'tc-r' + ri + '-' + ti;
+
+      const textWrap = document.createElement('div');
+      textWrap.className = 'task-text-wrap';
+
+      const textDiv = document.createElement('div');
+      textDiv.className = 'task-text' + (checked ? ' done' : '');
+      textDiv.id = 'tt-r' + ri + '-' + ti;
+      textDiv.textContent = task.t;
+
+      textWrap.appendChild(textDiv);
+
+      if (task.p === 'must') {
+        const badge = document.createElement('div');
+        badge.className = 'task-badge badge-must';
+        badge.textContent = 'must-do';
+        textWrap.appendChild(badge);
+      } else if (task.p === 'check') {
+        const badge = document.createElement('div');
+        badge.className = 'task-badge badge-check';
+        badge.textContent = 'check';
+        textWrap.appendChild(badge);
+      }
+
+      item.appendChild(checkDiv);
+      item.appendChild(textWrap);
+      bodyDiv.appendChild(item);
+    });
+
+    card.appendChild(headerDiv);
+    card.appendChild(bodyDiv);
+    sec.appendChild(card);
+  });
+}
+
+function buildSupplies() {
+  const sec = document.getElementById('supplies');
+  let idx = 0;
+  Object.entries(supplies).forEach(([cat, items]) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'supply-section';
+    const h = document.createElement('div');
+    h.className = 'supply-heading';
+    h.textContent = cat;
+    wrap.appendChild(h);
+    items.forEach(item => {
+      const k = key('sup', idx);
+      const checked = !!state[k];
+      const div = document.createElement('div');
+      div.className = 'supply-item';
+      div.onclick = () => toggleTask(k, null, 'supplies');
+      const chk = document.createElement('div');
+      chk.className = 'supply-check' + (checked ? ' checked' : '');
+      chk.id = 'chk-sup-' + idx;
+      const txt = document.createElement('div');
+      txt.className = 'supply-text' + (checked ? ' done' : '');
+      txt.id = 'txt-sup-' + idx;
+      txt.textContent = item;
+      div.appendChild(chk);
+      div.appendChild(txt);
+      wrap.appendChild(div);
+      idx++;
+    });
+    sec.appendChild(wrap);
+  });
+}
+
+function buildInspect() {
+  const sec = document.getElementById('inspect');
+  let idx = 0;
+  Object.entries(inspectGroups).forEach(([cat, items]) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'inspect-section';
+    const h = document.createElement('div');
+    h.className = 'inspect-heading';
+    h.textContent = cat;
+    wrap.appendChild(h);
+    items.forEach(item => {
+      const k = key('ins', idx);
+      const checked = !!state[k];
+      const div = document.createElement('div');
+      div.className = 'inspect-item';
+      div.onclick = () => toggleTask(k, null, 'inspect');
+      const chk = document.createElement('div');
+      chk.className = 'inspect-check' + (checked ? ' checked' : '');
+      chk.id = 'chk-ins-' + idx;
+      const txt = document.createElement('div');
+      txt.className = 'inspect-text' + (checked ? ' done' : '');
+      txt.id = 'txt-ins-' + idx;
+      txt.textContent = item;
+      div.appendChild(chk);
+      div.appendChild(txt);
+      wrap.appendChild(div);
+      idx++;
+    });
+    sec.appendChild(wrap);
+  });
+}
+
+function toggleRoom(ri) {
+  const body = document.getElementById('rb-' + ri);
+  const chev = document.getElementById('ch-' + ri);
+  body.classList.toggle('open');
+  chev.classList.toggle('open');
+}
+
+function toggleTask(k, ri, scope) {
+  state[k] = !state[k];
+  saveState();
+
+  // Update visual for this key
+  const parts = k.split('_');
+  if (scope === 'rooms') {
+    const [rpart, ti] = [parts[0].slice(1), parts[1]];
+    const ri2 = parseInt(rpart);
+    const chk = document.getElementById('tc-r' + ri2 + '-' + ti);
+    const txt = document.getElementById('tt-r' + ri2 + '-' + ti);
+    if (chk) chk.className = 'task-check' + (state[k] ? ' checked' : '');
+    if (txt) txt.className = 'task-text' + (state[k] ? ' done' : '');
+    updateRoomProgress(ri2);
+  } else if (scope === 'supplies') {
+    const idx = parts[1];
+    const chk = document.getElementById('chk-sup-' + idx);
+    const txt = document.getElementById('txt-sup-' + idx);
+    if (chk) chk.className = 'supply-check' + (state[k] ? ' checked' : '');
+    if (txt) txt.className = 'supply-text' + (state[k] ? ' done' : '');
+  } else if (scope === 'inspect') {
+    const idx = parts[1];
+    const chk = document.getElementById('chk-ins-' + idx);
+    const txt = document.getElementById('txt-ins-' + idx);
+    if (chk) chk.className = 'inspect-check' + (state[k] ? ' checked' : '');
+    if (txt) txt.className = 'inspect-text' + (state[k] ? ' done' : '');
+  }
+  updateGlobalProgress();
+}
+
+function updateRoomProgress(ri) {
+  const room = rooms[ri];
+  const total = room.tasks.length;
+  const done = room.tasks.filter((_, ti) => state[key('r' + ri, ti)]).length;
+  const el = document.getElementById('rp-' + ri);
+  if (el) el.textContent = done + '/' + total;
+  const card = document.getElementById('room-card-' + ri);
+  if (card) {
+    if (done === total) card.classList.add('all-done');
+    else card.classList.remove('all-done');
+  }
+}
+
+function countAll() {
+  let total = 0, done = 0;
+  rooms.forEach((room, ri) => {
+    room.tasks.forEach((_, ti) => {
+      total++;
+      if (state[key('r' + ri, ti)]) done++;
+    });
+  });
+  // supplies
+  let supIdx = 0;
+  Object.values(supplies).forEach(items => {
+    items.forEach(() => {
+      total++;
+      if (state[key('sup', supIdx)]) done++;
+      supIdx++;
+    });
+  });
+  // inspect
+  let insIdx = 0;
+  Object.values(inspectGroups).forEach(items => {
+    items.forEach(() => {
+      total++;
+      if (state[key('ins', insIdx)]) done++;
+      insIdx++;
+    });
+  });
+  return { total, done };
+}
+
+function countSection(prefix, groups) {
+  let done = 0, total = 0;
+  if (prefix === 'rooms') {
+    rooms.forEach((room, ri) => room.tasks.forEach((_, ti) => { total++; if (state[key('r' + ri, ti)]) done++; }));
+  } else {
+    let idx = 0;
+    Object.values(groups).forEach(items => items.forEach(() => { total++; if (state[key(prefix === 'supplies' ? 'sup' : 'ins', idx)]) done++; idx++; }));
+  }
+  return { total, done };
+}
+
+function updateGlobalProgress() {
+  const { total, done } = countAll();
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('pctLabel').textContent = pct + '%';
+  document.getElementById('countLabel').textContent = done + ' of ' + total + ' tasks complete';
+  document.getElementById('progressFill').style.width = pct + '%';
+
+  // Tab counts
+  const r = countSection('rooms', null);
+  const s = countSection('supplies', supplies);
+  const i = countSection('ins', inspectGroups);
+  document.getElementById('tc-rooms').textContent = r.done + '/' + r.total;
+  document.getElementById('tc-supplies').textContent = s.done + '/' + s.total;
+  document.getElementById('tc-inspect').textContent = i.done + '/' + i.total;
+
+  if (pct === 100) {
+    document.getElementById('doneBanner').classList.add('show');
+  } else {
+    document.getElementById('doneBanner').classList.remove('show');
+  }
+}
+
+function showTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function checkComplete() {
+  const { total, done } = countAll();
+  if (done === total) {
+    document.getElementById('modal').classList.add('show');
+  } else {
+    const remaining = total - done;
+    alert(remaining + ' task' + (remaining > 1 ? 's' : '') + ' still remaining. Keep going!');
+  }
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('show');
+}
+
+function resetAll() {
+  if (confirm('Reset all tasks? This will clear your progress.')) {
+    state = {};
+    saveState();
+    location.reload();
+  }
+}
+
+function setDate() {
+  const d = new Date();
+  const opts = { weekday: 'short', month: 'short', day: 'numeric' };
+  document.getElementById('dateLabel').textContent = d.toLocaleDateString('en-US', opts);
+}
+
+// Init
+loadState();
+buildRooms();
+buildSupplies();
+buildInspect();
+updateGlobalProgress();
+setDate();
+</script>
+</body>
+</html>
