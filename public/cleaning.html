@@ -629,6 +629,7 @@ const rooms = [
     { t: "Shower with bench: walls, glass, bench, floor" },
     { t: "Double sinks: basins, faucets, mirror, counter" },
     { t: "Replace toiletries, towels, toilet paper" },
+    { t: "Refill shampoo, conditioner, and body soap dispensers", p: "must" },
     { t: "Toilet: bowl, seat, lid, base, behind" },
     { t: "Empty trash and replace liner" },
     { t: "Clean balcony — wipe furniture, check for items left behind" },
@@ -647,6 +648,7 @@ const rooms = [
     { t: "Clean sink, mirror, counter" },
     { t: "Toilet: bowl, seat, base" },
     { t: "Replace towels, toiletries, TP" },
+    { t: "Refill shampoo, conditioner, and body soap dispensers", p: "must" },
     { t: "Vacuum/mop floor" },
     { t: "Empty trash" },
   ]},
@@ -658,10 +660,11 @@ const rooms = [
     { t: "Clean sink, mirror, counter" },
     { t: "Toilet: bowl, seat, base" },
     { t: "Replace towels, toiletries, TP" },
+    { t: "Refill shampoo, conditioner, and body soap dispensers", p: "must" },
     { t: "Vacuum/mop floor" },
     { t: "Empty trash" },
   ]},
-  { name: "Chef's kitchen", floor: "Main floor", time: "45 min", icon: "🍳", tasks: [
+  { name: "Kitchen", floor: "Main floor", time: "45 min", icon: "🍳", tasks: [
     { t: "Run dishwasher if needed; unload and put away all dishes", p: "must" },
     { t: "Wipe quartzite counters — check for stains", p: "must" },
     { t: "Viking range: grates, burners, surface, knobs", p: "must" },
@@ -702,6 +705,7 @@ const rooms = [
     { t: "Scrub shower" },
     { t: "Sink, mirror, counter, toilet" },
     { t: "Replace towels, toiletries, TP" },
+    { t: "Refill shampoo, conditioner, and body soap dispensers", p: "must" },
     { t: "Empty trash" },
   ]},
   { name: "Media room + pull-out", floor: "Lower level", time: "25 min", icon: "📺", tasks: [
@@ -1111,13 +1115,18 @@ function submitNetlifyForm() {
 }
 
 function checkComplete() {
-  const { total, done } = countAll();
-  if (done === total) {
+  let insIdx = 0, insDone = 0, insTotal = 0;
+  Object.values(inspectGroups).forEach(items => items.forEach(() => {
+    if (state[key('ins', insIdx)]) insDone++;
+    insTotal++;
+    insIdx++;
+  }));
+  if (insDone === insTotal) {
     submitNetlifyForm();
     document.getElementById('modal').classList.add('show');
   } else {
-    const remaining = total - done;
-    alert(remaining + ' task' + (remaining > 1 ? 's' : '') + ' still remaining. Keep going!');
+    const remaining = insTotal - insDone;
+    alert('Final Check must be fully complete before marking the house ready.\n\n' + remaining + ' item' + (remaining > 1 ? 's' : '') + ' still remaining in Final Check.');
   }
 }
 
