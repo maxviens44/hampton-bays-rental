@@ -554,6 +554,13 @@
 </head>
 <body>
 
+<!-- Hidden Netlify form for house-ready notification -->
+<form name="house-ready" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="house-ready">
+  <input type="hidden" name="completed_at" value="">
+  <input type="hidden" name="message" value="">
+</form>
+
 <div class="done-banner" id="doneBanner">House is ready — all tasks complete ✓</div>
 
 <div class="header">
@@ -1091,9 +1098,22 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
+function submitNetlifyForm() {
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const formData = new FormData();
+  formData.append('form-name', 'house-ready');
+  formData.append('completed_at', dateStr + ' at ' + timeStr);
+  formData.append('message', 'The Hampton Bays house has been cleaned and is guest-ready as of ' + dateStr + ' at ' + timeStr + '.');
+  fetch('/', { method: 'POST', body: formData })
+    .catch(err => console.warn('Notification form error:', err));
+}
+
 function checkComplete() {
   const { total, done } = countAll();
   if (done === total) {
+    submitNetlifyForm();
     document.getElementById('modal').classList.add('show');
   } else {
     const remaining = total - done;
