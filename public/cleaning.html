@@ -611,6 +611,7 @@ const rooms = [
     { t: "Gather all used towels and bath mats", p: "must" },
     { t: "Start first wash load (sheets)", p: "must" },
     { t: "Rotate loads throughout the clean — don't let them sit", p: "must" },
+    { t: "Wash and dry 10 beach towels", p: "must" },
   ]},
   { name: "Primary suite", floor: "2nd floor · north wing", time: "45 min", icon: "🛏️", tasks: [
     { t: "Strip and remake king bed with fresh linens", p: "must" },
@@ -684,13 +685,16 @@ const rooms = [
     { t: "Wipe counter and walls near sink" },
     { t: "Empty trash" },
   ]},
-  { name: "Lower bedroom", floor: "Lower level", time: "25 min", icon: "🛏️", tasks: [
+  { name: "Lower bedroom", floor: "Lower level", time: "20 min", icon: "🛏️", tasks: [
     { t: "Strip and remake king bed", p: "must" },
     { t: "Wipe nightstands, TV stand" },
-    { t: "Scrub adjacent bath shower" },
+    { t: "Vacuum/mop floor" },
+    { t: "Empty trash" },
+  ]},
+  { name: "Lower level bathroom", floor: "Lower level · outside bedroom", time: "15 min", icon: "🚿", tasks: [
+    { t: "Scrub shower" },
     { t: "Sink, mirror, counter, toilet" },
     { t: "Replace towels, toiletries, TP" },
-    { t: "Vacuum/mop floor" },
     { t: "Empty trash" },
   ]},
   { name: "Media room + pull-out", floor: "Lower level", time: "25 min", icon: "📺", tasks: [
