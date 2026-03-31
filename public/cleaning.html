@@ -6,6 +6,14 @@
 <title>Cleaning Checklist — Stay The Hamptons</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="STH Clean">
+<meta name="theme-color" content="#2c4a5a">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
 <style>
   :root {
     --sand: #f5f0e8;
@@ -1156,6 +1164,14 @@ buildSupplies();
 buildInspect();
 updateGlobalProgress();
 setDate();
+
+// Register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/service-worker.js')
+      .catch(err => console.warn('Service worker registration failed:', err));
+  });
+}
 </script>
 </body>
 </html>
