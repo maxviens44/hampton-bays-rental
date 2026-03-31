@@ -558,6 +558,72 @@
     font-size: 14px;
     cursor: pointer;
   }
+
+  /* PHOTO UPLOAD */
+  .photo-section { margin-bottom: 20px; text-align: left; }
+  .photo-label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-mid);
+    margin-bottom: 8px;
+    display: block;
+  }
+  .photo-label span { color: var(--text-light); font-weight: 400; }
+  .photo-drop {
+    border: 1.5px dashed var(--sand-dark);
+    border-radius: var(--radius-sm);
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--fog);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .photo-drop:active { border-color: var(--driftwood); background: var(--sand); }
+  .photo-drop-icon { font-size: 28px; margin-bottom: 6px; }
+  .photo-drop-text { font-size: 13px; color: var(--text-light); }
+  .photo-drop-text strong { color: var(--ocean); font-weight: 500; }
+  .photo-input { display: none; }
+  .photo-previews {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .photo-thumb {
+    width: 72px;
+    height: 72px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid var(--sand-dark);
+    position: relative;
+  }
+  .photo-thumb-wrap { position: relative; display: inline-block; }
+  .photo-remove {
+    position: absolute;
+    top: -6px; right: -6px;
+    width: 20px; height: 20px;
+    background: var(--text);
+    color: white;
+    border-radius: 50%;
+    border: none;
+    font-size: 12px;
+    line-height: 20px;
+    text-align: center;
+    cursor: pointer;
+    padding: 0;
+  }
+  .upload-status {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 8px;
+    min-height: 18px;
+    text-align: center;
+  }
+  .upload-status.error { color: #9a3030; }
+  .modal-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 </style>
 </head>
 <body>
@@ -611,9 +677,21 @@
   <div class="modal">
     <div class="modal-emoji">🏡</div>
     <div class="modal-title">House is ready!</div>
-    <div class="modal-sub">All tasks complete. The Hamptons house is guest-ready.<br>Great work.</div>
-    <button class="modal-btn" onclick="closeModal()">Done</button>
-    <button class="modal-btn-sec" onclick="resetAll()">Start a new clean</button>
+    <div class="modal-sub">Add photos to document the house condition before submitting.</div>
+
+    <div class="photo-section">
+      <label class="photo-label">Photos <span>(optional — tap to add from camera or library)</span></label>
+      <div class="photo-drop" onclick="document.getElementById('photoInput').click()">
+        <div class="photo-drop-icon">📷</div>
+        <div class="photo-drop-text"><strong>Tap to add photos</strong><br>Camera or photo library</div>
+      </div>
+      <input type="file" id="photoInput" class="photo-input" accept="image/*" multiple onchange="handlePhotos(this)">
+      <div class="photo-previews" id="photoPreviews"></div>
+      <div class="upload-status" id="uploadStatus"></div>
+    </div>
+
+    <button class="modal-btn" id="submitBtn" onclick="submitAll()">Submit &amp; Notify Admin</button>
+    <button class="modal-btn-sec" onclick="closeModal()">Go back</button>
   </div>
 </div>
 
@@ -1111,16 +1189,102 @@ function showTab(id, btn) {
   btn.classList.add('active');
 }
 
-function submitNetlifyForm() {
-  const now = new Date();
-  const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
-  const formData = new FormData();
-  formData.append('form-name', 'house-ready');
-  formData.append('completed_at', dateStr + ' at ' + timeStr);
-  formData.append('message', 'The Hampton Bays house has been cleaned and is guest-ready as of ' + dateStr + ' at ' + timeStr + '.');
-  fetch('/', { method: 'POST', body: formData })
-    .catch(err => console.warn('Notification form error:', err));
+const CLOUDINARY_CLOUD = 'dmzhd1nsb';
+const CLOUDINARY_PRESET = 'sth-cleaning';
+
+let selectedFiles = [];
+
+function handlePhotos(input) {
+  const newFiles = Array.from(input.files);
+  selectedFiles = selectedFiles.concat(newFiles).slice(0, 10); // max 10 photos
+  renderPreviews();
+  input.value = '';
+}
+
+function renderPreviews() {
+  const wrap = document.getElementById('photoPreviews');
+  wrap.innerHTML = '';
+  selectedFiles.forEach((file, i) => {
+    const url = URL.createObjectURL(file);
+    const div = document.createElement('div');
+    div.className = 'photo-thumb-wrap';
+    div.innerHTML = `
+      <img src="${url}" class="photo-thumb">
+      <button class="photo-remove" onclick="removePhoto(${i})">×</button>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function removePhoto(idx) {
+  selectedFiles.splice(idx, 1);
+  renderPreviews();
+}
+
+async function uploadToCloudinary(file, index, total) {
+  const status = document.getElementById('uploadStatus');
+  status.textContent = `Uploading photo ${index + 1} of ${total}...`;
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`, {
+    method: 'POST',
+    body: fd
+  });
+  if (!res.ok) throw new Error('Upload failed for photo ' + (index + 1));
+  const data = await res.json();
+  return data.secure_url;
+}
+
+async function submitAll() {
+  const btn = document.getElementById('submitBtn');
+  const status = document.getElementById('uploadStatus');
+  btn.disabled = true;
+
+  try {
+    // Upload all photos to Cloudinary
+    let photoLinks = [];
+    if (selectedFiles.length > 0) {
+      for (let i = 0; i < selectedFiles.length; i++) {
+        const url = await uploadToCloudinary(selectedFiles[i], i, selectedFiles.length);
+        photoLinks.push(url);
+      }
+    }
+
+    // Build Netlify form submission
+    status.textContent = 'Sending notification...';
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    const photoText = photoLinks.length > 0
+      ? '\n\nPhotos:\n' + photoLinks.join('\n')
+      : '\n\nNo photos submitted.';
+
+    const formData = new FormData();
+    formData.append('form-name', 'house-ready');
+    formData.append('completed_at', dateStr + ' at ' + timeStr);
+    formData.append('photo_count', photoLinks.length + ' photo(s)');
+    formData.append('message', 'The Hampton Bays house has been cleaned and is guest-ready as of ' + dateStr + ' at ' + timeStr + '.' + photoText);
+
+    await fetch('/', { method: 'POST', body: formData });
+
+    // Success state
+    status.textContent = '';
+    document.querySelector('.modal-emoji').textContent = '✅';
+    document.querySelector('.modal-title').textContent = 'Submitted!';
+    document.querySelector('.modal-sub').textContent = 'Notification sent to admin' + (photoLinks.length > 0 ? ' with ' + photoLinks.length + ' photo' + (photoLinks.length > 1 ? 's' : '') : '') + '. Great work!';
+    document.querySelector('.photo-section').style.display = 'none';
+    btn.style.display = 'none';
+    document.querySelector('.modal-btn-sec').textContent = 'Start a new clean';
+    document.querySelector('.modal-btn-sec').onclick = resetAll;
+    document.getElementById('doneBanner').classList.add('show');
+
+  } catch (err) {
+    status.className = 'upload-status error';
+    status.textContent = 'Error: ' + err.message + '. Please try again.';
+    btn.disabled = false;
+  }
 }
 
 function checkComplete() {
@@ -1131,7 +1295,12 @@ function checkComplete() {
     insIdx++;
   }));
   if (insDone === insTotal) {
-    submitNetlifyForm();
+    // Reset modal state in case it was opened before
+    selectedFiles = [];
+    renderPreviews();
+    document.getElementById('uploadStatus').textContent = '';
+    document.getElementById('uploadStatus').className = 'upload-status';
+    document.getElementById('submitBtn').disabled = false;
     document.getElementById('modal').classList.add('show');
   } else {
     const remaining = insTotal - insDone;
