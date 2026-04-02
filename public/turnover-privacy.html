@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy — Turnover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean: #2C4A5A;
+            --driftwood: #C4A882;
+            --cream: #F8F5F0;
+            --text: #2a2a2a;
+            --muted: #6b7280;
+            --border: #e5ddd3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        header {
+            background: var(--ocean);
+            padding: 48px 24px 40px;
+            text-align: center;
+        }
+
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--driftwood);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+        .logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 5vw, 42px);
+            color: white;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: rgba(255,255,255,0.65);
+            font-size: 14px;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 56px 24px 80px;
+        }
+
+        .intro-card {
+            background: white;
+            border-left: 4px solid var(--driftwood);
+            border-radius: 0 8px 8px 0;
+            padding: 24px 28px;
+            margin-bottom: 48px;
+            font-size: 15px;
+            color: var(--muted);
+            line-height: 1.7;
+        }
+
+        .intro-card strong {
+            color: var(--ocean);
+        }
+
+        section {
+            margin-bottom: 44px;
+        }
+
+        h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--ocean);
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 .section-num {
+            display: inline-flex;
+            width: 28px;
+            height: 28px;
+            background: var(--ocean);
+            color: white;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Lato', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        p {
+            font-size: 15px;
+            color: #444;
+            margin-bottom: 14px;
+            line-height: 1.8;
+        }
+
+        ul {
+            list-style: none;
+            margin: 12px 0 16px;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 15px;
+            color: #444;
+            padding: 6px 0 6px 22px;
+            position: relative;
+            line-height: 1.7;
+        }
+
+        ul li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 14px;
+            width: 6px;
+            height: 6px;
+            background: var(--driftwood);
+            border-radius: 50%;
+        }
+
+        .highlight-box {
+            background: var(--ocean);
+            color: white;
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .highlight-box strong {
+            color: var(--driftwood);
+        }
+
+        .contact-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px 28px;
+            margin-top: 16px;
+        }
+
+        .contact-card p {
+            margin-bottom: 6px;
+        }
+
+        .contact-card a {
+            color: var(--ocean);
+            text-decoration: none;
+            font-weight: 700;
+            border-bottom: 1px solid var(--driftwood);
+        }
+
+        footer {
+            background: var(--ocean);
+            text-align: center;
+            padding: 28px 24px;
+            color: rgba(255,255,255,0.5);
+            font-size: 13px;
+            font-weight: 300;
+        }
+
+        footer a {
+            color: var(--driftwood);
+            text-decoration: none;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 40px 20px 60px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo-mark">
+        <div class="logo-icon">🏡</div>
+        <span class="logo-text">Turnover</span>
+    </div>
+    <h1>Privacy Policy</h1>
+    <p>Last updated: April 2, 2026</p>
+</header>
+
+<div class="container">
+
+    <div class="intro-card">
+        <strong>Your privacy matters.</strong> Turnover is a cleaning management app for short-term rental hosts and their cleaners. This policy explains what information we collect, how we use it, and how we protect it. We keep things simple — we collect only what's needed to run the app, and we never sell your data.
+    </div>
+
+    <section>
+        <h2><span class="section-num">1</span> Information We Collect</h2>
+        <p>When you use Turnover, we collect the following information:</p>
+        <ul>
+            <li><strong>Account information</strong> — your name, email address, and role (host or cleaner) when you sign up</li>
+            <li><strong>Property information</strong> — property names, addresses, room details, and cleaning checklists you create</li>
+            <li><strong>Cleaning session data</strong> — task completion records, notes, timestamps, and progress during cleaning sessions</li>
+            <li><strong>Photos</strong> — room photos and damage report photos you upload during cleaning sessions</li>
+            <li><strong>Messages</strong> — in-app messages exchanged between hosts and cleaners</li>
+            <li><strong>Usage data</strong> — basic app usage information collected automatically by Firebase</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2><span class="section-num">2</span> How We Use Your Information</h2>
+        <p>We use the information collected solely to operate the Turnover app:</p>
+        <ul>
+            <li>To create and manage your account</li>
+            <li>To enable hosts to manage properties and cleaning checklists</li>
+            <li>To allow cleaners to execute and submit cleaning sessions</li>
+            <li>To facilitate communication between hosts and cleaners</li>
+            <li>To store and display cleaning history and damage reports</li>
+            <li>To manage subscription status and trial periods</li>
+        </ul>
+        <div class="highlight-box">
+            <strong>We do not sell your data.</strong> Your information is never sold, rented, or shared with advertisers or third-party marketers.
+        </div>
+    </section>
+
+    <section>
+        <h2><span class="section-num">3</span> Third-Party Services</h2>
+        <p>Turnover uses the following third-party services to operate:</p>
+        <ul>
+            <li><strong>Google Firebase</strong> — authentication, database storage, and file storage. Subject to <a href="https://firebase.google.com/support/privacy" target="_blank" style="color: var(--ocean);">Google's Privacy Policy</a></li>
+            <li><strong>Google Sign-In</strong> — optional sign-in method. Subject to Google's Privacy Policy</li>
+        </ul>
+        <p>These services may collect device identifiers and usage data in accordance with their own privacy policies.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">4</span> Photos & Media</h2>
+        <p>If you choose to upload photos (room photos or damage reports), those images are stored securely in Firebase Storage and are only accessible to the host and cleaner connected to the same property. Photos are never shared publicly or used for any purpose outside the app.</p>
+        <p>Accessing your photo library requires your explicit permission. You may revoke this permission at any time in your device's Settings.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">5</span> Data Retention</h2>
+        <p>Your data is retained as long as your account is active. If you delete your account, your personal data will be removed from our systems within 30 days. Cleaning history and associated photos tied to a property may be retained at the host's request for record-keeping purposes.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">6</span> Data Security</h2>
+        <p>We take reasonable measures to protect your information. All data is stored in Firebase, which uses industry-standard encryption in transit and at rest. Access to property data is restricted — only the property owner and their assigned cleaner can access that property's information.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">7</span> Children's Privacy</h2>
+        <p>Turnover is not intended for use by children under the age of 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we will delete it promptly.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">8</span> Your Rights</h2>
+        <p>You have the right to:</p>
+        <ul>
+            <li>Access the personal data we hold about you</li>
+            <li>Request correction of inaccurate data</li>
+            <li>Request deletion of your account and associated data</li>
+            <li>Withdraw consent at any time by deleting your account</li>
+        </ul>
+        <p>To exercise any of these rights, please contact us using the information below.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">9</span> Changes to This Policy</h2>
+        <p>We may update this privacy policy from time to time. When we do, we will update the "Last updated" date at the top of this page. Continued use of the app after changes constitutes acceptance of the updated policy.</p>
+    </section>
+
+    <section>
+        <h2><span class="section-num">10</span> Contact Us</h2>
+        <p>If you have any questions about this privacy policy or how we handle your data, please contact us:</p>
+        <div class="contact-card">
+            <p><strong>Turnover App</strong></p>
+            <p>Email: <a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></p>
+            <p>Website: <a href="https://staythehamptons.com" target="_blank">staythehamptons.com</a></p>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>&copy; 2026 Turnover · <a href="https://staythehamptons.com">staythehamptons.com</a></p>
+</footer>
+
+</body>
+</html>
