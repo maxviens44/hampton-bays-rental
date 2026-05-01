@@ -95,7 +95,7 @@ nav.scrolled {
   font-weight: 400;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--cream-dim);
+  color: var(--white);
   transition: color 0.2s;
   position: relative;
 }
