@@ -1,729 +1,719 @@
-    1 <!DOCTYPE html>
-    2 <html lang="en">
-    3 <head>
-    4   <meta charset="UTF-8" />
-    5   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    6   <title>House Info & Local Guide — Stay The Hamptons | Hampton Bays</title>
-    7   <meta name="description" content="House rules, Wi-Fi, check-in info, and a curated local guide to the best H
-      amptons beaches and restaurants near our Hampton Bays vacation rental." />
-    8   <link rel="canonical" href="https://staythehamptons.com/info.html" />
-    9   <link rel="icon" type="image/png" href="/favicon.png" />
-   10   <meta property="og:type" content="website" />
-   11   <meta property="og:title" content="House Info & Local Guide — Stay The Hamptons" />
-   12   <meta property="og:description" content="House rules, check-in info, and a curated local guide to the best H
-      amptons beaches and restaurants." />
-   13   <meta property="og:url" content="https://staythehamptons.com/info.html" />
-   14   <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />
-   15   <meta name="twitter:card" content="summary_large_image" />
-   16   <meta name="twitter:image" content="https://staythehamptons.com/images/pool1.webp" />
-   17   <link rel="stylesheet" href="/css/style.css" />
-   18   <style>
-   19     .info-hero {
-   20       padding: 160px 48px 80px;
-   21       background: var(--dark);
-   22       border-bottom: 1px solid var(--border);
-   23     }
-   24
-   25     .info-tabs {
-   26       display: flex;
-   27       border-bottom: 1px solid var(--border);
-   28       padding: 0 48px;
-   29       background: var(--dark);
-   30       position: sticky;
-   31       top: 64px;
-   32       z-index: 100;
-   33       overflow-x: auto;
-   34     }
-   35
-   36     .info-tab {
-   37       padding: 20px 28px;
-   38       font-size: 11px;
-   39       letter-spacing: 0.2em;
-   40       text-transform: uppercase;
-   41       color: var(--text-muted);
-   42       cursor: pointer;
-   43       border-bottom: 2px solid transparent;
-   44       transition: all 0.2s;
-   45       white-space: nowrap;
-   46       background: none;
-   47       border-left: none;
-   48       border-right: none;
-   49       border-top: none;
-   50       font-family: 'Jost', sans-serif;
-   51     }
-   52
-   53     .info-tab.active,
-   54     .info-tab:hover {
-   55       color: var(--gold);
-   56       border-bottom-color: var(--gold);
-   57     }
-   58
-   59     .info-section {
-   60       display: none;
-   61       padding: 80px 48px;
-   62     }
-   63
-   64     .info-section.active { display: block; }
-   65
-   66     /* House rules */
-   67     .rules-grid {
-   68       display: grid;
-   69       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-   70       gap: 2px;
-   71       margin-top: 48px;
-   72     }
-   73
-   74     .rules-card {
-   75       background: var(--dark);
-   76       padding: 36px;
-   77     }
-   78
-   79     .rules-card-icon {
-   80       font-size: 28px;
-   81       margin-bottom: 16px;
-   82     }
-   83
-   84     .rules-card-title {
-   85       font-family: 'Cormorant Garamond', serif;
-   86       font-size: 22px;
-   87       color: var(--gold-light);
-   88       margin-bottom: 16px;
-   89     }
-   90
-   91     .rules-list {
-   92       list-style: none;
-   93       display: flex;
-   94       flex-direction: column;
-   95       gap: 10px;
-   96     }
-   97
-   98     .rules-list li {
-   99       display: flex;
-  100       align-items: flex-start;
-  101       gap: 10px;
-  102       font-size: 17px;
-  103       color: var(--cream);
-  104       line-height: 1.6;
-  105     }
-  106
-  107     .rules-list li::before {
-  108       content: '—';
-  109       color: var(--gold-dim);
-  110       flex-shrink: 0;
-  111     }
-  112
-  113     /* Beaches */
-  114     .beaches-intro {
-  115       max-width: 640px;
-  116       margin-bottom: 56px;
-  117     }
-  118
-  119     .beaches-intro p {
-  120       color: var(--cream);
-  121       font-size: 19px;
-  122       font-weight: 400;
-  123       margin-top: 12px;
-  124     }
-  125
-  126     .beach-list {
-  127       display: grid;
-  128       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  129       gap: 2px;
-  130     }
-  131
-  132     .beach-card {
-  133       background: var(--dark);
-  134       padding: 32px;
-  135       transition: background 0.2s;
-  136     }
-  137
-  138     .beach-card:hover { background: var(--dark2); }
-  139
-  140     .beach-name {
-  141       font-family: 'Cormorant Garamond', serif;
-  142       font-size: 22px;
-  143       color: var(--cream);
-  144       margin-bottom: 8px;
-  145     }
-  146
-  147     .beach-desc {
-  148       font-size: 17px;
-  149       color: var(--cream);
-  150       line-height: 1.7;
-  151       margin-bottom: 16px;
-  152     }
-  153
-  154     .beach-links {
-  155       display: flex;
-  156       gap: 12px;
-  157     }
-  158
-  159     .beach-link {
-  160       font-size: 10px;
-  161       letter-spacing: 0.2em;
-  162       text-transform: uppercase;
-  163       color: var(--gold);
-  164       border-bottom: 1px solid transparent;
-  165       transition: border-color 0.2s;
-  166     }
-  167
-  168     .beach-link:hover { border-bottom-color: var(--gold); }
-  169
-  170     .beach-note {
-  171       margin-top: 32px;
-  172       padding: 20px 24px;
-  173       background: var(--dark2);
-  174       border-left: 2px solid var(--gold-dim);
-  175       font-size: 17px;
-  176       color: var(--cream);
-  177     }
-  178
-  179     /* Restaurants */
-  180     .restaurant-area {
-  181       margin-bottom: 56px;
-  182     }
-  183
-  184     .restaurant-area-title {
-  185       font-family: 'Cormorant Garamond', serif;
-  186       font-size: 28px;
-  187       color: var(--gold-light);
-  188       margin-bottom: 20px;
-  189       padding-bottom: 16px;
-  190       border-bottom: 1px solid var(--border);
-  191     }
-  192
-  193     .restaurant-grid {
-  194       display: grid;
-  195       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  196       gap: 2px;
-  197     }
-  198
-  199     .restaurant-card {
-  200       background: var(--dark);
-  201       padding: 28px;
-  202       transition: background 0.2s;
-  203       position: relative;
-  204     }
-  205
-  206     .restaurant-card:hover { background: var(--dark2); }
-  207
-  208     .restaurant-fav {
-  209       position: absolute;
-  210       top: 20px;
-  211       right: 20px;
-  212       font-size: 10px;
-  213       letter-spacing: 0.15em;
-  214       text-transform: uppercase;
-  215       color: var(--gold);
-  216       background: rgba(201,169,110,0.1);
-  217       border: 1px solid var(--gold-dim);
-  218       padding: 3px 8px;
-  219     }
-  220
-  221     .restaurant-name {
-  222       font-family: 'Cormorant Garamond', serif;
-  223       font-size: 20px;
-  224       color: var(--cream);
-  225       margin-bottom: 6px;
-  226     }
-  227
-  228     .restaurant-desc {
-  229       font-size: 17px;
-  230       color: var(--cream);
-  231       line-height: 1.7;
-  232       margin-bottom: 14px;
-  233     }
-  234
-  235     .restaurant-link {
-  236       font-size: 10px;
-  237       letter-spacing: 0.2em;
-  238       text-transform: uppercase;
-  239       color: var(--gold);
-  240       border-bottom: 1px solid transparent;
-  241       transition: border-color 0.2s;
-  242     }
-  243
-  244     .restaurant-link:hover { border-bottom-color: var(--gold); }
-  245
-  246     @media (max-width: 768px) {
-  247       .info-hero { padding: 120px 24px 60px; }
-  248       .info-tabs { padding: 0 24px; }
-  249       .info-section { padding: 60px 24px; }
-  250     }
-  251   </style>
-  252 </head>
-  253 <body>
-  254
-  255 <nav>
-  256   <a href="/" class="nav-logo">
-  257     <img src="/favicon.png" alt="Stay The Hamptons" />
-  258     <span class="nav-logo-text">Stay The Hamptons</span>
-  259   </a>
-  260   <ul class="nav-links">
-  261     <li><a href="/">Home</a></li>
-  262     <li><a href="/gallery.html">Gallery</a></li>
-  263     <li><a href="/info.html">Info</a></li>
-  264     <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>
-  265     <li><a href="/reviews.html">Reviews</a></li>
-  266   </ul>
-  267   <div class="nav-hamburger"><span></span><span></span><span></span></div>
-  268 </nav>
-  269
-  270 <div class="info-hero fade-in">
-  271   <div class="section-label">Your Guide</div>
-  272   <h1 class="section-title">House Info &<br><em>Local Discoveries</em></h1>
-  273   <p style="color:var(--cream); max-width:520px; margin-top:12px; font-size:19px; font-weight:400;">Everything
-       you need for a seamless stay — from house rules and Wi-Fi to the best beaches and restaurants in the Hamptons
-      .</p>
-  274 </div>
-  275
-  276 <div class="info-tabs">
-  277   <button class="info-tab active" data-tab="rules">House Info & Rules</button>
-  278   <button class="info-tab" data-tab="beaches">Beaches</button>
-  279   <button class="info-tab" data-tab="restaurants">Restaurants</button>
-  280   <button class="info-tab" data-tab="tour">Tour</button>
-  281 </div>
-  282
-  283 <!-- ── HOUSE RULES ── -->
-  284 <div class="info-section active" id="tab-rules">
-  285   <div class="section-label fade-in">House Info & Rules</div>
-  286   <h2 class="section-title fade-in">Everything You<br><em>Need to Know</em></h2>
-  287   <div class="rules-grid">
-  288
-  289     <div class="rules-card fade-in">
-  290       <div class="rules-card-icon">📶</div>
-  291       <div class="rules-card-title">Wi-Fi</div>
-  292       <ul class="rules-list">
-  293         <li>Network: <strong style="color:var(--cream)">staythehamptons</strong></li>
-  294         <li>Password provided after booking</li>
-  295         <li>Full coverage throughout house, office, and pool patio</li>
-  296       </ul>
-  297     </div>
-  298
-  299     <div class="rules-card fade-in">
-  300       <div class="rules-card-icon">🔑</div>
-  301       <div class="rules-card-title">Check In & Out</div>
-  302       <ul class="rules-list">
-  303         <li>Check in after 4:00 PM</li>
-  304         <li>Check out by 11:00 AM</li>
-  305         <li>Smart lock code sent morning of arrival</li>
-  306         <li>Before leaving: run the dishwasher and take trash to outdoor bins</li>
-  307       </ul>
-  308     </div>
-  309
-  310     <div class="rules-card fade-in">
-  311       <div class="rules-card-icon">🗑️ </div>
-  312       <div class="rules-card-title">Garbage & Recycling</div>
-  313       <ul class="rules-list">
-  314         <li>Bins on the side of the house near the driveway</li>
-  315         <li>Trash pickup: Tuesday only</li>
-  316         <li>Recycling: Wednesday</li>
-  317         <li>Break down boxes and rinse cans and bottles</li>
-  318       </ul>
-  319     </div>
-  320
-  321     <div class="rules-card fade-in">
-  322       <div class="rules-card-icon">💡</div>
-  323       <div class="rules-card-title">Lighting & HVAC</div>
-  324       <ul class="rules-list">
-  325         <li>Most lights are on dimmers — slide to adjust brightness</li>
-  326         <li>Pool and patio lights: switches near the back sliders</li>
-  327         <li>Thermostats: keep between 68–74°F for comfort and efficiency</li>
-  328       </ul>
-  329     </div>
-  330
-  331     <div class="rules-card fade-in">
-  332       <div class="rules-card-icon">🏊</div>
-  333       <div class="rules-card-title">Pool & Outdoor</div>
-  334       <ul class="rules-list">
-  335         <li>Saltwater pool with weekly service — serviced every Thursday</li>
-  336         <li>6 beach chairs and 1 umbrella are available in the garage, on the stairs leading up to the gym</li
-      >
-  337         <li>Outdoor shower by the garage walkway</li>
-  338         <li>Close umbrellas and secure cushions if windy</li>
-  339         <li>Only plastic glasses, cups, and plates permitted at the pool and patio</li>
-  340       </ul>
-  341     </div>
-  342
-  343     <div class="rules-card fade-in">
-  344       <div class="rules-card-icon">🚗</div>
-  345       <div class="rules-card-title">Parking</div>
-  346       <ul class="rules-list">
-  347         <li>Driveway fits 5 cars</li>
-  348         <li>Garage access only if noted in your booking</li>
-  349         <li>Avoid street parking — local signs apply</li>
-  350       </ul>
-  351     </div>
-  352
-  353     <div class="rules-card fade-in">
-  354       <div class="rules-card-icon">💻</div>
-  355       <div class="rules-card-title">Home Office</div>
-  356       <ul class="rules-list">
-  357         <li>Dedicated desk in a quiet room with natural light</li>
-  358         <li>Fast Wi-Fi with strong signal in office and common areas</li>
-  359         <li>Standard outlets and a surge-protected power strip</li>
-  360       </ul>
-  361     </div>
-  362
-  363     <div class="rules-card fade-in">
-  364       <div class="rules-card-icon">🏋️ </div>
-  365       <div class="rules-card-title">Gym</div>
-  366       <ul class="rules-list">
-  367         <li>Accessible via the side door of the garage, up the stairs</li>
-  368         <li>Equipment: exercise bike, multi-station gym, dumbbells, and weight bench</li>
-  369         <li>Towels and a water cooler are provided</li>
-  370       </ul>
-  371     </div>
-  372
-  373     <div class="rules-card fade-in">
-  374       <div class="rules-card-icon">🚨</div>
-  375       <div class="rules-card-title">Emergency</div>
-  376       <ul class="rules-list">
-  377         <li>Dial 911 for emergencies</li>
-  378         <li>Urgent home issues: use host phone number in your arrival email</li>
-  379         <li>Nearest hospital: Stony Brook Southampton Hospital (~20 min west)</li>
-  380       </ul>
-  381     </div>
-  382
-  383     <div class="rules-card fade-in" style="border-left: 2px solid var(--gold);">
-  384       <div class="rules-card-icon">📋</div>
-  385       <div class="rules-card-title">House Rules</div>
-  386       <ul class="rules-list">
-  387         <li>No parties and no smoking</li>
-  388         <li>No pets unless approved before booking</li>
-  389         <li>Quiet hours after 10:00 PM per town guidance</li>
-  390         <li>Only plastic glasses, cups, plates, and dishes permitted at pool and patio</li>
-  391       </ul>
-  392     </div>
-  393
-  394   </div>
-  395 </div>
-  396
-  397 <!-- ── BEACHES ── -->
-  398 <div class="info-section" id="tab-beaches">
-  399   <div class="beaches-intro fade-in">
-  400     <div class="section-label">Local Beaches</div>
-  401     <h2 class="section-title">Hamptons<br><em>Beaches</em></h2>
-  402     <p>From the wide Atlantic shores of Southampton to the calm bay beaches nearby, the Hamptons offers some o
-      f the finest coastline in the Northeast.</p>
-  403   </div>
-  404
-  405   <div class="beach-list">
-  406     <div class="beach-card fade-in">
-  407       <div class="beach-name">Ponquogue Beach</div>
-  408       <div class="beach-desc">Wide ocean beach with soft sand and seasonal facilities.</div>
-  409       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Ponquogue+Beach+
-      Hampton+Bays" target="_blank">Directions</a></div>
-  410     </div>
-  411     <div class="beach-card fade-in">
-  412       <div class="beach-name">Tiana Beach</div>
-  413       <div class="beach-desc">Family-friendly ocean spot with pavilion area and gentle surf.</div>
-  414       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Tiana+Beach+Hamp
-      ton+Bays" target="_blank">Directions</a></div>
-  415     </div>
-  416     <div class="beach-card fade-in">
-  417       <div class="beach-name">Meschutt Beach County Park</div>
-  418       <div class="beach-desc">Bay beach with calmer water and easy food options.</div>
-  419       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Meschutt+Beach+C
-      ounty+Park" target="_blank">Directions</a></div>
-  420     </div>
-  421     <div class="beach-card fade-in">
-  422       <div class="beach-name">Shinnecock East County Park</div>
-  423       <div class="beach-desc">Natural oceanfront near the inlet with fewer structures and open dunes.</div>
-  424       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Shinnecock+East+
-      County+Park" target="_blank">Directions</a></div>
-  425     </div>
-  426     <div class="beach-card fade-in">
-  427       <div class="beach-name">Coopers Beach</div>
-  428       <div class="beach-desc">Southampton flagship beach with services and long shoreline walks.</div>
-  429       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Coopers+Beach+So
-      uthampton" target="_blank">Directions</a></div>
-  430     </div>
-  431     <div class="beach-card fade-in">
-  432       <div class="beach-name">Old Town Beach</div>
-  433       <div class="beach-desc">Quieter option south of the village with classic ocean views.</div>
-  434       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Old+Town+Beach+S
-      outhampton" target="_blank">Directions</a></div>
-  435     </div>
-  436     <div class="beach-card fade-in">
-  437       <div class="beach-name">Flying Point Beach</div>
-  438       <div class="beach-desc">Water Mill favorite with a broad beach face and relaxed feel.</div>
-  439       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Flying+Point+Bea
-      ch+Water+Mill" target="_blank">Directions</a></div>
-  440     </div>
-  441     <div class="beach-card fade-in">
-  442       <div class="beach-name">Foster Memorial Beach (Long Beach)</div>
-  443       <div class="beach-desc">Sag Harbor bay beach with calm water and gorgeous sunset views.</div>
-  444       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Foster+Memorial+
-      Beach+Sag+Harbor" target="_blank">Directions</a></div>
-  445     </div>
-  446     <div class="beach-card fade-in">
-  447       <div class="beach-name">Main Beach, East Hampton</div>
-  448       <div class="beach-desc">Iconic village ocean beach with lifeguards, dunes, and the classic Hamptons feel
-      .</div>
-  449       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Main+Beach+East+
-      Hampton" target="_blank">Directions</a></div>
-  450     </div>
-  451     <div class="beach-card fade-in">
-  452       <div class="beach-name">Indian Wells Beach</div>
-  453       <div class="beach-desc">Amagansett favorite with long open beach and seasonal facilities.</div>
-  454       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Indian+Wells+Bea
-      ch+Amagansett" target="_blank">Directions</a></div>
-  455     </div>
-  456     <div class="beach-card fade-in">
-  457       <div class="beach-name">Georgica Beach</div>
-  458       <div class="beach-desc">Beautiful stretch near Georgica Pond with a quieter, more private vibe.</div>
-  459       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Georgica+Beach+E
-      ast+Hampton" target="_blank">Directions</a></div>
-  460     </div>
-  461     <div class="beach-card fade-in">
-  462       <div class="beach-name">Two Mile Hollow Beach</div>
-  463       <div class="beach-desc">Less crowded village beach with wide Atlantic shoreline.</div>
-  464       <div class="beach-links"><a class="beach-link" href="https://www.google.com/maps/search/Two+Mile+Hollow+
-      Beach+East+Hampton" target="_blank">Directions</a></div>
-  465     </div>
-  466   </div>
-  467
-  468   <div class="beach-note fade-in">
-  469     ⚠️  Parking and permits vary by town and season. Check official pages before you go.
-  470   </div>
-  471 </div>
-  472
-  473 <!-- ── RESTAURANTS ── -->
-  474 <div class="info-section" id="tab-restaurants">
-  475   <div class="fade-in" style="margin-bottom:56px;">
-  476     <div class="section-label">Local Dining</div>
-  477     <h2 class="section-title">Where to <em>Dine</em></h2>
-  478     <p style="color:var(--cream); max-width:520px; font-size:19px; font-weight:400; margin-top:12px;">Our pers
-      onal picks and local favorites across the Hamptons. <span style="color:var(--gold)">★ Host favorites</span> ar
-      e marked.</p>
-  479   </div>
-  480
-  481   <div class="restaurant-area fade-in">
-  482     <div class="restaurant-area-title">Hampton Bays</div>
-  483     <div class="restaurant-grid">
-  484       <div class="restaurant-card">
-  485         <span class="restaurant-fav">★ Host Favorite</span>
-  486         <div class="restaurant-name">Rumba</div>
-  487         <div class="restaurant-desc">Caribbean-inspired spot on the water with fish tacos and rum drinks.</div
-      >
-  488         <a class="restaurant-link" href="https://www.google.com/maps/search/Rumba+Hampton+Bays" target="_blank
-      ">Find on Map →</a>
-  489       </div>
-  490       <div class="restaurant-card">
-  491         <span class="restaurant-fav">★ Host Favorite</span>
-  492         <div class="restaurant-name">Cowfish</div>
-  493         <div class="restaurant-desc">Waterfront seafood, sushi, and steaks with beautiful canal views.</div>
-  494         <a class="restaurant-link" href="https://www.google.com/maps/search/Cowfish+Hampton+Bays" target="_bla
-      nk">Find on Map →</a>
-  495       </div>
-  496       <div class="restaurant-card">
-  497         <div class="restaurant-name">Edgewater</div>
-  498         <div class="restaurant-desc">Classic Italian with seafood pastas and a family-friendly vibe.</div>
-  499         <a class="restaurant-link" href="https://www.google.com/maps/search/Edgewater+Hampton+Bays" target="_b
-      lank">Find on Map →</a>
-  500       </div>
-  501       <div class="restaurant-card">
-  502         <div class="restaurant-name">Oakland's</div>
-  503         <div class="restaurant-desc">Seasonal marina restaurant for seafood platters and stunning sunsets.</di
-      v>
-  504         <a class="restaurant-link" href="https://www.google.com/maps/search/Oakland%27s+Hampton+Bays" target="
-      _blank">Find on Map →</a>
-  505       </div>
-  506       <div class="restaurant-card">
-  507         <div class="restaurant-name">1 North Steakhouse</div>
-  508         <div class="restaurant-desc">Local steakhouse with hearty cuts and a busy bar scene.</div>
-  509         <a class="restaurant-link" href="https://www.google.com/maps/search/1+North+Steakhouse+Hampton+Bays" t
-      arget="_blank">Find on Map →</a>
-  510       </div>
-  511     </div>
-  512   </div>
-  513
-  514   <div class="restaurant-area fade-in">
-  515     <div class="restaurant-area-title">Southampton</div>
-  516     <div class="restaurant-grid">
-  517       <div class="restaurant-card">
-  518         <div class="restaurant-name">75 Main</div>
-  519         <div class="restaurant-desc">Trendy American bistro with a quintessential Hamptons social vibe.</div>
-  520         <a class="restaurant-link" href="https://www.google.com/maps/search/75+Main+Southampton" target="_blan
-      k">Find on Map →</a>
-  521       </div>
-  522       <div class="restaurant-card">
-  523         <div class="restaurant-name">Sant Ambroeus</div>
-  524         <div class="restaurant-desc">Chic Milan-style café and upscale Italian classics.</div>
-  525         <a class="restaurant-link" href="https://www.google.com/maps/search/Sant+Ambroeus+Southampton" target=
-      "_blank">Find on Map →</a>
-  526       </div>
-  527       <div class="restaurant-card">
-  528         <div class="restaurant-name">Tutto Il Giorno</div>
-  529         <div class="restaurant-desc">Stylish Italian with handmade pastas and garden seating.</div>
-  530         <a class="restaurant-link" href="https://www.google.com/maps/search/Tutto+Il+Giorno+Southampton" targe
-      t="_blank">Find on Map →</a>
-  531       </div>
-  532       <div class="restaurant-card">
-  533         <span class="restaurant-fav">★ Host Favorite</span>
-  534         <div class="restaurant-name">Union Burger Bar</div>
-  535         <div class="restaurant-desc">Casual pub for gourmet burgers and craft beer. Very kid-friendly.</div>
-  536         <a class="restaurant-link" href="https://www.google.com/maps/search/Union+Burger+Bar+Southampton" targ
-      et="_blank">Find on Map →</a>
-  537       </div>
-  538       <div class="restaurant-card">
-  539         <div class="restaurant-name">Le Charlot</div>
-  540         <div class="restaurant-desc">Elegant French bistro with Provençal dishes.</div>
-  541         <a class="restaurant-link" href="https://www.google.com/maps/search/Le+Charlot+Southampton" target="_b
-      lank">Find on Map →</a>
-  542       </div>
-  543     </div>
-  544   </div>
-  545
-  546   <div class="restaurant-area fade-in">
-  547     <div class="restaurant-area-title">Sag Harbor</div>
-  548     <div class="restaurant-grid">
-  549       <div class="restaurant-card">
-  550         <div class="restaurant-name">The American Hotel</div>
-  551         <div class="restaurant-desc">Historic inn with refined French-inspired dining and a legendary wine lis
-      t.</div>
-  552         <a class="restaurant-link" href="https://www.google.com/maps/search/American+Hotel+Sag+Harbor" target=
-      "_blank">Find on Map →</a>
-  553       </div>
-  554       <div class="restaurant-card">
-  555         <span class="restaurant-fav">★ Host Favorite</span>
-  556         <div class="restaurant-name">Le Bilboquet</div>
-  557         <div class="restaurant-desc">Upscale waterfront French-inspired seafood and a lively scene.</div>
-  558         <a class="restaurant-link" href="https://www.google.com/maps/search/Le+Bilboquet+Sag+Harbor" target="_
-      blank">Find on Map →</a>
-  559       </div>
-  560       <div class="restaurant-card">
-  561         <div class="restaurant-name">Lulu Kitchen & Bar</div>
-  562         <div class="restaurant-desc">Modern Mediterranean with wood-fired dishes and tapas.</div>
-  563         <a class="restaurant-link" href="https://www.google.com/maps/search/Lulu+Kitchen+Bar+Sag+Harbor" targe
-      t="_blank">Find on Map →</a>
-  564       </div>
-  565       <div class="restaurant-card">
-  566         <div class="restaurant-name">Page at 63 Main</div>
-  567         <div class="restaurant-desc">Farm-to-table American menu with a lovely garden patio.</div>
-  568         <a class="restaurant-link" href="https://www.google.com/maps/search/Lulu+Kitchen+Bar+Sag+Harbor" targe
-      t="_blank">Find on Map →</a>
-  569       </div>
-  570     </div>
-  571   </div>
-  572
-  573   <div class="restaurant-area fade-in">
-  574     <div class="restaurant-area-title">East Hampton</div>
-  575     <div class="restaurant-grid">
-  576       <div class="restaurant-card">
-  577         <div class="restaurant-name">Nick & Toni's</div>
-  578         <div class="restaurant-desc">Mediterranean-inspired menu and iconic wood-fired pizzas.</div>
-  579         <a class="restaurant-link" href="https://www.google.com/maps/search/Nick+Toni%27s+East+Hampton" target
-      ="_blank">Find on Map →</a>
-  580       </div>
-  581       <div class="restaurant-card">
-  582         <div class="restaurant-name">East Hampton Grill</div>
-  583         <div class="restaurant-desc">Refined American grill known for rotisserie chicken and dry-aged steaks.<
-      /div>
-  584         <a class="restaurant-link" href="https://www.google.com/maps/search/East+Hampton+Grill" target="_blank
-      ">Find on Map →</a>
-  585       </div>
-  586       <div class="restaurant-card">
-  587         <div class="restaurant-name">Cittanuova</div>
-  588         <div class="restaurant-desc">Vibrant trattoria for pasta, pizza, and aperitivos.</div>
-  589         <a class="restaurant-link" href="https://www.google.com/maps/search/Cittanuova+East+Hampton" target="_
-      blank">Find on Map →</a>
-  590       </div>
-  591       <div class="restaurant-card">
-  592         <div class="restaurant-name">Fresno</div>
-  593         <div class="restaurant-desc">Casual-upscale bistro popular for seafood and local wines.</div>
-  594         <a class="restaurant-link" href="https://www.google.com/maps/search/Fresno+East+Hampton" target="_blan
-      k">Find on Map →</a>
-  595       </div>
-  596       <div class="restaurant-card">
-  597         <div class="restaurant-name">Serafina</div>
-  598         <div class="restaurant-desc">Lively outpost serving contemporary Italian favorites.</div>
-  599         <a class="restaurant-link" href="https://www.google.com/maps/search/Serafina+East+Hampton" target="_bl
-      ank">Find on Map →</a>
-  600       </div>
-  601     </div>
-  602   </div>
-  603 </div>
-  604
-  605 <!-- ── TOUR ── -->
-  606 <div class="info-section" id="tab-tour">
-  607   <div class="section-label fade-in">Property Tour</div>
-  608   <h2 class="section-title fade-in">See It <em>In Action</em></h2>
-  609   <div class="rules-grid">
-  610     <div class="rules-card fade-in">
-  611       <div class="rules-card-title">Murphy Bed — Opening</div>
-  612       <video controls muted playsinline style="width:100%;border-radius:4px;margin-top:12px;">
-  613         <source src="/videos/Open_murphy_bed.mp4" type="video/mp4">
-  614       </video>
-  615     </div>
-  616     <div class="rules-card fade-in">
-  617       <div class="rules-card-title">Murphy Bed — Closing</div>
-  618       <video controls muted playsinline style="width:100%;border-radius:4px;margin-top:12px;">
-  619         <source src="/videos/Close_Murphy_Bed.mp4" type="video/mp4">
-  620       </video>
-  621     </div>
-  622   </div>
-  623 </div>
-  624
-  625 <footer>
-  626   <div class="footer-grid">
-  627     <div>
-  628       <div class="footer-brand">
-  629         <img src="/favicon.png" alt="" />
-  630         <span class="footer-brand-name">Stay The Hamptons</span>
-  631       </div>
-  632       <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
-  633     </div>
-  634     <div class="footer-col">
-  635       <h4>Navigate</h4>
-  636       <ul>
-  637         <li><a href="/">Home</a></li>
-  638         <li><a href="/gallery.html">Gallery</a></li>
-  639         <li><a href="/info.html">Info & Rules</a></li>
-  640         <li><a href="/book.html">Book Now</a></li>
-  641         <li><a href="/reviews.html">Reviews</a></li>
-  642       </ul>
-  643     </div>
-  644     <div class="footer-col">
-  645       <h4>Contact</h4>
-  646       <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
-  647     </div>
-  648     <div class="footer-col">
-  649       <h4>Also Listed On</h4>
-  650       <ul>
-  651         <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
-  652         <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
-  653       </ul>
-  654     </div>
-  655   </div>
-  656   <div class="footer-bottom">
-  657     <span>© 2026 Stay The Hamptons. All rights reserved.</span>
-  658     <div class="footer-listing-links">
-  659       <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
-  660       <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
-  661     </div>
-  662   </div>
-  663 </footer>
-  664
-  665 <script src="/js/main.js"></script>
-  666 <script>
-  667 document.querySelectorAll('.info-tab').forEach(tab => {
-  668   tab.addEventListener('click', () => {
-  669     document.querySelectorAll('.info-tab').forEach(t => t.classList.remove('active'));
-  670     document.querySelectorAll('.info-section').forEach(s => s.classList.remove('active'));
-  671     tab.classList.add('active');
-  672     document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
-  673     // Re-trigger fade-ins
-  674     document.querySelectorAll('.info-section.active .fade-in').forEach(el => {
-  675       const obs = new IntersectionObserver(entries => {
-  676         entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.targ
-      et); } });
-  677       }, { threshold: 0.05 });
-  678       obs.observe(el);
-  679     });
-  680   });
-  681 });
-  682 </script>
-  683 </body>
-  684 </html>
+  <!DOCTYPE html>                                                                                                      
+  <html lang="en">                                                                                                     
+  <head>
+    <meta charset="UTF-8" />                                                                                           
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>House Info & Local Guide — Stay The Hamptons | Hampton Bays</title>                                         
+    <meta name="description" content="House rules, Wi-Fi, check-in info, and a curated local guide to the best Hamptons
+   beaches and restaurants near our Hampton Bays vacation rental." />                                                  
+    <link rel="canonical" href="https://staythehamptons.com/info.html" />                                              
+    <link rel="icon" type="image/png" href="/favicon.png" />                                                           
+    <meta property="og:type" content="website" />                                                                      
+    <meta property="og:title" content="House Info & Local Guide — Stay The Hamptons" />
+    <meta property="og:description" content="House rules, check-in info, and a curated local guide to the best Hamptons
+   beaches and restaurants." />                                                                                        
+    <meta property="og:url" content="https://staythehamptons.com/info.html" />                                         
+    <meta property="og:image" content="https://staythehamptons.com/images/pool1.webp" />                               
+    <meta name="twitter:card" content="summary_large_image" />                                                         
+    <meta name="twitter:image" content="https://staythehamptons.com/images/pool1.webp" />                              
+    <link rel="stylesheet" href="/css/style.css" />                                                                    
+    <style>                                                                                                            
+      .info-hero {                                          
+        padding: 160px 48px 80px;                                                                                      
+        background: var(--dark);                            
+        border-bottom: 1px solid var(--border);                                                                        
+      }
+                                                                                                                       
+      .info-tabs {                                          
+        display: flex;
+        border-bottom: 1px solid var(--border);                                                                        
+        padding: 0 48px;
+        background: var(--dark);                                                                                       
+        position: sticky;                                   
+        top: 64px;                                                                                                     
+        z-index: 100;
+        overflow-x: auto;                                                                                              
+      }                                                     
+
+      .info-tab {                                                                                                      
+        padding: 20px 28px;
+        font-size: 11px;                                                                                               
+        letter-spacing: 0.2em;                              
+        text-transform: uppercase;
+        color: var(--text-muted);
+        cursor: pointer;                                                                                               
+        border-bottom: 2px solid transparent;
+        transition: all 0.2s;                                                                                          
+        white-space: nowrap;                                
+        background: none;                                                                                              
+        border-left: none;
+        border-right: none;                                                                                            
+        border-top: none;                                   
+        font-family: 'Jost', sans-serif;                                                                               
+      }
+                                                                                                                       
+      .info-tab.active,                                                                                                
+      .info-tab:hover {
+        color: var(--gold);                                                                                            
+        border-bottom-color: var(--gold);                   
+      }
+                                                                                                                       
+      .info-section {
+        display: none;                                                                                                 
+        padding: 80px 48px;                                 
+      }
+
+      .info-section.active { display: block; }
+
+      .rules-grid {                                                                                                    
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));                                                  
+        gap: 2px;                                           
+        margin-top: 48px;                                                                                              
+      }
+                                                                                                                       
+      .rules-card {                                         
+        background: var(--dark);
+        padding: 36px;
+      }                                                                                                                
+  
+      .rules-card-icon {                                                                                               
+        font-size: 28px;                                    
+        margin-bottom: 16px;
+      }                                                                                                                
+  
+      .rules-card-title {                                                                                              
+        font-family: 'Cormorant Garamond', serif;           
+        font-size: 22px;
+        color: var(--gold-light);
+        margin-bottom: 16px;                                                                                           
+      }
+                                                                                                                       
+      .rules-list {                                         
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;                                                                                                     
+      }
+                                                                                                                       
+      .rules-list li {                                      
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-size: 17px;                                                                                               
+        color: var(--cream);
+        line-height: 1.6;                                                                                              
+      }                                                     
+
+      .rules-list li::before {                                                                                         
+        content: '—';
+        color: var(--gold-dim);                                                                                        
+        flex-shrink: 0;                                     
+      }
+
+      .beaches-intro {                                                                                                 
+        max-width: 640px;
+        margin-bottom: 56px;                                                                                           
+      }                                                     
+
+      .beaches-intro p {                                                                                               
+        color: var(--cream);
+        font-size: 19px;                                                                                               
+        font-weight: 400;                                   
+        margin-top: 12px;
+      }
+
+      .beach-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2px;                                                                                                      
+      }
+                                                                                                                       
+      .beach-card {                                         
+        background: var(--dark);
+        padding: 32px;
+        transition: background 0.2s;
+      }                                                                                                                
+  
+      .beach-card:hover { background: var(--dark2); }                                                                  
+                                                            
+      .beach-name {                                                                                                    
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 22px;                                                                                               
+        color: var(--cream);                                
+        margin-bottom: 8px;
+      }
+
+      .beach-desc {
+        font-size: 17px;
+        color: var(--cream);
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+                                                                                                                       
+      .beach-links {
+        display: flex;                                                                                                 
+        gap: 12px;                                          
+      }
+
+      .beach-link {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;                                                                                     
+        color: var(--gold);
+        border-bottom: 1px solid transparent;                                                                          
+        transition: border-color 0.2s;                      
+      }                                                                                                                
+  
+      .beach-link:hover { border-bottom-color: var(--gold); }                                                          
+                                                            
+      .beach-note {
+        margin-top: 32px;
+        padding: 20px 24px;                                                                                            
+        background: var(--dark2);
+        border-left: 2px solid var(--gold-dim);                                                                        
+        font-size: 17px;                                                                                               
+        color: var(--cream);
+      }                                                                                                                
+                                                            
+      .restaurant-area {                                                                                               
+        margin-bottom: 56px;
+      }                                                                                                                
+                                                            
+      .restaurant-area-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 28px;                                                                                               
+        color: var(--gold-light);
+        margin-bottom: 20px;                                                                                           
+        padding-bottom: 16px;                               
+        border-bottom: 1px solid var(--border);                                                                        
+      }
+                                                                                                                       
+      .restaurant-grid {                                    
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2px;                                                                                                      
+      }
+                                                                                                                       
+      .restaurant-card {                                    
+        background: var(--dark);
+        padding: 28px;
+        transition: background 0.2s;
+        position: relative;
+      }                                                                                                                
+  
+      .restaurant-card:hover { background: var(--dark2); }                                                             
+                                                            
+      .restaurant-fav {
+        position: absolute;
+        top: 20px;
+        right: 20px;                                                                                                   
+        font-size: 10px;
+        letter-spacing: 0.15em;                                                                                        
+        text-transform: uppercase;                          
+        color: var(--gold);
+        background: rgba(201,169,110,0.1);                                                                             
+        border: 1px solid var(--gold-dim);
+        padding: 3px 8px;                                                                                              
+      }                                                     
+                                                                                                                       
+      .restaurant-name {                                    
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 20px;
+        color: var(--cream);
+        margin-bottom: 6px;
+      }
+
+      .restaurant-desc {
+        font-size: 17px;
+        color: var(--cream);
+        line-height: 1.7;                                                                                              
+        margin-bottom: 14px;
+      }                                                                                                                
+                                                            
+      .restaurant-link {
+        font-size: 10px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;                                                                                     
+        color: var(--gold);
+        border-bottom: 1px solid transparent;                                                                          
+        transition: border-color 0.2s;                      
+      }
+
+      .restaurant-link:hover { border-bottom-color: var(--gold); }
+
+      @media (max-width: 768px) {
+        .info-hero { padding: 120px 24px 60px; }
+        .info-tabs { padding: 0 24px; }                                                                                
+        .info-section { padding: 60px 24px; }
+      }                                                                                                                
+    </style>                                                
+  </head>                                                                                                              
+  <body>
+                                                                                                                       
+  <nav>                                                     
+    <a href="/" class="nav-logo">
+      <img src="/favicon.png" alt="Stay The Hamptons" />
+      <span class="nav-logo-text">Stay The Hamptons</span>                                                             
+    </a>
+    <ul class="nav-links">                                                                                             
+      <li><a href="/">Home</a></li>                         
+      <li><a href="/gallery.html">Gallery</a></li>                                                                     
+      <li><a href="/info.html">Info</a></li>
+      <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>                                                  
+      <li><a href="/reviews.html">Reviews</a></li>                                                                     
+    </ul>                                                                                                              
+    <div class="nav-hamburger"><span></span><span></span><span></span></div>                                           
+  </nav>                                                                                                               
+                                                            
+  <div class="info-hero fade-in">                                                                                      
+    <div class="section-label">Your Guide</div>
+    <h1 class="section-title">House Info &<br><em>Local Discoveries</em></h1>                                          
+    <p style="color:var(--cream); max-width:520px; margin-top:12px; font-size:19px; font-weight:400;">Everything you   
+  need for a seamless stay — from house rules and Wi-Fi to the best beaches and restaurants in the Hamptons.</p>       
+  </div>                                                                                                               
+                                                                                                                       
+  <div class="info-tabs">                                   
+    <button class="info-tab active" data-tab="rules">House Info & Rules</button>
+    <button class="info-tab" data-tab="beaches">Beaches</button>                                                       
+    <button class="info-tab" data-tab="restaurants">Restaurants</button>
+    <button class="info-tab" data-tab="tour">Tour</button>                                                             
+  </div>                                                    
+                                                                                                                       
+  <!-- ── HOUSE RULES ── -->                                                                                           
+  <div class="info-section active" id="tab-rules">
+    <div class="section-label fade-in">House Info & Rules</div>                                                        
+    <h2 class="section-title fade-in">Everything You<br><em>Need to Know</em></h2>                                     
+    <div class="rules-grid">                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-icon">📶</div>               
+        <div class="rules-card-title">Wi-Fi</div>                                                                      
+        <ul class="rules-list">
+          <li>Network: <strong style="color:var(--cream)">staythehamptons</strong></li>                                
+          <li>Password provided after booking</li>                                                                     
+          <li>Full coverage throughout house, office, and pool patio</li>                                              
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                      
+        <div class="rules-card-icon">🔑</div>
+        <div class="rules-card-title">Check In & Out</div>                                                             
+        <ul class="rules-list">
+          <li>Check in after 4:00 PM</li>                                                                              
+          <li>Check out by 11:00 AM</li>                                                                               
+          <li>Smart lock code sent morning of arrival</li>                                                             
+          <li>Before leaving: run the dishwasher and take trash to outdoor bins</li>                                   
+        </ul>                                                                                                          
+      </div>                                                
+                                                                                                                       
+      <div class="rules-card fade-in">                      
+        <div class="rules-card-icon">🗑️ </div>
+        <div class="rules-card-title">Garbage & Recycling</div>                                                        
+        <ul class="rules-list">
+          <li>Bins on the side of the house near the driveway</li>                                                     
+          <li>Trash pickup: Tuesday only</li>                                                                          
+          <li>Recycling: Wednesday</li>                                                                                
+          <li>Break down boxes and rinse cans and bottles</li>                                                         
+        </ul>                                                                                                          
+      </div>                                                
+                                                                                                                       
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-icon">💡</div>
+        <div class="rules-card-title">Lighting & HVAC</div>                                                            
+        <ul class="rules-list">                             
+          <li>Most lights are on dimmers — slide to adjust brightness</li>                                             
+          <li>Pool and patio lights: switches near the back sliders</li>                                               
+          <li>Thermostats: keep between 68–74°F for comfort and efficiency</li>                                        
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                      
+        <div class="rules-card-icon">🏊</div>                                                                          
+        <div class="rules-card-title">Pool & Outdoor</div>  
+        <ul class="rules-list">                                                                                        
+          <li>Saltwater pool with weekly service — serviced every Thursday</li>
+          <li>6 beach chairs and 1 umbrella are available in the garage, on the stairs leading up to the gym</li>      
+          <li>Outdoor shower by the garage walkway</li>                                                                
+          <li>Close umbrellas and secure cushions if windy</li>                                                        
+          <li>Only plastic glasses, cups, and plates permitted at the pool and patio</li>                              
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                      
+        <div class="rules-card-icon">🚗</div>
+        <div class="rules-card-title">Parking</div>                                                                    
+        <ul class="rules-list">
+          <li>Driveway fits 5 cars</li>                                                                                
+          <li>Garage access only if noted in your booking</li>                                                         
+          <li>Avoid street parking — local signs apply</li>                                                            
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                            
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-icon">💻</div>               
+        <div class="rules-card-title">Home Office</div>
+        <ul class="rules-list">                                                                                        
+          <li>Dedicated desk in a quiet room with natural light</li>
+          <li>Fast Wi-Fi with strong signal in office and common areas</li>                                            
+          <li>Standard outlets and a surge-protected power strip</li>                                                  
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-icon">🏋️ </div>
+        <div class="rules-card-title">Gym</div>                                                                        
+        <ul class="rules-list">                             
+          <li>Accessible via the side door of the garage, up the stairs</li>
+          <li>Equipment: exercise bike, multi-station gym, dumbbells, and weight bench</li>                            
+          <li>Towels and a water cooler are provided</li>                                                              
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-icon">🚨</div>
+        <div class="rules-card-title">Emergency</div>                                                                  
+        <ul class="rules-list">                             
+          <li>Dial 911 for emergencies</li>                                                                            
+          <li>Urgent home issues: use host phone number in your arrival email</li>
+          <li>Nearest hospital: Stony Brook Southampton Hospital (~20 min west)</li>                                   
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+      <div class="rules-card fade-in" style="border-left: 2px solid var(--gold);">                                     
+        <div class="rules-card-icon">📋</div>               
+        <div class="rules-card-title">House Rules</div>                                                                
+        <ul class="rules-list">
+          <li>No parties and no smoking</li>                                                                           
+          <li>No pets unless approved before booking</li>                                                              
+          <li>Quiet hours after 10:00 PM per town guidance</li>                                                        
+          <li>Only plastic glasses, cups, plates, and dishes permitted at pool and patio</li>                          
+        </ul>                                                                                                          
+      </div>                                                                                                           
+                                                                                                                       
+    </div>                                                  
+  </div>
+
+  <!-- ── BEACHES ── -->
+  <div class="info-section" id="tab-beaches">
+    <div class="beaches-intro fade-in">                                                                                
+      <div class="section-label">Local Beaches</div>
+      <h2 class="section-title">Hamptons<br><em>Beaches</em></h2>                                                      
+      <p>From the wide Atlantic shores of Southampton to the calm bay beaches nearby, the Hamptons offers some of the  
+  finest coastline in the Northeast.</p>                                                                               
+    </div>                                                                                                             
+                                                                                                                       
+    <div class="beach-list">                                
+      <div class="beach-card fade-in">
+        <div class="beach-name">Ponquogue Beach</div>                                                                  
+        <div class="beach-desc">Wide ocean beach with soft sand and seasonal facilities.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Ponquogue+Beach+Hampton+Bays" target="_blank">Directions</a></div>          
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Tiana Beach</div>           
+        <div class="beach-desc">Family-friendly ocean spot with pavilion area and gentle surf.</div>                   
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Tiana+Beach+Hampton+Bays" target="_blank">Directions</a></div>              
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Meschutt Beach County Park</div>
+        <div class="beach-desc">Bay beach with calmer water and easy food options.</div>                               
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Meschutt+Beach+County+Park" target="_blank">Directions</a></div>            
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Shinnecock East County Park</div>
+        <div class="beach-desc">Natural oceanfront near the inlet with fewer structures and open dunes.</div>          
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Shinnecock+East+County+Park" target="_blank">Directions</a></div>           
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Coopers Beach</div>         
+        <div class="beach-desc">Southampton flagship beach with services and long shoreline walks.</div>               
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Coopers+Beach+Southampton" target="_blank">Directions</a></div>             
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Old Town Beach</div>        
+        <div class="beach-desc">Quieter option south of the village with classic ocean views.</div>                    
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Old+Town+Beach+Southampton" target="_blank">Directions</a></div>            
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Flying Point Beach</div>    
+        <div class="beach-desc">Water Mill favorite with a broad beach face and relaxed feel.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Flying+Point+Beach+Water+Mill" target="_blank">Directions</a></div>         
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Foster Memorial Beach (Long Beach)</div>
+        <div class="beach-desc">Sag Harbor bay beach with calm water and gorgeous sunset views.</div>                  
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Foster+Memorial+Beach+Sag+Harbor" target="_blank">Directions</a></div>      
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Main Beach, East Hampton</div>
+        <div class="beach-desc">Iconic village ocean beach with lifeguards, dunes, and the classic Hamptons feel.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Main+Beach+East+Hampton" target="_blank">Directions</a></div>               
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Indian Wells Beach</div>                                                               
+        <div class="beach-desc">Amagansett favorite with long open beach and seasonal facilities.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Indian+Wells+Beach+Amagansett" target="_blank">Directions</a></div>         
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Georgica Beach</div>        
+        <div class="beach-desc">Beautiful stretch near Georgica Pond with a quieter, more private vibe.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Georgica+Beach+East+Hampton" target="_blank">Directions</a></div>           
+      </div>                                                                                                           
+      <div class="beach-card fade-in">                                                                                 
+        <div class="beach-name">Two Mile Hollow Beach</div> 
+        <div class="beach-desc">Less crowded village beach with wide Atlantic shoreline.</div>
+        <div class="beach-links"><a class="beach-link"                                                                 
+  href="https://www.google.com/maps/search/Two+Mile+Hollow+Beach+East+Hampton" target="_blank">Directions</a></div>    
+      </div>                                                                                                           
+    </div>                                                                                                             
+                                                            
+    <div class="beach-note fade-in">
+      ⚠️  Parking and permits vary by town and season. Check official pages before you go.
+    </div>                                                                                                             
+  </div>
+                                                                                                                       
+  <!-- ── RESTAURANTS ── -->                                
+  <div class="info-section" id="tab-restaurants">
+    <div class="fade-in" style="margin-bottom:56px;">
+      <div class="section-label">Local Dining</div>                                                                    
+      <h2 class="section-title">Where to <em>Dine</em></h2>
+      <p style="color:var(--cream); max-width:520px; font-size:19px; font-weight:400; margin-top:12px;">Our personal   
+  picks and local favorites across the Hamptons. <span style="color:var(--gold)">★ Host favorites</span> are           
+  marked.</p>                                                                                                          
+    </div>                                                                                                             
+                                                            
+    <div class="restaurant-area fade-in">                                                                              
+      <div class="restaurant-area-title">Hampton Bays</div>
+      <div class="restaurant-grid">                                                                                    
+        <div class="restaurant-card">                       
+          <span class="restaurant-fav">★ Host Favorite</span>
+          <div class="restaurant-name">Rumba</div>                                                                     
+          <div class="restaurant-desc">Caribbean-inspired spot on the water with fish tacos and rum drinks.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Rumba+Hampton+Bays" target="_blank">Find 
+  on Map →</a>                                                                                                         
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <span class="restaurant-fav">★ Host Favorite</span>
+          <div class="restaurant-name">Cowfish</div>                                                                   
+          <div class="restaurant-desc">Waterfront seafood, sushi, and steaks with beautiful canal views.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Cowfish+Hampton+Bays"                    
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Edgewater</div>      
+          <div class="restaurant-desc">Classic Italian with seafood pastas and a family-friendly vibe.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Edgewater+Hampton+Bays"                  
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Oakland's</div>                                                                 
+          <div class="restaurant-desc">Seasonal marina restaurant for seafood platters and stunning sunsets.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Oakland%27s+Hampton+Bays"                
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">1 North Steakhouse</div>
+          <div class="restaurant-desc">Local steakhouse with hearty cuts and a busy bar scene.</div>                   
+          <a class="restaurant-link" href="https://www.google.com/maps/search/1+North+Steakhouse+Hampton+Bays"         
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+      </div>                                                                                                           
+    </div>                                                  
+
+    <div class="restaurant-area fade-in">
+      <div class="restaurant-area-title">Southampton</div>
+      <div class="restaurant-grid">                                                                                    
+        <div class="restaurant-card">
+          <div class="restaurant-name">75 Main</div>                                                                   
+          <div class="restaurant-desc">Trendy American bistro with a quintessential Hamptons social vibe.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/75+Main+Southampton" target="_blank">Find
+   on Map →</a>                                                                                                        
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Sant Ambroeus</div>  
+          <div class="restaurant-desc">Chic Milan-style café and upscale Italian classics.</div>                       
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Sant+Ambroeus+Southampton"               
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Tutto Il Giorno</div>
+          <div class="restaurant-desc">Stylish Italian with handmade pastas and garden seating.</div>                  
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Tutto+Il+Giorno+Southampton"             
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <span class="restaurant-fav">★ Host Favorite</span>
+          <div class="restaurant-name">Union Burger Bar</div>                                                          
+          <div class="restaurant-desc">Casual pub for gourmet burgers and craft beer. Very kid-friendly.</div>         
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Union+Burger+Bar+Southampton"            
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Le Charlot</div>     
+          <div class="restaurant-desc">Elegant French bistro with Provençal dishes.</div>                              
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Le+Charlot+Southampton" 
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                              
+      </div>                                                                                                           
+    </div>                                                  
+                                                                                                                       
+    <div class="restaurant-area fade-in">
+      <div class="restaurant-area-title">Sag Harbor</div>                                                              
+      <div class="restaurant-grid">                         
+        <div class="restaurant-card">
+          <div class="restaurant-name">The American Hotel</div>
+          <div class="restaurant-desc">Historic inn with refined French-inspired dining and a legendary wine           
+  list.</div>                                                                                                          
+          <a class="restaurant-link" href="https://www.google.com/maps/search/American+Hotel+Sag+Harbor"               
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                              
+        <div class="restaurant-card">                                                                                  
+          <span class="restaurant-fav">★ Host Favorite</span>                                                          
+          <div class="restaurant-name">Le Bilboquet</div>
+          <div class="restaurant-desc">Upscale waterfront French-inspired seafood and a lively scene.</div>            
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Le+Bilboquet+Sag+Harbor"                 
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Lulu Kitchen & Bar</div>
+          <div class="restaurant-desc">Modern Mediterranean with wood-fired dishes and tapas.</div>                    
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Lulu+Kitchen+Bar+Sag+Harbor"             
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Page at 63 Main</div>
+          <div class="restaurant-desc">Farm-to-table American menu with a lovely garden patio.</div>                   
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Page+63+Main+Sag+Harbor"                 
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+      </div>                                                                                                           
+    </div>                                                  
+                                                                                                                       
+    <div class="restaurant-area fade-in">
+      <div class="restaurant-area-title">East Hampton</div>                                                            
+      <div class="restaurant-grid">                         
+        <div class="restaurant-card">
+          <div class="restaurant-name">Nick & Toni's</div>
+          <div class="restaurant-desc">Mediterranean-inspired menu and iconic wood-fired pizzas.</div>                 
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Nick+Toni%27s+East+Hampton"              
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">East Hampton Grill</div>
+          <div class="restaurant-desc">Refined American grill known for rotisserie chicken and dry-aged steaks.</div>  
+          <a class="restaurant-link" href="https://www.google.com/maps/search/East+Hampton+Grill" target="_blank">Find 
+  on Map →</a>                                                                                                         
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Cittanuova</div>
+          <div class="restaurant-desc">Vibrant trattoria for pasta, pizza, and aperitivos.</div>                       
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Cittanuova+East+Hampton"                 
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Fresno</div>         
+          <div class="restaurant-desc">Casual-upscale bistro popular for seafood and local wines.</div>                
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Fresno+East+Hampton" target="_blank">Find
+   on Map →</a>                                                                                                        
+        </div>                                                                                                         
+        <div class="restaurant-card">                                                                                  
+          <div class="restaurant-name">Serafina</div>       
+          <div class="restaurant-desc">Lively outpost serving contemporary Italian favorites.</div>
+          <a class="restaurant-link" href="https://www.google.com/maps/search/Serafina+East+Hampton"                   
+  target="_blank">Find on Map →</a>                                                                                    
+        </div>                                                                                                         
+      </div>                                                                                                           
+    </div>                                                  
+  </div>
+
+  <!-- ── TOUR ── -->                                                                                                  
+  <div class="info-section" id="tab-tour">
+    <div class="section-label fade-in">Property Tour</div>                                                             
+    <h2 class="section-title fade-in">See It <em>In Action</em></h2>
+    <div class="rules-grid">                                                                                           
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-title">Murphy Bed — Opening</div>                                                       
+        <video controls muted playsinline style="width:100%;border-radius:4px;margin-top:12px;">                       
+          <source src="/videos/Open_murphy_bed.mp4" type="video/mp4">                                                  
+        </video>                                                                                                       
+      </div>                                                                                                           
+      <div class="rules-card fade-in">                                                                                 
+        <div class="rules-card-title">Murphy Bed — Closing</div>
+        <video controls muted playsinline style="width:100%;border-radius:4px;margin-top:12px;">                       
+          <source src="/videos/Close_Murphy_Bed.mp4" type="video/mp4">
+        </video>                                                                                                       
+      </div>                                                
+    </div>                                                                                                             
+  </div>                                                    
+
+  <footer>                                                                                                             
+    <div class="footer-grid">
+      <div>                                                                                                            
+        <div class="footer-brand">                          
+          <img src="/favicon.png" alt="" />
+          <span class="footer-brand-name">Stay The Hamptons</span>                                                     
+        </div>                                                                                                         
+        <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>                            
+      </div>                                                                                                           
+      <div class="footer-col">                              
+        <h4>Navigate</h4>                                                                                              
+        <ul>                                                                                                           
+          <li><a href="/">Home</a></li>
+          <li><a href="/gallery.html">Gallery</a></li>                                                                 
+          <li><a href="/info.html">Info & Rules</a></li>                                                               
+          <li><a href="/book.html">Book Now</a></li>
+          <li><a href="/reviews.html">Reviews</a></li>                                                                 
+        </ul>                                               
+      </div>                                                                                                           
+      <div class="footer-col">                              
+        <h4>Contact</h4>
+        <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+      </div>                                                                                                           
+      <div class="footer-col">
+        <h4>Also Listed On</h4>                                                                                        
+        <ul>                                                
+          <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>                           
+          <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>                                     
+        </ul>                                                                                                          
+      </div>                                                                                                           
+    </div>                                                  
+    <div class="footer-bottom">                                                                                        
+      <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+      <div class="footer-listing-links">
+        <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>                                      
+        <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+      </div>                                                                                                           
+    </div>                                                  
+  </footer>                                                                                                            
+                                                            
+  <script src="/js/main.js"></script>                                                                                  
+  <script>
+  document.querySelectorAll('.info-tab').forEach(tab => {                                                              
+    tab.addEventListener('click', () => {                   
+      document.querySelectorAll('.info-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.info-section').forEach(s => s.classList.remove('active'));                           
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');                                       
+      document.querySelectorAll('.info-section.active .fade-in').forEach(el => {                                       
+        const obs = new IntersectionObserver(entries => {                                                              
+          entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } 
+  });                                                                                                                  
+        }, { threshold: 0.05 });                            
+        obs.observe(el);                                                                                               
+      });                                                   
+    });                                                                                                                
+  });                                                       
+  </script>
+  </body>
+  </html>
