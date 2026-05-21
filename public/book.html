@@ -308,7 +308,7 @@
       <div class="inquiry-title">Request a Booking</div>                                                                                                     
       <p class="inquiry-sub">Fill out the form and we'll get back to you quickly to confirm availability and next steps.</p>
                                                                                                                                                              
-      <form id="inquiry-form" name="booking-inquiry" action="/test/thanks.html" method="POST" data-netlify="true">
+      <form id="inquiry-form" name="booking-inquiry" action="/thanks.html" method="POST" data-netlify="true">
         <input type="hidden" name="form-name" value="booking-inquiry" />                                                                                     
                                                                                                                                                              
         <div class="form-row">
@@ -486,6 +486,14 @@
     if (location.search.includes('sent=1')) {                                                                                                                
       document.getElementById('form-success').style.display = 'block';
     }                                                                                                                                                        
-  </script>                                                 
+  </script>
+  <script>
+    document.getElementById('inquiry-form').addEventListener('submit', function() {
+      gtag('event', 'generate_lead', {
+        currency: 'USD',
+        value: 7000
+      });
+    });
+  </script>
   </body>
   </html>
