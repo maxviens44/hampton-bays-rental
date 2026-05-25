@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MJTWQ3QXH1"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-MJTWQ3QXH1');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You for Your Review — Stay The Hamptons</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .thanks-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 48px 80px;
+      text-align: center;
+      background: var(--black);
+    }
+    .thanks-label {
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+    }
+    .thanks-label::before, .thanks-label::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--gold);
+    }
+    .thanks-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(48px, 6vw, 80px);
+      font-weight: 300;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+    .thanks-title em { font-style: italic; color: var(--gold-light); }
+    .thanks-divider { width: 60px; height: 1px; background: var(--gold-dim); margin: 0 auto 32px; }
+    .thanks-message { font-size: 16px; color: var(--cream-dim); max-width: 480px; line-height: 1.8; margin-bottom: 48px; }
+    .thanks-actions { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+    @media (max-width: 768px) { .thanks-page { padding: 100px 24px 60px; } }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <img src="/favicon.png" alt="Stay The Hamptons" />
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/gallery.html">Gallery</a></li>
+    <li><a href="/info.html">Info</a></li>
+    <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="/reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="thanks-page">
+  <div class="thanks-label">Review Received</div>
+  <h1 class="thanks-title">Thank You for<br><em>Your Review</em></h1>
+  <div class="thanks-divider"></div>
+  <p class="thanks-message">Your review has been submitted and will be verified by our host before appearing on the site. We truly appreciate you sharing your experience.</p>
+  <div class="thanks-actions">
+    <a href="/" class="btn-gold btn-gold-fill">Back to Home</a>
+    <a href="/book.html" class="btn-gold">Check Availability</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/gallery.html">Gallery</a></li>
+        <li><a href="/info.html">Info & Rules</a></li>
+        <li><a href="/book.html">Book Now</a></li>
+        <li><a href="/reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+    <div class="footer-col">
+      <h4>Also Listed On</h4>
+      <ul>
+        <li><a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a></li>
+        <li><a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+    <div class="footer-listing-links">
+      <a href="https://airbnb.com/h/staythehamptons" target="_blank">Airbnb</a>
+      <a href="https://www.vrbo.com/5031363" target="_blank">VRBO</a>
+    </div>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+</body>
+</html>

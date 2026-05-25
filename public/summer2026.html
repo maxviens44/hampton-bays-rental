@@ -49,7 +49,7 @@
     "aggregateRating": {
       "@type": "AggregateRating",
       "ratingValue": "5.0",
-      "reviewCount": "3",
+      "reviewCount": "4",
       "bestRating": "5"
     },
     "makesOffer": {
@@ -163,7 +163,7 @@
       gap: 20px;
     }
 
-    .summer-feature-icon { font-size: 26px; flex-shrink: 0; }
+    .summer-feature-icon { font-size: 18px; color: var(--gold); flex-shrink: 0; line-height: 1.4; }
 
     .summer-feature-title {
       font-family: 'Cormorant Garamond', serif;
@@ -305,7 +305,7 @@
 <!-- ── HERO ── -->
 <div class="summer-hero">
   <div style="position: relative; z-index: 1; max-width: 760px;">
-    <div class="summer-badge">🌊 Hampton Bays, New York · Summer 2026</div>
+    <div class="summer-badge">Hampton Bays, New York · Summer 2026</div>
     <h1 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(44px, 6vw, 80px); font-weight: 300; line-height: 1.05; color: var(--white); margin-bottom: 24px;">
       Your Hamptons Summer<br><em style="font-style: italic; color: var(--gold-light);">Starts Here</em>
     </h1>
@@ -354,28 +354,28 @@
     <p style="color: var(--cream); font-size: 16px; line-height: 1.8; margin-top: 20px; margin-bottom: 32px;">This classic cedar shingle estate in Hampton Bays is designed for summer. The heated saltwater pool opens directly from the vaulted great room, the chef's kitchen handles any size gathering, and the primary suite's bay-view balcony makes every morning feel like a vacation.</p>
     <div class="summer-features">
       <div class="summer-feature">
-        <div class="summer-feature-icon">🏊</div>
+        <div class="summer-feature-icon">—</div>
         <div>
           <div class="summer-feature-title">Heated Saltwater Pool</div>
           <div class="summer-feature-desc">Pool patio with outdoor shower, direct access from the great room</div>
         </div>
       </div>
       <div class="summer-feature">
-        <div class="summer-feature-icon">🍳</div>
+        <div class="summer-feature-icon">—</div>
         <div>
           <div class="summer-feature-title">Chef's Kitchen</div>
           <div class="summer-feature-desc">Viking appliances, Quartzite counters, and island seating for the whole group</div>
         </div>
       </div>
       <div class="summer-feature">
-        <div class="summer-feature-icon">🌊</div>
+        <div class="summer-feature-icon">—</div>
         <div>
           <div class="summer-feature-title">5 Min to Beaches</div>
           <div class="summer-feature-desc">Cooper's Beach — rated #1 in the US — is 12 min away. Tiana Beach is even closer.</div>
         </div>
       </div>
       <div class="summer-feature">
-        <div class="summer-feature-icon">🛏️</div>
+        <div class="summer-feature-icon">—</div></div>
         <div>
           <div class="summer-feature-title">Primary Suite</div>
           <div class="summer-feature-desc">Entire north wing, spa bath with jacuzzi, bay-view balcony</div>
@@ -384,6 +384,20 @@
     </div>
   </div>
 </div>
+
+<!-- ── AVAILABILITY ── -->
+<section style="background: var(--dark); border-top: 1px solid var(--border); padding: 80px 48px;">
+  <div class="fade-in" style="max-width: 560px; margin-bottom: 48px;">
+    <div class="section-label">Availability</div>
+    <h2 class="section-title">Check <em>Availability</em></h2>
+    <p style="color: var(--cream); font-size: 16px; margin-top: 16px; line-height: 1.7;">Browse open dates and nightly rates below. Greyed dates are reserved. <span style="color:var(--gold);">From $1,520 / night.</span></p>
+  </div>
+  <div id="summer-calendar" class="fade-in"></div>
+  <div style="margin-top: 32px; display: flex; gap: 16px; flex-wrap: wrap;" class="fade-in">
+    <a href="/book.html" class="btn-gold btn-gold-fill">Check Availability</a>
+    <a href="mailto:admin@staythehamptons.com" class="btn-gold">Email Us Directly</a>
+  </div>
+</section>
 
 <!-- ── RATES ── -->
 <div class="summer-rates">
@@ -427,22 +441,22 @@
     </div>
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 2px;" class="fade-in">
       <div style="background: var(--dark); padding: 28px;">
-        <div style="font-size: 22px; margin-bottom: 12px;">🏖️</div>
+        <div style="font-size:16px; color:var(--gold); margin-bottom:12px;">—</div>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-light); margin-bottom: 8px;">Cooper's Beach</div>
         <div style="font-size: 13px; color: var(--text-muted);">Rated #1 beach in the United States — 12 min drive</div>
       </div>
       <div style="background: var(--dark); padding: 28px;">
-        <div style="font-size: 22px; margin-bottom: 12px;">⛳</div>
+        <div style="font-size:16px; color:var(--gold); margin-bottom:12px;">—</div>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-light); margin-bottom: 8px;">Shinnecock Hills</div>
         <div style="font-size: 13px; color: var(--text-muted);">Host of the 2026 US Open — ~10 min drive</div>
       </div>
       <div style="background: var(--dark); padding: 28px;">
-        <div style="font-size: 22px; margin-bottom: 12px;">🛍️</div>
+        <div style="font-size:16px; color:var(--gold); margin-bottom:12px;">—</div>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-light); margin-bottom: 8px;">Southampton Village</div>
         <div style="font-size: 13px; color: var(--text-muted);">Dining, shops, and farmers market — ~10 min</div>
       </div>
       <div style="background: var(--dark); padding: 28px;">
-        <div style="font-size: 22px; margin-bottom: 12px;">🍽️</div>
+        <div style="font-size:16px; color:var(--gold); margin-bottom:12px;">—</div>
         <div style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: var(--gold-light); margin-bottom: 8px;">Hamptons Dining</div>
         <div style="font-size: 13px; color: var(--text-muted);">Top restaurants in Southampton, Bridgehampton & East Hampton nearby</div>
       </div>
@@ -566,5 +580,10 @@
 <script src="/js/main.js"></script>
 <script src="/js/calendar-data.js"></script>
 <script src="/js/calendar.js"></script>
+<script>
+  if (document.getElementById('summer-calendar')) {
+    renderCalendar('summer-calendar', false);
+  }
+</script>
 </body>
 </html>
