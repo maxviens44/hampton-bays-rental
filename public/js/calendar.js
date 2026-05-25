@@ -3,21 +3,32 @@
 // Booked dates come from /availability.json (fetched once, cached).
 // Admin localStorage overrides are merged on top for the owner's session.
 
+// Prices come from /prices.json; booked dates from /availability.json.
+// Admin localStorage overrides are merged on top for the owner's session.
+// Use the Export button in admin mode to get JSON to send for file updates.
+
 const STORAGE_KEY = 'sth_calendar_data';
 let _availabilityBooked = null;
+let _filePrices = null;
 
 async function loadAvailability() {
-  if (_availabilityBooked !== null) return;
+  if (_availabilityBooked !== null && _filePrices !== null) return;
   try {
-    const res = await fetch('/availability.json');
-    const json = await res.json();
-    _availabilityBooked = json.booked || [];
-  } catch { _availabilityBooked = []; }
+    const [availRes, pricesRes] = await Promise.all([
+      fetch('/availability.json'),
+      fetch('/prices.json')
+    ]);
+    _availabilityBooked = (await availRes.json()).booked || [];
+    _filePrices = (await pricesRes.json()).prices || {};
+  } catch {
+    _availabilityBooked = _availabilityBooked || [];
+    _filePrices = _filePrices || {};
+  }
 }
 
 function getCalendarData() {
-  const prices = window.CALENDAR_DATA ? { ...window.CALENDAR_DATA.prices } : {};
-  const booked = _availabilityBooked ? [..._availabilityBooked] : [];
+  const prices = { ...(_filePrices || {}) };
+  const booked = [...(_availabilityBooked || [])];
 
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
@@ -32,11 +43,26 @@ function getCalendarData() {
 }
 
 function saveCalendarData(data) {
-  // Only persist price overrides and admin-added bookings to localStorage.
-  // The source-of-truth for bookings is /availability.json.
-  const base = _availabilityBooked || [];
-  const adminBooked = data.booked.filter(k => !base.includes(k));
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ prices: data.prices, booked: adminBooked }));
+  const baseBooked = _availabilityBooked || [];
+  const basePrices = _filePrices || {};
+  // Only store overrides (differences from the JSON files) in localStorage
+  const localPrices = {};
+  for (const [k, v] of Object.entries(data.prices)) {
+    if (basePrices[k] !== v) localPrices[k] = v;
+  }
+  const localBooked = data.booked.filter(k => !baseBooked.includes(k));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ prices: localPrices, booked: localBooked }));
+}
+
+function exportAdminData() {
+  const data = getCalendarData();
+  const out = { prices: data.prices, booked: data.booked };
+  const box = document.getElementById('cal-export-box');
+  if (box) {
+    box.value = JSON.stringify(out, null, 2);
+    box.style.display = 'block';
+    box.select();
+  }
 }
 
 function dateKey(y, m, d) {

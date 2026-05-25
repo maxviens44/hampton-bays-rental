@@ -290,11 +290,12 @@
           </div>                                                                                                                                             
           <button class="btn-gold" id="bulk-apply-btn" style="white-space:nowrap;">Apply</button>
         </div>                                                                                                                                               
-        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">                                                                               
-          <button class="btn-gold" id="bulk-book-btn" style="border-color:var(--text-dim);color:var(--text-dim); font-size:9px;">Mark Range as               
-  Reserved</button>                                                                                                                                          
+        <div style="margin-top:16px; display:flex; gap:12px; flex-wrap:wrap;">
+          <button class="btn-gold" id="bulk-book-btn" style="border-color:var(--text-dim);color:var(--text-dim); font-size:9px;">Mark Range as Reserved</button>
           <button class="btn-gold" id="bulk-clear-btn" style="border-color:var(--text-dim);color:var(--text-dim); font-size:9px;">Clear Range</button>
-        </div>                                                                                                                                               
+          <button class="btn-gold" id="bulk-export-btn" style="border-color:var(--gold-dim);color:var(--gold); font-size:9px;">Export Data</button>
+        </div>
+        <textarea id="cal-export-box" style="display:none; margin-top:16px; width:100%; height:160px; background:#111; border:1px solid var(--gold-dim); color:var(--cream); font-family:monospace; font-size:11px; padding:12px; resize:vertical;" placeholder="Exported data will appear here — copy and send to update the live site."></textarea>                                                                                                                                               
       </div>                                                
                                                                                                                                                              
       <div class="section-label fade-in">Availability Calendar</div>
@@ -457,8 +458,10 @@
     });
                                                                                                                                                              
     document.getElementById('bulk-clear-btn').addEventListener('click', () => {
-      applyBulkAction('clear');                                                                                                                              
-    });                                                     
+      applyBulkAction('clear');
+    });
+
+    document.getElementById('bulk-export-btn').addEventListener('click', exportAdminData);                                                     
 
     function applyBulkAction(action) {
       const fromStr = document.getElementById('bulk-from').value;
