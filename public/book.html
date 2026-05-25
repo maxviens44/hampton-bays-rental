@@ -498,10 +498,7 @@
   </script>
   <script>
     document.getElementById('inquiry-form').addEventListener('submit', function() {
-      gtag('event', 'Generate_Leads', {
-        currency: 'USD',
-        value: 7000
-      });
+      sessionStorage.setItem('booking_submitted', '1');
     });
   </script>
   </body>

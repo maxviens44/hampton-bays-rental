@@ -10,10 +10,13 @@
     gtag('config', 'G-MJTWQ3QXH1');
   </script>
   <script>
-    gtag('event', 'generate_lead', {
-      currency: 'USD',
-      value: 7000
-    });
+    if (sessionStorage.getItem('booking_submitted') === '1') {
+      sessionStorage.removeItem('booking_submitted');
+      gtag('event', 'generate_lead', {
+        currency: 'USD',
+        value: 7000
+      });
+    }
   </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
