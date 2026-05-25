@@ -1,23 +1,42 @@
-// ── CALENDAR DATA (stored in localStorage for admin persistence) ──
+// ── CALENDAR DATA ──
+// Prices come from calendar-data.js (window.CALENDAR_DATA).
+// Booked dates come from /availability.json (fetched once, cached).
+// Admin localStorage overrides are merged on top for the owner's session.
+
 const STORAGE_KEY = 'sth_calendar_data';
+let _availabilityBooked = null;
+
+async function loadAvailability() {
+  if (_availabilityBooked !== null) return;
+  try {
+    const res = await fetch('/availability.json');
+    const json = await res.json();
+    _availabilityBooked = json.booked || [];
+  } catch { _availabilityBooked = []; }
+}
 
 function getCalendarData() {
-  const base = (window.CALENDAR_DATA)
-    ? { prices: { ...window.CALENDAR_DATA.prices }, booked: [...window.CALENDAR_DATA.booked] }
-    : { prices: {}, booked: [] };
+  const prices = window.CALENDAR_DATA ? { ...window.CALENDAR_DATA.prices } : {};
+  const booked = _availabilityBooked ? [..._availabilityBooked] : [];
+
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return base;
-    const local = JSON.parse(raw);
-    // Merge: localStorage prices override static file; booked lists are combined
-    Object.assign(base.prices, local.prices || {});
-    (local.booked || []).forEach(k => { if (!base.booked.includes(k)) base.booked.push(k); });
-    return base;
-  } catch { return base; }
+    if (raw) {
+      const local = JSON.parse(raw);
+      Object.assign(prices, local.prices || {});
+      (local.booked || []).forEach(k => { if (!booked.includes(k)) booked.push(k); });
+    }
+  } catch {}
+
+  return { prices, booked };
 }
 
 function saveCalendarData(data) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  // Only persist price overrides and admin-added bookings to localStorage.
+  // The source-of-truth for bookings is /availability.json.
+  const base = _availabilityBooked || [];
+  const adminBooked = data.booked.filter(k => !base.includes(k));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify({ prices: data.prices, booked: adminBooked }));
 }
 
 function dateKey(y, m, d) {
@@ -36,7 +55,8 @@ function getPrice(key, data) {
 const calendarOffsets = {};
 
 // ── RENDER CALENDAR ──
-function renderCalendar(containerId, isAdmin = false) {
+async function renderCalendar(containerId, isAdmin = false) {
+  await loadAvailability();
   const container = document.getElementById(containerId);
   if (!container) return;
 
