@@ -2,10 +2,18 @@
 const STORAGE_KEY = 'sth_calendar_data';
 
 function getCalendarData() {
+  const base = (window.CALENDAR_DATA)
+    ? { prices: { ...window.CALENDAR_DATA.prices }, booked: [...window.CALENDAR_DATA.booked] }
+    : { prices: {}, booked: [] };
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : { prices: {}, booked: [] };
-  } catch { return { prices: {}, booked: [] }; }
+    if (!raw) return base;
+    const local = JSON.parse(raw);
+    // Merge: localStorage prices override static file; booked lists are combined
+    Object.assign(base.prices, local.prices || {});
+    (local.booked || []).forEach(k => { if (!base.booked.includes(k)) base.booked.push(k); });
+    return base;
+  } catch { return base; }
 }
 
 function saveCalendarData(data) {
