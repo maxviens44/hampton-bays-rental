@@ -290,7 +290,7 @@
 }
 
 @media (max-width: 768px) {
-  .cal-day { min-height: 36px; }
-  .cal-day-price { display: none; }
+  .cal-day { min-height: 44px; }
+  .cal-day-price { display: block; font-size: 8px; }
 }
 
