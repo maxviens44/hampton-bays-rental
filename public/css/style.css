@@ -53,6 +53,8 @@ nav {
   align-items: center;
   justify-content: space-between;
   transition: background var(--transition), padding var(--transition);
+  background: rgba(10,10,10,0.55);
+  backdrop-filter: blur(8px);
 }
 
 nav.scrolled {
