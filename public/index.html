@@ -158,10 +158,10 @@
       inset: 0;
       background: linear-gradient(
         to top,
-        rgba(10,10,10,0.92) 0%,
-        rgba(10,10,10,0.5) 40%,
-        rgba(10,10,10,0.2) 70%,
-        rgba(10,10,10,0.1) 100%
+        rgba(10,10,10,0.95) 0%,
+        rgba(10,10,10,0.65) 40%,
+        rgba(10,10,10,0.45) 70%,
+        rgba(10,10,10,0.3) 100%
       );
     }
 
@@ -193,11 +193,12 @@
 
     .hero-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(52px, 7vw, 96px);
+      font-size: clamp(40px, 5vw, 72px);
       font-weight: 300;
-      line-height: 1.0;
+      line-height: 1.05;
       color: var(--white);
-      margin-bottom: 28px;
+      margin-bottom: 18px;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
     }
 
     .hero-title em {
@@ -206,12 +207,13 @@
     }
 
     .hero-subtitle {
-      font-size: 14px;
-      font-weight: 300;
-      color: var(--cream-dim);
-      letter-spacing: 0.08em;
-      margin-bottom: 40px;
+      font-size: 15px;
+      font-weight: 400;
+      color: var(--cream);
+      letter-spacing: 0.04em;
+      margin-bottom: 24px;
       max-width: 500px;
+      text-shadow: 0 1px 8px rgba(0,0,0,0.9);
     }
 
     .hero-specs {
