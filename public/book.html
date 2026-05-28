@@ -125,11 +125,42 @@
         color: var(--gold-light);                                                                                                                            
       }                                                                                                                                                      
   
-      @media (max-width: 900px) {                                                                                                                            
-        .book-layout { grid-template-columns: 1fr; }        
-        .book-left { border-right: none; padding: 60px 24px; }
-        .book-right { padding: 60px 24px; position: static; }                                                                                                
-        .book-hero { padding: 120px 24px 60px; }                                                                                                             
+      .book-direct-box {
+        background: rgba(201,169,110,0.07);
+        border: 1px solid var(--gold-dim);
+        padding: 14px 18px;
+        margin-bottom: 20px;
+        font-size: 12px;
+        color: var(--cream-dim);
+        line-height: 1.7;
+      }
+
+      .book-direct-box strong {
+        color: var(--gold);
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 4px;
+      }
+
+      .email-cta {
+        margin-top: 16px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+        font-size: 12px;
+        color: var(--text-muted);
+        text-align: center;
+      }
+
+      .email-cta a { color: var(--gold-dim); transition: color 0.2s; }
+      .email-cta a:hover { color: var(--gold); }
+
+      @media (max-width: 900px) {
+        .book-layout { grid-template-columns: 1fr; }
+        .book-right { order: -1; padding: 40px 24px 20px; position: static; }
+        .book-left { border-right: none; padding: 20px 24px 60px; }
+        .book-hero { padding: 120px 24px 60px; }
       }                                                                                                                                                      
     </style>                                                
   </head>                                                                                                                                                    
@@ -165,10 +196,15 @@
       <div id="admin-calendar" class="fade-in"></div>                                                                                                        
     </div>                                                  
                                                                                                                                                              
-    <!-- RIGHT: Inquiry form -->                            
+    <!-- RIGHT: Inquiry form -->
     <div class="book-right fade-in">
       <div class="inquiry-title">Check Availability</div>
-      <p class="inquiry-sub" style="margin-bottom:20px;">Summer 2026 dates filling fast. Fill out the form and we'll confirm availability within a few hours.</p>
+      <p class="inquiry-sub" style="margin-bottom:16px;">Summer 2026 dates filling fast. From <strong style="color:var(--gold);">$1,300/night.</strong> Fill out the form and we'll confirm availability within a few hours.</p>
+
+      <div class="book-direct-box">
+        <strong>Why book direct?</strong>
+        No Airbnb or VRBO service fees. Save up to 14% compared to booking on a platform. Same house, same host, better price.
+      </div>
                                                                                                                                                              
       <form id="inquiry-form" name="booking-inquiry" action="/thanks.html" method="POST" data-netlify="true">
         <input type="hidden" name="form-name" value="booking-inquiry" />                                                                                     
@@ -222,15 +258,29 @@
           <textarea name="message" class="form-textarea" placeholder="Tell us about your group, occasion, or any questions..."></textarea>                   
         </div>                                                                                                                                               
                                                                                                                                                              
-        <div style="background:rgba(201,169,110,0.07); border-left:2px solid var(--gold-dim); padding:12px 16px; margin-bottom:16px; font-size:12px; color:var(--cream-dim); line-height:1.6; font-style:italic;">
-          "My friends, young son and I had a phenomenal stay for Memorial Day Weekend. The house was absolutely spotless, well designed, stocked and in a great location. Max was a lovely host."
-          <div style="margin-top:6px; font-style:normal; font-size:11px; letter-spacing:0.1em; color:var(--gold-dim);">— Nicole, MAY 2026</div>
+        <div style="display:flex; flex-direction:column; gap:8px; margin-bottom:16px;">
+          <div style="background:rgba(201,169,110,0.07); border-left:2px solid var(--gold-dim); padding:12px 16px; font-size:12px; color:var(--cream-dim); line-height:1.6; font-style:italic;">
+            "The house was absolutely spotless, well designed, stocked and in a great location. Max was a lovely host."
+            <div style="margin-top:6px; font-style:normal; font-size:11px; letter-spacing:0.1em; color:var(--gold-dim);">— Nicole, May 2026 · ★★★★★</div>
+          </div>
+          <div style="background:rgba(201,169,110,0.07); border-left:2px solid var(--gold-dim); padding:12px 16px; font-size:12px; color:var(--cream-dim); line-height:1.6; font-style:italic;">
+            "Beautiful home and great location! Hosts were easy to deal with and responsive."
+            <div style="margin-top:6px; font-style:normal; font-size:11px; letter-spacing:0.1em; color:var(--gold-dim);">— Robert P. · ★★★★★</div>
+          </div>
+          <div style="background:rgba(201,169,110,0.07); border-left:2px solid var(--gold-dim); padding:12px 16px; font-size:12px; color:var(--cream-dim); line-height:1.6; font-style:italic;">
+            "Perfect for our holiday weekend getaway from the city! Communication with the hosts is super quick and easy."
+            <div style="margin-top:6px; font-style:normal; font-size:11px; letter-spacing:0.1em; color:var(--gold-dim);">— Tina R. · ★★★★★</div>
+          </div>
         </div>
         <button type="submit" class="btn-gold btn-gold-fill" style="width:100%; justify-content:center; padding:16px;">Check Availability</button>                 
       </form>                                               
                                                                                                                                                              
-      <div class="form-success" id="form-success">                                                                                                           
+      <div class="form-success" id="form-success">
         ✓ &nbsp; Your inquiry has been sent! We'll be in touch soon.
+      </div>
+
+      <div class="email-cta">
+        Prefer to reach out directly? <a href="mailto:admin@staythehamptons.com">Email us at admin@staythehamptons.com</a>
       </div>                                                                                                                                                 
                                                                                                                                                              
       <div class="listing-links">
