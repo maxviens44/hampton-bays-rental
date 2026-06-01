@@ -121,13 +121,32 @@
       border-bottom: 1px solid var(--border);
       position: relative;
       overflow: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .usopen-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/images/shinnecock.jpg');
+      background-size: cover;
+      background-position: center;
+      z-index: 0;
     }
 
     .usopen-hero::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 70% 50%, rgba(201,169,110,0.06) 0%, transparent 60%);
+      background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.65) 100%);
+      z-index: 1;
+    }
+
+    .usopen-hero > * {
+      position: relative;
+      z-index: 2;
     }
 
     .usopen-badge {
@@ -361,6 +380,7 @@
 
 <!-- HERO -->
 <div class="usopen-hero fade-in">
+  <div class="usopen-hero-bg"></div>
   <div class="usopen-badge">2026 US Open · Shinnecock Hills</div>
   <div class="section-label">Golf Week Rental</div>
   <h1 class="section-title">US Open 2026 Housing<br>Near <em>Shinnecock Hills</em></h1>
@@ -375,13 +395,6 @@
   <div class="usopen-warning">
     <strong style="color:var(--gold)">US Open week fills fast.</strong> The 2026 US Open runs June 15–21, 2026. Contact us now to secure your dates — availability is extremely limited.
   </div>
-</div>
-
-<!-- HERO IMAGE -->
-<div style="width:100%; height:520px; overflow:hidden; position:relative;">
-  <img src="/images/shinnecock.jpg" alt="Shinnecock Hills Golf Club — 2026 US Open venue, 10 minutes from our Hampton Bays rental" style="width:100%; height:100%; object-fit:cover; object-position:center;" />
-  <div style="position:absolute; inset:0; background:linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.1) 100%);"></div>
-  <div style="position:absolute; bottom:32px; left:48px; background:rgba(0,0,0,0.55); border:1px solid rgba(201,169,110,0.4); padding:12px 24px; font-size:11px; letter-spacing:0.25em; text-transform:uppercase; color:var(--gold);">Shinnecock Hills Golf Club · 10 Min Away</div>
 </div>
 
 <!-- PHOTO GRID -->
