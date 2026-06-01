@@ -130,10 +130,16 @@
     .usopen-hero-bg {
       position: absolute;
       inset: 0;
-      background-image: url('/images/shinnecock.jpg');
-      background-size: cover;
-      background-position: center;
       z-index: 0;
+      overflow: hidden;
+    }
+
+    .usopen-hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
     }
 
     .usopen-hero::before {
@@ -380,7 +386,7 @@
 
 <!-- HERO -->
 <div class="usopen-hero fade-in">
-  <div class="usopen-hero-bg"></div>
+  <div class="usopen-hero-bg"><img src="/images/shinnecock.jpg" alt="Shinnecock Hills Golf Club" /></div>
   <div class="usopen-badge">2026 US Open · Shinnecock Hills</div>
   <div class="section-label">Golf Week Rental</div>
   <h1 class="section-title">US Open 2026 Housing<br>Near <em>Shinnecock Hills</em></h1>
