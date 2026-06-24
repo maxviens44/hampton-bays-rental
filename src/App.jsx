@@ -82,7 +82,6 @@ function Header() {
           <Link href="#gallery" className="px-2 py-1">Gallery</Link>
           <Link href="#/info" className="px-2 py-1">Info</Link>
           <Link href="#/reviews" className="px-2 py-1">Reviews</Link>
-          <Link href="#/usopen" className="px-2 py-1">US Open 2026</Link>
           <Link href="#/contact" className="px-2 py-1">Contact</Link>
         </nav>
 
@@ -112,7 +111,6 @@ function Header() {
             <Link href="#gallery" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Gallery</Link>
             <Link href="#/info" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Info</Link>
             <Link href="#/reviews" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Reviews</Link>
-            <Link href="#/usopen" className="px-2 py-2 rounded-lg hover:bg-neutral-100">US Open 2026</Link>
             <Link href="#/contact" className="px-2 py-2 rounded-lg hover:bg-neutral-100">Contact</Link>
           </nav>
         </div>
@@ -406,9 +404,6 @@ className="w-full h-[44vh] sm:h-[50vh] md:h-[62vh] object-cover"
               </h1>
               <p className="text-white text-xs sm:text-sm md:text-lg drop-shadow mt-1">
                 10 guests · 4 bedrooms · 5 beds · 5 baths
-              </p>
-              <p className="text-white text-[11px] sm:text-xs md:text-sm drop-shadow mt-1">
-                Luxury vacation rental in Hampton Bays near Shinnecock Hills, Hamptons beaches, and Southampton, US Open 2026.
               </p>
             </div>
           </div>
