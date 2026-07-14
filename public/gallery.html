@@ -57,27 +57,35 @@
       color: var(--black);
     }
 
-    /* Masonry grid */
+    /* Uniform tile grid */
     .gallery-grid {
-      columns: 3 280px;
-      column-gap: 3px;
-      padding: 3px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 8px;
+      padding: 8px;
       background: var(--black);
     }
 
     .gallery-item {
-      break-inside: avoid;
-      margin-bottom: 3px;
+      aspect-ratio: 4 / 3;
       overflow: hidden;
       position: relative;
       cursor: pointer;
+      background: var(--dark2);
     }
 
     .gallery-item img {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
       display: block;
       transition: transform 0.6s ease;
+      opacity: 0;
+    }
+
+    .gallery-item img.loaded {
+      opacity: 1;
+      transition: opacity 0.4s ease, transform 0.6s ease;
     }
 
     .gallery-item:hover img { transform: scale(1.04); }
@@ -180,7 +188,7 @@
 
     @media (max-width: 768px) {
       .gallery-hero { padding: 120px 24px 60px; }
-      .gallery-grid { columns: 2 180px; }
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 4px; padding: 4px; }
     }
   </style>
 </head>
@@ -283,42 +291,45 @@
 
 <script src="/js/main.js"></script>
 <script>
+function img(name, cat, label) {
+  return { thumb: `/images/thumbs/${name}.webp`, full: `/images/full/${name}.webp`, cat, label };
+}
+
 const photos = [
-  { src: '/images/pool2.webp', cat: 'exterior', label: 'Pool Deck' },
-  { src: '/images/pool3.webp', cat: 'exterior', label: 'Pool Area' },
-  { src: '/images/pool4.webp', cat: 'exterior', label: 'Pool View' },
-  { src: '/images/top.webp', cat: 'exterior', label: 'Aerial View' },
-  { src: '/images/backyard_aerial.png', cat: 'exterior', label: 'Backyard Aerial' },
-  { src: '/images/house.webp', cat: 'exterior', label: 'House Front' },
-  { src: '/images/garage.webp', cat: 'exterior', label: 'Garage' },
-  { src: '/images/balcony.webp', cat: 'exterior', label: 'Balcony' },
-  { src: '/images/livingroom1.png', cat: 'living', label: 'Living Room' },
-  { src: '/images/basementlivingroom2.webp', cat: 'living', label: 'Media Room' },
-  { src: '/images/basement1.png', cat: 'living', label: 'Lower Level' },
-  { src: '/images/basement2.png', cat: 'living', label: 'Lower Level' },
-  { src: '/images/gym.png', cat: 'living', label: 'Home Gym' },
-  { src: '/images/stairs.webp', cat: 'living', label: 'Staircase' },
-  { src: '/images/kitchen2.webp', cat: 'kitchen', label: 'Kitchen' },
-  { src: '/images/kitchen3.webp', cat: 'kitchen', label: 'Kitchen' },
-  { src: '/images/kitchenangle.webp', cat: 'kitchen', label: 'Kitchen Island' },
-  { src: '/images/mainfloor.png', cat: 'kitchen', label: 'Open Kitchen & Dining' },
-  { src: '/images/diningroom.png', cat: 'kitchen', label: 'Dining Room' },
-  { src: '/images/primary1.webp', cat: 'bedroom', label: 'Primary Suite' },
-  { src: '/images/primary2.webp', cat: 'bedroom', label: 'Primary Suite' },
-  { src: '/images/primary3.webp', cat: 'bedroom', label: 'Primary Suite' },
-  { src: '/images/bedroom1.png', cat: 'bedroom', label: 'Bedroom' },
-  { src: '/images/bedroom1-2.png', cat: 'bedroom', label: 'Bedroom' },
-  { src: '/images/room1.webp', cat: 'bedroom', label: 'Guest Room' },
-  { src: '/images/basementbedroom1.png', cat: 'bedroom', label: 'Lower Bedroom' },
-  { src: '/images/basementbedroom2.png', cat: 'bedroom', label: 'Lower Bedroom' },
-  { src: '/images/bathmain.webp', cat: 'bathroom', label: 'Primary Bath' },
-  { src: '/images/bathmain2.webp', cat: 'bathroom', label: 'Primary Bath' },
-  { src: '/images/bathmain3.webp', cat: 'bathroom', label: 'Primary Bath' },
-  { src: '/images/bath1.webp', cat: 'bathroom', label: 'En-Suite Bath' },
-  { src: '/images/bath2.webp', cat: 'bathroom', label: 'Bathroom' },
-  { src: '/images/bath4.webp', cat: 'bathroom', label: 'Bathroom' },
-  { src: '/images/restroom.webp', cat: 'bathroom', label: 'Powder Room' },
-  { src: '/images/laundry.webp', cat: 'living', label: 'Laundry' },
+  img('pool2', 'exterior', 'Pool Deck'),
+  img('pool3', 'exterior', 'Pool Area'),
+  img('pool4', 'exterior', 'Pool View'),
+  img('top', 'exterior', 'Aerial View'),
+  img('backyard_aerial', 'exterior', 'Backyard Aerial'),
+  img('house', 'exterior', 'House Front'),
+  img('garage', 'exterior', 'Garage'),
+  img('balcony', 'exterior', 'Balcony'),
+  img('livingroom1', 'living', 'Living Room'),
+  img('basementlivingroom2', 'living', 'Media Room'),
+  img('basement1', 'living', 'Lower Level'),
+  img('basement2', 'living', 'Lower Level'),
+  img('gym', 'living', 'Home Gym'),
+  img('stairs', 'living', 'Staircase'),
+  img('kitchen2', 'kitchen', 'Kitchen'),
+  img('kitchen3', 'kitchen', 'Kitchen'),
+  img('kitchenangle', 'kitchen', 'Kitchen Island'),
+  img('mainfloor', 'kitchen', 'Open Kitchen & Dining'),
+  img('diningroom', 'kitchen', 'Dining Room'),
+  img('primary1', 'bedroom', 'Primary Suite'),
+  img('primary2', 'bedroom', 'Primary Suite'),
+  img('primary3', 'bedroom', 'Primary Suite'),
+  img('bedroom1', 'bedroom', 'Bedroom'),
+  img('bedroom1-2', 'bedroom', 'Bedroom'),
+  img('room1', 'bedroom', 'Guest Room'),
+  img('basementbedroom1', 'bedroom', 'Lower Bedroom'),
+  img('basementbedroom2', 'bedroom', 'Lower Bedroom'),
+  img('bathmain', 'bathroom', 'Primary Bath'),
+  img('bathmain3', 'bathroom', 'Primary Bath'),
+  img('bath1', 'bathroom', 'En-Suite Bath'),
+  img('bath2', 'bathroom', 'Bathroom'),
+  img('bath4', 'bathroom', 'Bathroom'),
+  img('restroom', 'bathroom', 'Powder Room'),
+  img('laundry', 'living', 'Laundry'),
 ];
 
 let filteredPhotos = [...photos];
@@ -329,7 +340,7 @@ function renderGallery(filter = 'all') {
   const grid = document.getElementById('gallery-grid');
   grid.innerHTML = filteredPhotos.map((p, i) => `
     <div class="gallery-item fade-in" data-index="${i}">
-      <img src="${p.src}" alt="${p.label}" loading="lazy" />
+      <img src="${p.thumb}" alt="${p.label}" loading="lazy" decoding="async" onload="this.classList.add('loaded')" />
       <div class="gallery-item-overlay">
         <span class="gallery-item-label">${p.label}</span>
       </div>
@@ -352,7 +363,7 @@ function renderGallery(filter = 'all') {
 
 function openLightbox(idx) {
   currentLbIdx = idx;
-  document.getElementById('lb-img').src = filteredPhotos[idx].src;
+  document.getElementById('lb-img').src = filteredPhotos[idx].full;
   document.getElementById('lb-counter').textContent = `${idx + 1} / ${filteredPhotos.length}`;
   document.getElementById('lightbox').classList.add('open');
 }
