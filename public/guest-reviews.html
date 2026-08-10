@@ -148,57 +148,144 @@
       margin-top: 20px;
     }
 
-    /* ── TABLE ── */
-    .gr-table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--border);
+    /* ── CARDS ── */
+    .gr-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
 
-    table.gr-table {
-      width: 100%;
-      border-collapse: collapse;
+    .gr-card {
+      background: rgba(201,169,110,0.07);
+      border: 1px solid var(--gold-dim);
+      padding: 22px 26px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .gr-card:hover { border-color: var(--gold); }
+
+    .gr-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .gr-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 21px;
+      color: var(--cream);
+    }
+
+    .gr-card-rating {
+      color: var(--gold);
       font-size: 13px;
       white-space: nowrap;
+      letter-spacing: 1px;
     }
 
-    .gr-table th, .gr-table td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      text-align: left;
+    .gr-card-subtitle {
+      margin-top: 8px;
+      font-size: 12px;
+      color: var(--cream-dim);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
-    .gr-table th {
+    .gr-card-tag {
+      border: 1px solid var(--border-light);
+      padding: 2px 9px;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cream-dim);
+    }
+
+    .gr-card-hint {
+      margin-top: 14px;
       font-size: 10px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--gold);
-      background: var(--dark2);
+      color: var(--gold-dim);
     }
 
-    .gr-table tr:hover td { background: rgba(201,169,110,0.04); }
+    .gr-card-body {
+      display: none;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
 
-    .gr-table .rating { color: var(--gold); letter-spacing: 1px; }
+    .gr-card.open .gr-card-body { display: block; }
 
-    .gr-row-actions { display: flex; gap: 10px; }
+    .gr-card-field {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 7px 0;
+      font-size: 13px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
 
-    .gr-row-actions button {
+    .gr-card-field:last-of-type { border-bottom: none; }
+
+    .gr-card-field-label {
+      color: var(--gold-dim);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-top: 2px;
+    }
+
+    .gr-card-field-value {
+      color: var(--cream);
+      text-align: right;
+    }
+
+    .gr-card-text {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .gr-card-text:last-of-type { border-bottom: none; }
+
+    .gr-card-text .gr-card-field-label { padding-top: 0; margin-bottom: 6px; }
+
+    .gr-card-text-value {
+      color: var(--cream);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .gr-card-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .gr-card-actions button {
       background: none;
       border: none;
       color: var(--cream-dim);
       font-size: 10px;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       cursor: pointer;
     }
 
-    .gr-row-actions button:hover { color: var(--gold); }
-    .gr-row-actions button.danger:hover { color: #e0806f; }
+    .gr-card-actions button:hover { color: var(--gold); }
+    .gr-card-actions button.danger:hover { color: #e0806f; }
 
     .gr-empty {
       padding: 60px 20px;
       text-align: center;
       color: var(--text-muted);
       font-size: 13px;
+      border: 1px solid var(--border);
     }
 
     @media (max-width: 900px) {
@@ -206,6 +293,7 @@
       .gr-form-grid .form-group.span-2, .gr-form-grid .form-group.span-3 { grid-column: span 2; }
       .gr-hero { padding: 120px 24px 40px; }
       .gr-wrap { padding: 40px 20px 80px; }
+      .gr-cards { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -351,32 +439,9 @@
       </form>
     </div>
 
-    <!-- Table -->
-    <div class="gr-table-wrap">
-      <table class="gr-table">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Check In</th>
-            <th>Check Out</th>
-            <th>Nights</th>
-            <th>Platform</th>
-            <th># Guests</th>
-            <th>Welcome Gift</th>
-            <th>Occasion</th>
-            <th>Payout</th>
-            <th>Additional Info</th>
-            <th>Payment</th>
-            <th>Comments</th>
-            <th>Phone</th>
-            <th>Rating</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="entries-tbody"></tbody>
-      </table>
-      <div class="gr-empty" id="entries-empty" style="display:none;">No entries yet. Click "Add Entry" to get started.</div>
-    </div>
+    <!-- Cards -->
+    <div class="gr-cards" id="entries-cards"></div>
+    <div class="gr-empty" id="entries-empty" style="display:none;">No entries yet. Click "Add Entry" to get started.</div>
   </div>
 
 </div>

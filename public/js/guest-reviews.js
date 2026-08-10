@@ -11,13 +11,28 @@
   const entryFormWrap = document.getElementById('entry-form-wrap')
   const entryForm = document.getElementById('entry-form')
   const entryFormTitle = document.getElementById('entry-form-title')
-  const tbody = document.getElementById('entries-tbody')
+  const cardsContainer = document.getElementById('entries-cards')
   const emptyState = document.getElementById('entries-empty')
   const checkInInput = entryForm.querySelector('[name="checkIn"]')
   const checkOutInput = entryForm.querySelector('[name="checkOut"]')
   const nightsInput = entryForm.querySelector('[name="nights"]')
 
+  const FIELD_LABELS = {
+    guests: 'Number of Guests',
+    welcomeGift: 'Welcome Gift',
+    occasion: 'Occasion',
+    payout: 'Payout',
+    payment: 'Payment',
+    phone: 'Phone'
+  }
+
+  const TEXT_FIELD_LABELS = {
+    additionalInfo: 'Additional Information',
+    comments: 'Comments'
+  }
+
   let entries = []
+  let openCardId = null
 
   function showApp() {
     loginScreen.style.display = 'none'
@@ -36,7 +51,7 @@
       const data = await res.json()
       entries = data.entries || []
       showApp()
-      renderTable()
+      renderCards()
     } else {
       showLogin()
     }
@@ -132,7 +147,7 @@
     }
     const data = await res.json()
     entries = data.entries || []
-    renderTable()
+    renderCards()
   }
 
   function escapeHtml(str) {
@@ -141,42 +156,83 @@
     return div.innerHTML
   }
 
-  function renderTable() {
-    tbody.innerHTML = ''
+  function renderCards() {
+    cardsContainer.innerHTML = ''
     emptyState.style.display = entries.length ? 'none' : 'block'
 
     entries.forEach((entry) => {
-      const tr = document.createElement('tr')
+      const card = document.createElement('div')
+      card.className = 'gr-card'
+      if (entry.id === openCardId) card.classList.add('open')
+
       const rating = Number(entry.rating) || 0
       const stars = rating ? '★'.repeat(rating) + '☆'.repeat(5 - rating) : '—'
+      const dateRange = [entry.checkIn, entry.checkOut].filter(Boolean).join(' → ')
 
-      tr.innerHTML = `
-        <td>${escapeHtml(entry.name)}</td>
-        <td>${escapeHtml(entry.checkIn)}</td>
-        <td>${escapeHtml(entry.checkOut)}</td>
-        <td>${escapeHtml(entry.nights)}</td>
-        <td>${escapeHtml(entry.platform)}</td>
-        <td>${escapeHtml(entry.guests)}</td>
-        <td>${escapeHtml(entry.welcomeGift)}</td>
-        <td>${escapeHtml(entry.occasion)}</td>
-        <td>${escapeHtml(entry.payout)}</td>
-        <td>${escapeHtml(entry.additionalInfo)}</td>
-        <td>${escapeHtml(entry.payment)}</td>
-        <td>${escapeHtml(entry.comments)}</td>
-        <td>${escapeHtml(entry.phone)}</td>
-        <td class="rating">${stars}</td>
-        <td>
-          <div class="gr-row-actions">
+      const fieldRows = Object.entries(FIELD_LABELS)
+        .map(([key, label]) => {
+          const value = entry[key]
+          if (!value) return ''
+          return `
+            <div class="gr-card-field">
+              <span class="gr-card-field-label">${escapeHtml(label)}</span>
+              <span class="gr-card-field-value">${escapeHtml(value)}</span>
+            </div>
+          `
+        })
+        .join('')
+
+      const textBlocks = Object.entries(TEXT_FIELD_LABELS)
+        .map(([key, label]) => {
+          const value = entry[key]
+          if (!value) return ''
+          return `
+            <div class="gr-card-text">
+              <div class="gr-card-field-label">${escapeHtml(label)}</div>
+              <div class="gr-card-text-value">${escapeHtml(value)}</div>
+            </div>
+          `
+        })
+        .join('')
+
+      card.innerHTML = `
+        <div class="gr-card-header">
+          <div>
+            <div class="gr-card-name">${escapeHtml(entry.name) || 'Unnamed Guest'}</div>
+            <div class="gr-card-subtitle">
+              <span>${escapeHtml(dateRange)}</span>
+              ${entry.nights ? `<span>· ${escapeHtml(entry.nights)} nights</span>` : ''}
+              ${entry.platform ? `<span class="gr-card-tag">${escapeHtml(entry.platform)}</span>` : ''}
+            </div>
+          </div>
+          <div class="gr-card-rating">${stars}</div>
+        </div>
+        <div class="gr-card-hint">${entry.id === openCardId ? 'Tap to collapse' : 'Tap to view details'}</div>
+        <div class="gr-card-body">
+          ${fieldRows}
+          ${textBlocks}
+          <div class="gr-card-actions">
             <button type="button" data-action="edit">Edit</button>
             <button type="button" data-action="delete" class="danger">Delete</button>
           </div>
-        </td>
+        </div>
       `
 
-      tr.querySelector('[data-action="edit"]').addEventListener('click', () => openForm(entry))
-      tr.querySelector('[data-action="delete"]').addEventListener('click', () => deleteEntry(entry.id))
+      card.addEventListener('click', () => {
+        openCardId = openCardId === entry.id ? null : entry.id
+        renderCards()
+      })
 
-      tbody.appendChild(tr)
+      card.querySelector('[data-action="edit"]').addEventListener('click', (e) => {
+        e.stopPropagation()
+        openForm(entry)
+      })
+      card.querySelector('[data-action="delete"]').addEventListener('click', (e) => {
+        e.stopPropagation()
+        deleteEntry(entry.id)
+      })
+
+      cardsContainer.appendChild(card)
     })
   }
 
@@ -187,7 +243,10 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ id })
     })
-    if (res.ok) loadEntries()
+    if (res.ok) {
+      if (openCardId === id) openCardId = null
+      loadEntries()
+    }
   }
 
   checkSession()
