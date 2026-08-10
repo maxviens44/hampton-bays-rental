@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guest Reviews — Internal | Stay The Hamptons</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    .gr-hero {
+      padding: 160px 48px 60px;
+      background: var(--dark);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .gr-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 60px 48px 100px;
+    }
+
+    /* ── FORM ELEMENTS (shared pattern from book.html) ── */
+    .inquiry-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--cream);
+      margin-bottom: 8px;
+    }
+
+    .inquiry-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      line-height: 1.7;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cream);
+      font-weight: 500;
+    }
+
+    .form-input, .form-textarea, .form-select {
+      background: var(--dark2);
+      border: 1px solid rgba(201,169,110,0.35);
+      color: var(--white);
+      padding: 14px 16px;
+      font-family: 'Jost', sans-serif;
+      font-size: 15px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s;
+      appearance: none;
+    }
+
+    .form-input:focus,
+    .form-textarea:focus,
+    .form-select:focus { border-color: var(--gold); }
+
+    .form-textarea { resize: vertical; min-height: 80px; }
+
+    /* ── LOGIN ── */
+    .gr-login {
+      max-width: 380px;
+      margin: 0 auto;
+      padding: 60px 0;
+      text-align: center;
+    }
+
+    .gr-login .form-group { text-align: left; }
+
+    .gr-error {
+      display: none;
+      color: #e0806f;
+      font-size: 12px;
+      margin-top: 10px;
+    }
+
+    /* ── APP ── */
+    #app-screen { display: none; }
+
+    .gr-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--border-light);
+      color: var(--cream-dim);
+      padding: 10px 20px;
+      font-family: 'Jost', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+
+    /* ── ENTRY FORM ── */
+    .gr-form {
+      background: var(--dark);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 48px;
+      display: none;
+    }
+
+    .gr-form.open { display: block; }
+
+    .gr-form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      color: var(--cream);
+      margin-bottom: 20px;
+    }
+
+    .gr-form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px 16px;
+    }
+
+    .gr-form-grid .form-group.span-2 { grid-column: span 2; }
+    .gr-form-grid .form-group.span-3 { grid-column: span 3; }
+
+    .form-input[readonly] { color: var(--cream-dim); cursor: not-allowed; }
+
+    .gr-form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    /* ── TABLE ── */
+    .gr-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--border);
+    }
+
+    table.gr-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .gr-table th, .gr-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    .gr-table th {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold);
+      background: var(--dark2);
+    }
+
+    .gr-table tr:hover td { background: rgba(201,169,110,0.04); }
+
+    .gr-table .rating { color: var(--gold); letter-spacing: 1px; }
+
+    .gr-row-actions { display: flex; gap: 10px; }
+
+    .gr-row-actions button {
+      background: none;
+      border: none;
+      color: var(--cream-dim);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .gr-row-actions button:hover { color: var(--gold); }
+    .gr-row-actions button.danger:hover { color: #e0806f; }
+
+    .gr-empty {
+      padding: 60px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .gr-form-grid { grid-template-columns: 1fr 1fr; }
+      .gr-form-grid .form-group.span-2, .gr-form-grid .form-group.span-3 { grid-column: span 2; }
+      .gr-hero { padding: 120px 24px 40px; }
+      .gr-wrap { padding: 40px 20px 80px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">
+    <span class="nav-logo-text">Stay The Hamptons</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="/">Home</a></li>
+    <li><a href="/gallery.html">Gallery</a></li>
+    <li><a href="/info.html">Info</a></li>
+    <li><a href="/book.html" class="nav-book-btn">Book Now</a></li>
+    <li><a href="/reviews.html">Reviews</a></li>
+  </ul>
+  <div class="nav-hamburger"><span></span><span></span><span></span></div>
+</nav>
+
+<div class="gr-hero fade-in">
+  <div class="section-label">Internal</div>
+  <h1 class="section-title">Guest <em>Reviews</em> Log</h1>
+</div>
+
+<div class="gr-wrap">
+
+  <!-- LOGIN -->
+  <div class="gr-login" id="login-screen">
+    <div class="inquiry-title" style="text-align:center;">Enter Password</div>
+    <p class="inquiry-sub" style="text-align:center;">This section is restricted to the property team.</p>
+    <form id="login-form">
+      <div class="form-group">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-input" required autocomplete="current-password" />
+      </div>
+      <button type="submit" class="btn-gold btn-gold-fill" style="width:100%; justify-content:center; padding:14px; margin-top:8px;">Enter</button>
+      <div class="gr-error" id="login-error">Incorrect password. Try again.</div>
+    </form>
+  </div>
+
+  <!-- APP -->
+  <div id="app-screen">
+    <div class="gr-toolbar">
+      <div class="section-label" style="margin-bottom:0;">Guest Stays</div>
+      <div style="display:flex; gap:12px;">
+        <button class="btn-gold" id="new-entry-btn">+ Add Entry</button>
+        <button class="btn-ghost" id="logout-btn">Log Out</button>
+      </div>
+    </div>
+
+    <!-- Entry form -->
+    <div class="gr-form" id="entry-form-wrap">
+      <div class="gr-form-title" id="entry-form-title">New Entry</div>
+      <form id="entry-form">
+        <input type="hidden" name="id" />
+        <div class="gr-form-grid">
+          <div class="form-group span-2">
+            <label class="form-label">Name *</label>
+            <input type="text" name="name" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Rating</label>
+            <select name="rating" class="form-select">
+              <option value="">Select...</option>
+              <option value="5">★★★★★ (5)</option>
+              <option value="4">★★★★ (4)</option>
+              <option value="3">★★★ (3)</option>
+              <option value="2">★★ (2)</option>
+              <option value="1">★ (1)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Check In *</label>
+            <input type="date" name="checkIn" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Check Out *</label>
+            <input type="date" name="checkOut" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nights</label>
+            <input type="text" name="nights" class="form-input" readonly />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Platform</label>
+            <select name="platform" class="form-select">
+              <option value="">Select...</option>
+              <option>Airbnb</option>
+              <option>VRBO</option>
+              <option>Direct</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Number of Guests</label>
+            <input type="number" name="guests" class="form-input" min="0" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone</label>
+            <input type="tel" name="phone" class="form-input" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Welcome Gift</label>
+            <input type="text" name="welcomeGift" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Occasion</label>
+            <input type="text" name="occasion" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Payout</label>
+            <input type="text" name="payout" class="form-input" placeholder="$" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Payment</label>
+            <select name="payment" class="form-select">
+              <option value="">Select...</option>
+              <option>Platform</option>
+              <option>Venmo</option>
+              <option>Zelle</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group span-2">
+            <label class="form-label">Additional Information</label>
+            <textarea name="additionalInfo" class="form-textarea"></textarea>
+          </div>
+
+          <div class="form-group span-3">
+            <label class="form-label">Comments</label>
+            <textarea name="comments" class="form-textarea"></textarea>
+          </div>
+        </div>
+
+        <div class="gr-form-actions">
+          <button type="submit" class="btn-gold btn-gold-fill">Save Entry</button>
+          <button type="button" class="btn-ghost" id="cancel-entry-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Table -->
+    <div class="gr-table-wrap">
+      <table class="gr-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Check In</th>
+            <th>Check Out</th>
+            <th>Nights</th>
+            <th>Platform</th>
+            <th># Guests</th>
+            <th>Welcome Gift</th>
+            <th>Occasion</th>
+            <th>Payout</th>
+            <th>Additional Info</th>
+            <th>Payment</th>
+            <th>Comments</th>
+            <th>Phone</th>
+            <th>Rating</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="entries-tbody"></tbody>
+      </table>
+      <div class="gr-empty" id="entries-empty" style="display:none;">No entries yet. Click "Add Entry" to get started.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">
+        <img src="/favicon.png" alt="" />
+        <span class="footer-brand-name">Stay The Hamptons</span>
+      </div>
+      <p class="footer-desc">A luxury cedar shingle estate in Hampton Bays, New York.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/gallery.html">Gallery</a></li>
+        <li><a href="/info.html">Info & Rules</a></li>
+        <li><a href="/book.html">Book Now</a></li>
+        <li><a href="/reviews.html">Reviews</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul><li><a href="mailto:admin@staythehamptons.com">admin@staythehamptons.com</a></li></ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Stay The Hamptons. All rights reserved.</span>
+  </div>
+</footer>
+
+<script src="/js/main.js"></script>
+<script src="/js/guest-reviews.js"></script>
+</body>
+</html>
