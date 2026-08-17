@@ -121,13 +121,11 @@ async function renderCalendar(containerId, isAdmin = false) {
     for (let d = 1; d <= daysInMonth; d++) {
       const key = dateKey(year, month, d);
       const booked = isBooked(key, data);
-      const price = getPrice(key, data);
       const isPast = new Date(year, month, d) < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const cls = ['cal-day', booked ? 'booked' : '', isPast ? 'past' : '', price && !booked && !isPast ? 'has-price' : ''].filter(Boolean).join(' ');
-      const dataAttrs = `data-key="${key}" data-price="${price || ''}" data-booked="${booked}"`;
+      const cls = ['cal-day', booked ? 'booked' : '', isPast ? 'past' : ''].filter(Boolean).join(' ');
+      const dataAttrs = `data-key="${key}" data-booked="${booked}"`;
       html += `<div class="${cls}" ${dataAttrs}>
         <span class="cal-day-num">${d}</span>
-        ${price && !booked && !isPast ? `<span class="cal-day-price">$${price}</span>` : ''}
         ${booked ? '<span class="cal-booked-dot"></span>' : ''}
       </div>`;
     }
@@ -136,7 +134,6 @@ async function renderCalendar(containerId, isAdmin = false) {
 
   html += `</div><div class="cal-legend">
     <div class="cal-legend-item"><span class="cal-legend-dot available"></span> Available</div>
-    <div class="cal-legend-item"><span class="cal-legend-dot priced"></span> Priced</div>
     <div class="cal-legend-item"><span class="cal-legend-dot booked-dot"></span> Reserved</div>
     <div class="cal-legend-item"><span class="cal-legend-dot past-dot"></span> Past</div>
   </div>`;
@@ -152,10 +149,9 @@ async function renderCalendar(containerId, isAdmin = false) {
 
   container.querySelectorAll('.cal-day[data-key]').forEach(el => {
     el.addEventListener('mouseenter', () => {
-      const price = el.dataset.price;
       const booked = el.dataset.booked === 'true';
-      if (!price && !booked) return;
-      showTooltip(el, booked ? 'Reserved' : `$${price}/night`);
+      if (!booked) return;
+      showTooltip(el, 'Reserved');
     });
     el.addEventListener('mouseleave', hideTooltip);
   });

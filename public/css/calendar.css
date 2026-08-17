@@ -61,11 +61,6 @@
   border: 1px solid #383838;
 }
 
-.cal-day.has-price:not(.booked) {
-  background: rgba(201, 169, 110, 0.12);
-  border: 1px solid rgba(201, 169, 110, 0.3);
-}
-
 .cal-day.booked {
   background: #1a1a1a;
   border: 1px solid #222;
@@ -92,13 +87,6 @@
 
 .cal-day.past .cal-day-num { color: #ffffff; }
 .cal-day.booked .cal-day-num { color: #ffffff; }
-
-.cal-day-price {
-  font-size: 9px;
-  color: var(--gold);
-  letter-spacing: 0.05em;
-  margin-top: 2px;
-}
 
 .cal-booked-dot {
   position: absolute;
@@ -152,7 +140,6 @@
 }
 
 .cal-legend-dot.available { background: #2a2a2a; border: 1px solid #383838; }
-.cal-legend-dot.priced { background: rgba(201, 169, 110, 0.2); border: 1px solid rgba(201, 169, 110, 0.4); }
 .cal-legend-dot.booked-dot { background: #1a1a1a; border: 1px solid #222; }
 .cal-legend-dot.past-dot { background: #1e1e1e; border: 1px solid #262626; }
 
@@ -291,6 +278,5 @@
 
 @media (max-width: 768px) {
   .cal-day { min-height: 44px; }
-  .cal-day-price { display: block; font-size: 8px; }
 }
 
