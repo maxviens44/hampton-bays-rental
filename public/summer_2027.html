@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Summer 2027 Calendar — Stay The Hamptons</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1a1d21; --muted:#6b7280; --line:#e7e9ee;
+    --airbnb:#ff5a5f; --vrbo:#3b5bdb; --direct:#16a34a;
+    --airbnb-bg:#ffe9ea; --vrbo-bg:#e7ecfe; --direct-bg:#e3f6e9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+  .wrap{max-width:1080px;margin:0 auto;padding:32px 20px 64px}
+  header h1{margin:0 0 4px;font-size:28px;letter-spacing:-.02em}
+  header p{margin:0;color:var(--muted);font-size:14px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 8px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .stat .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .stat .v{font-size:24px;font-weight:700;margin-top:6px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .cals{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}
+  @media(max-width:720px){.cals{grid-template-columns:1fr}}
+  .cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .cal h2{margin:0 0 12px;font-size:17px}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dow{font-size:11px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+  .day{aspect-ratio:1/1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;position:relative;border:1px solid transparent}
+  .day.empty{background:transparent}
+  .day.free{background:#fafbfc;border-color:var(--line);color:var(--muted)}
+  .day .num{font-weight:600}
+  .day.booked{color:#fff;font-weight:600}
+  .day.turn{background:linear-gradient(135deg,var(--a) 0 50%,var(--b) 50% 100%);color:#fff}
+  table{width:100%;border-collapse:collapse;margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th,td{text-align:left;padding:13px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#fafbfc}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+  .pill.Airbnb{background:var(--airbnb-bg);color:var(--airbnb)}
+  .pill.VRBO{background:var(--vrbo-bg);color:var(--vrbo)}
+  .pill.Direct{background:var(--direct-bg);color:var(--direct)}
+  td.amt{font-variant-numeric:tabular-nums;font-weight:600}
+  .sub{color:var(--muted);font-size:12px}
+  footer{margin-top:28px;font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Summer 2027 — Booking Calendar</h1>
+    <p>Stay The Hamptons · pulled from Guest CRM on 2026-10-19 · June–July 2027</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="k">Confirmed Bookings</div><div class="v">5</div></div>
+    <div class="stat"><div class="k">Nights Booked</div><div class="v">36</div></div>
+    <div class="stat"><div class="k">Projected Revenue</div><div class="v">$56,141</div></div>
+    <div class="stat"><div class="k">Avg / Night</div><div class="v">$1,560</div></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot" style="background:var(--airbnb)"></i>Airbnb</span>
+    <span><i class="dot" style="background:var(--vrbo)"></i>VRBO</span>
+    <span><i class="dot" style="background:var(--direct)"></i>Direct</span>
+    <span><i class="dot" style="background:#fafbfc;border:1px solid var(--line)"></i>Available</span>
+    <span>Split square = same-day turnover</span>
+  </div>
+
+  <div class="cals" id="cals"></div>
+
+  <table>
+    <thead>
+      <tr><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Platform</th><th>Payout</th><th>Notes</th></tr>
+    </thead>
+    <tbody id="rows"></tbody>
+  </table>
+
+  <footer>
+    Internal document — contains guest records. Erin checks out and Ellen Lodato checks in on the same day (Jul 25), so plan a tight turnover.
+    Jul 5–10 and Jun 1–17 are currently open.
+  </footer>
+</div>
+
+<script>
+const PLAT = {Airbnb:"#ff5a5f", VRBO:"#3b5bdb", Direct:"#16a34a"};
+const bookings = [
+  {guest:"Lena Digliani", ci:"2027-06-18", co:"2027-06-27", nights:9, plat:"VRBO",   pay:11249, note:""},
+  {guest:"Scott Mack",    ci:"2027-06-28", co:"2027-07-05", nights:7, plat:"Direct", pay:12500, note:"908 327-2914"},
+  {guest:"Jennifer Cento",ci:"2027-07-10", co:"2027-07-17", nights:7, plat:"VRBO",   pay:10206, note:""},
+  {guest:"Erin",          ci:"2027-07-18", co:"2027-07-25", nights:7, plat:"Airbnb", pay:10686, note:""},
+  {guest:"Ellen Lodato",  ci:"2027-07-25", co:"2027-07-31", nights:6, plat:"Direct", pay:11500, note:"same-day turnover w/ Erin"},
+];
+const money = n => "$"+n.toLocaleString("en-US");
+
+// map each occupied night (ci inclusive -> co exclusive) to its platform color
+const nightMap = {}; // "2027-06-18" -> [colors]
+for(const b of bookings){
+  let d = new Date(b.ci+"T00:00:00");
+  const end = new Date(b.co+"T00:00:00");
+  while(d < end){
+    const key = d.toISOString().slice(0,10);
+    (nightMap[key] = nightMap[key] || []).push(PLAT[b.plat]);
+    d.setDate(d.getDate()+1);
+  }
+}
+
+const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function renderMonth(year, month, label){
+  const first = new Date(year, month, 1);
+  const startDow = first.getDay();
+  const days = new Date(year, month+1, 0).getDate();
+  let html = `<div class="cal"><h2>${label}</h2><div class="grid">`;
+  for(const d of DOW) html += `<div class="dow">${d}</div>`;
+  for(let i=0;i<startDow;i++) html += `<div class="day empty"></div>`;
+  for(let n=1;n<=days;n++){
+    const key = `${year}-${String(month+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`;
+    const c = nightMap[key];
+    if(!c){
+      html += `<div class="day free"><span class="num">${n}</span></div>`;
+    } else if(c.length===1){
+      html += `<div class="day booked" style="background:${c[0]}"><span class="num">${n}</span></div>`;
+    } else {
+      html += `<div class="day turn" style="--a:${c[0]};--b:${c[1]}"><span class="num">${n}</span></div>`;
+    }
+  }
+  html += `</div></div>`;
+  return html;
+}
+document.getElementById("cals").innerHTML =
+  renderMonth(2027,5,"June 2027") + renderMonth(2027,6,"July 2027");
+
+document.getElementById("rows").innerHTML = bookings.map(b=>`
+  <tr>
+    <td><strong>${b.guest}</strong></td>
+    <td>${b.ci}</td><td>${b.co}</td><td>${b.nights}</td>
+    <td><span class="pill ${b.plat}">${b.plat}</span></td>
+    <td class="amt">${money(b.pay)}</td>
+    <td class="sub">${b.note||"—"}</td>
+  </tr>`).join("");
+</script>
+</body>
+</html>
