@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Summer 2027 Calendar — Stay The Hamptons</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --ink:#1a1d21; --muted:#6b7280; --line:#e7e9ee;
+    --accent:#2563eb; --accent-dim:rgba(37,99,235,.15);
+    --airbnb:#ff5a5f; --vrbo:#3b5bdb; --direct:#16a34a; --other:#6b7280;
+    --airbnb-bg:#ffe9ea; --vrbo-bg:#e7ecfe; --direct-bg:#e3f6e9; --other-bg:#eef0f3;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.45}
+
+  /* ── LOGIN ── */
+  #login-screen{display:flex;min-height:100vh;align-items:center;justify-content:center;padding:24px;background:#0f1320}
+  .login-card{background:var(--card);border-radius:16px;padding:32px;width:100%;max-width:360px;box-shadow:0 20px 50px rgba(0,0,0,.35);text-align:center}
+  .login-brand{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px}
+  .login-brand-dot{width:9px;height:9px;border-radius:50%;background:var(--accent)}
+  .login-brand-name{font-weight:700;font-size:14px}
+  .login-title{font-size:20px;font-weight:700;margin-bottom:6px}
+  .login-sub{font-size:13px;color:var(--muted);margin-bottom:22px}
+  .field-label{display:block;text-align:left;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .field-input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:9px;font-size:14px;outline:none;transition:border-color .15s,box-shadow .15s}
+  .field-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+  .btn{cursor:pointer;border:none;font-weight:600;border-radius:9px;font-size:14px;padding:11px 16px}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-block{width:100%;margin-top:16px}
+  .btn-outline{background:transparent;border:1px solid var(--line);color:var(--ink)}
+  .login-error{display:none;color:#dc2626;font-size:13px;margin-top:12px}
+
+  /* ── APP ── */
+  #app-screen{display:none}
+  .wrap{max-width:1080px;margin:0 auto;padding:28px 20px 64px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  header h1{margin:0 0 4px;font-size:26px;letter-spacing:-.02em}
+  header p{margin:0;color:var(--muted);font-size:13px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0 8px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .stat .k{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+  .stat .v{font-size:23px;font-weight:700;margin-top:6px}
+  .legend{display:flex;gap:16px;flex-wrap:wrap;margin:18px 0 6px;font-size:13px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .cals{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:18px}
+  @media(max-width:720px){.cals{grid-template-columns:1fr}}
+  .cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+  .cal h2{margin:0 0 12px;font-size:17px}
+  .grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+  .dow{font-size:11px;color:var(--muted);text-align:center;padding:4px 0;font-weight:600}
+  .day{aspect-ratio:1/1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;border:1px solid transparent}
+  .day.empty{background:transparent}
+  .day.free{background:#fafbfc;border-color:var(--line);color:var(--muted)}
+  .day .num{font-weight:600}
+  .day.booked{color:#fff;font-weight:600}
+  .day.turn{color:#fff;font-weight:600}
+  table{width:100%;border-collapse:collapse;margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  th,td{text-align:left;padding:13px 16px;font-size:14px;border-bottom:1px solid var(--line)}
+  th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#fafbfc}
+  tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:600}
+  .pill.Airbnb{background:var(--airbnb-bg);color:var(--airbnb)}
+  .pill.VRBO{background:var(--vrbo-bg);color:var(--vrbo)}
+  .pill.Direct{background:var(--direct-bg);color:var(--direct)}
+  .pill.Other{background:var(--other-bg);color:var(--other)}
+  td.amt{font-variant-numeric:tabular-nums;font-weight:600}
+  .sub{color:var(--muted);font-size:12px}
+  .note{margin-top:24px;font-size:12px;color:var(--muted)}
+  #empty{display:none;margin-top:24px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-brand">
+      <span class="login-brand-dot"></span>
+      <span class="login-brand-name">Stay The Hamptons</span>
+    </div>
+    <div class="login-title">Summer 2027 Calendar</div>
+    <div class="login-sub">Enter the internal password to continue.</div>
+    <form id="login-form">
+      <label class="field-label">Password</label>
+      <input type="password" name="password" class="field-input" required autocomplete="current-password" />
+      <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+      <div class="login-error" id="login-error">Incorrect password. Try again.</div>
+    </form>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <div class="wrap">
+    <div class="topbar">
+      <header>
+        <h1>Summer 2027 — Booking Calendar</h1>
+        <p id="subtitle">Stay The Hamptons · June–September 2027</p>
+      </header>
+      <button type="button" class="btn btn-outline" id="logout-btn">Log Out</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Confirmed Bookings</div><div class="v" id="s-bookings">—</div></div>
+      <div class="stat"><div class="k">Nights Booked</div><div class="v" id="s-nights">—</div></div>
+      <div class="stat"><div class="k">Projected Revenue</div><div class="v" id="s-revenue">—</div></div>
+      <div class="stat"><div class="k">Avg / Night</div><div class="v" id="s-avg">—</div></div>
+    </div>
+
+    <div class="legend">
+      <span><i class="dot" style="background:var(--airbnb)"></i>Airbnb</span>
+      <span><i class="dot" style="background:var(--vrbo)"></i>VRBO</span>
+      <span><i class="dot" style="background:var(--direct)"></i>Direct</span>
+      <span><i class="dot" style="background:var(--other)"></i>Other</span>
+      <span><i class="dot" style="background:#fafbfc;border:1px solid var(--line)"></i>Available</span>
+      <span>Split square = same-day turnover</span>
+    </div>
+
+    <div class="cals" id="cals"></div>
+
+    <table id="booking-table">
+      <thead>
+        <tr><th>Guest</th><th>Check-in</th><th>Check-out</th><th>Nights</th><th>Platform</th><th>Payout</th><th>Notes</th></tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+
+    <div id="empty">No bookings in June–September 2027 yet.</div>
+
+    <p class="note" id="footnote"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  const PLAT = {Airbnb:"#ff5a5f", VRBO:"#3b5bdb", Direct:"#16a34a", Other:"#6b7280"};
+  const RANGE_START = new Date("2027-06-01T00:00:00");
+  const RANGE_END   = new Date("2027-10-01T00:00:00"); // exclusive
+  const MONTHS = [[2027,5,"June 2027"],[2027,6,"July 2027"],[2027,7,"August 2027"],[2027,8,"September 2027"]];
+  const DOW = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  const loginScreen = document.getElementById('login-screen');
+  const appScreen   = document.getElementById('app-screen');
+  const loginForm   = document.getElementById('login-form');
+  const loginError  = document.getElementById('login-error');
+  const logoutBtn   = document.getElementById('logout-btn');
+
+  const money = n => "$"+Math.round(n).toLocaleString("en-US");
+  const parseMoney = v => { const n = parseFloat(String(v||"").replace(/[^0-9.-]/g,"")); return isNaN(n)?0:n; };
+  const platClass = p => (["Airbnb","VRBO","Direct"].includes(p)?p:"Other");
+  const esc = s => { const d=document.createElement("div"); d.textContent=s??""; return d.innerHTML; };
+
+  function showApp(){ loginScreen.style.display='none'; appScreen.style.display='block'; }
+  function showLogin(){ appScreen.style.display='none'; loginScreen.style.display='flex'; }
+
+  async function checkSession(){
+    try{
+      const res = await fetch('/.netlify/functions/reviews', { method:'GET' });
+      if(res.ok){ const data = await res.json(); showApp(); render(data.entries||[]); }
+      else showLogin();
+    }catch(e){ showLogin(); }
+  }
+
+  loginForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    loginError.style.display='none';
+    const password = loginForm.password.value;
+    const res = await fetch('/.netlify/functions/reviews-login', {
+      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({password})
+    });
+    if(res.ok){ loginForm.reset(); checkSession(); }
+    else loginError.style.display='block';
+  });
+
+  logoutBtn.addEventListener('click', async ()=>{
+    await fetch('/.netlify/functions/reviews-logout', { method:'POST' });
+    showLogin();
+  });
+
+  function inRange(b){
+    if(!b.checkIn || !b.checkOut) return false;
+    const ci = new Date(b.checkIn+"T00:00:00"), co = new Date(b.checkOut+"T00:00:00");
+    return ci < RANGE_END && co > RANGE_START; // stay overlaps summer window
+  }
+
+  function buildNightMap(list){
+    const map = {};
+    for(const b of list){
+      const plat = platClass(b.platform);
+      let d = new Date(b.checkIn+"T00:00:00");
+      const end = new Date(b.checkOut+"T00:00:00");
+      while(d < end){
+        const key = d.toISOString().slice(0,10);
+        (map[key] = map[key] || []).push(PLAT[plat]);
+        d.setDate(d.getDate()+1);
+      }
+    }
+    return map;
+  }
+
+  function renderMonth(year, month, label, nightMap){
+    const first = new Date(year, month, 1);
+    const startDow = first.getDay();
+    const days = new Date(year, month+1, 0).getDate();
+    let html = `<div class="cal"><h2>${label}</h2><div class="grid">`;
+    for(const d of DOW) html += `<div class="dow">${d}</div>`;
+    for(let i=0;i<startDow;i++) html += `<div class="day empty"></div>`;
+    for(let n=1;n<=days;n++){
+      const key = `${year}-${String(month+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`;
+      const c = nightMap[key];
+      if(!c){ html += `<div class="day free"><span class="num">${n}</span></div>`; }
+      else if(c.length===1){ html += `<div class="day booked" style="background:${c[0]}"><span class="num">${n}</span></div>`; }
+      else { html += `<div class="day turn" style="background:linear-gradient(135deg,${c[0]} 0 50%,${c[1]} 50% 100%)"><span class="num">${n}</span></div>`; }
+    }
+    html += `</div></div>`;
+    return html;
+  }
+
+  function render(allEntries){
+    const list = allEntries.filter(inRange)
+      .sort((a,b)=> (a.checkIn||"").localeCompare(b.checkIn||""));
+
+    // stats
+    const totalNights = list.reduce((s,b)=> s + (Number(b.nights)|| 0), 0);
+    const totalRev = list.reduce((s,b)=> s + parseMoney(b.payout), 0);
+    document.getElementById('s-bookings').textContent = list.length;
+    document.getElementById('s-nights').textContent = totalNights;
+    document.getElementById('s-revenue').textContent = money(totalRev);
+    document.getElementById('s-avg').textContent = totalNights ? money(totalRev/totalNights) : "—";
+
+    // calendars
+    const nightMap = buildNightMap(list);
+    document.getElementById('cals').innerHTML =
+      MONTHS.map(m => renderMonth(m[0], m[1], m[2], nightMap)).join("");
+
+    // table
+    const rows = document.getElementById('rows');
+    const empty = document.getElementById('empty');
+    const table = document.getElementById('booking-table');
+    if(!list.length){ table.style.display='none'; empty.style.display='block'; }
+    else{
+      table.style.display=''; empty.style.display='none';
+      rows.innerHTML = list.map(b=>{
+        const pc = platClass(b.platform);
+        const note = esc(b.comments || b.additionalInfo || b.occasion || b.phone || "") || "—";
+        return `<tr>
+          <td><strong>${esc(b.name)||"—"}</strong></td>
+          <td>${esc(b.checkIn)}</td><td>${esc(b.checkOut)}</td>
+          <td>${esc(b.nights)||"—"}</td>
+          <td><span class="pill ${pc}">${esc(b.platform)||"—"}</span></td>
+          <td class="amt">${b.payout?money(parseMoney(b.payout)):"—"}</td>
+          <td class="sub">${note}</td>
+        </tr>`;
+      }).join("");
+    }
+
+    document.getElementById('footnote').textContent =
+      `Live from Guest CRM · ${list.length} booking${list.length===1?"":"s"} in June–September 2027. ` +
+      `Internal document — contains guest records.`;
+  }
+
+  checkSession();
+})();
+</script>
+</body>
+</html>
