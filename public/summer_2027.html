@@ -52,7 +52,7 @@
 <div class="wrap">
   <header>
     <h1>Summer 2027 — Booking Calendar</h1>
-    <p>Stay The Hamptons · pulled from Guest CRM on 2026-10-19 · June–July 2027</p>
+    <p>Stay The Hamptons · pulled from Guest CRM on 2026-10-19 · June–September 2027</p>
   </header>
 
   <div class="stats">
@@ -81,7 +81,7 @@
 
   <footer>
     Internal document — contains guest records. Erin checks out and Ellen Lodato checks in on the same day (Jul 25), so plan a tight turnover.
-    Jul 5–10 and Jun 1–17 are currently open.
+    Jun 1–17 and Jul 5–10 are currently open; August and September 2027 have no bookings yet.
   </footer>
 </div>
 
@@ -131,7 +131,8 @@ function renderMonth(year, month, label){
   return html;
 }
 document.getElementById("cals").innerHTML =
-  renderMonth(2027,5,"June 2027") + renderMonth(2027,6,"July 2027");
+  renderMonth(2027,5,"June 2027") + renderMonth(2027,6,"July 2027") +
+  renderMonth(2027,7,"August 2027") + renderMonth(2027,8,"September 2027");
 
 document.getElementById("rows").innerHTML = bookings.map(b=>`
   <tr>
