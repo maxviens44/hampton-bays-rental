@@ -181,6 +181,7 @@
   const parseMoney = v => { const n = parseFloat(String(v||"").replace(/[^0-9.-]/g,"")); return isNaN(n)?0:n; };
   const platClass = p => (["Airbnb","VRBO","Direct"].includes(p)?p:"Other");
   const esc = s => { const d=document.createElement("div"); d.textContent=s??""; return d.innerHTML; };
+  const escAttr = s => String(s??"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
   const todayKey = (()=>{ const t=new Date(); return `${t.getFullYear()}-${String(t.getMonth()+1).padStart(2,"0")}-${String(t.getDate()).padStart(2,"0")}`; })();
 
   function showApp(){ loginScreen.style.display='none'; appScreen.style.display='block'; }
@@ -317,7 +318,7 @@
       if(!c){ cells += `<div class="day free${isToday}"><span class="num">${n}</span></div>`; continue; }
       bookedInMonth++;
       const dateLabel = `${label.split(" ")[0]} ${n}, ${year}`;
-      const tip = esc(tipData(dateLabel, c));
+      const tip = escAttr(tipData(dateLabel, c));
       if(c.length===1){ cells += `<div class="day booked${isToday}" style="background:${c[0].color}" data-tip="${tip}"><span class="num">${n}</span></div>`; }
       else { cells += `<div class="day turn${isToday}" style="background:linear-gradient(135deg,${c[0].color} 0 50%,${c[1].color} 50% 100%)" data-tip="${tip}"><span class="num">${n}</span></div>`; }
     }
