@@ -66,6 +66,14 @@
   .day.booked{color:#fff;font-weight:600}
   .day.turn{color:#fff;font-weight:600}
   .day.today{outline:2px solid var(--accent);outline-offset:1px}
+  .day.booked,.day.turn{cursor:pointer}
+  #tt{position:fixed;z-index:60;pointer-events:none;background:#111827;color:#fff;border-radius:9px;padding:9px 11px;font-size:12.5px;line-height:1.5;max-width:240px;box-shadow:0 8px 24px rgba(0,0,0,.25);opacity:0;transition:opacity .12s;white-space:normal}
+  #tt.show{opacity:1}
+  #tt .tt-date{font-weight:700;margin-bottom:4px;font-size:12px;color:#cbd5e1}
+  #tt .tt-row{display:flex;align-items:center;gap:7px}
+  #tt .tt-row+.tt-row{margin-top:3px}
+  #tt .tt-chip{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+  #tt .tt-plat{color:#9ca3af;margin-left:2px}
   table{width:100%;border-collapse:collapse;margin-top:28px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
   th,td{text-align:left;padding:13px 16px;font-size:14px;border-bottom:1px solid var(--line)}
   th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);background:#fafbfc}
@@ -133,6 +141,7 @@
     </div>
 
     <div class="cals" id="cals"></div>
+    <div id="tt" role="tooltip" aria-hidden="true"></div>
 
     <table id="booking-table">
       <thead>
@@ -223,6 +232,50 @@
 
   refreshBtn.addEventListener('click', ()=>{ loadAndRender(); });
 
+  // ── Hover tooltip: who's booked on a given day ──
+  const tt = document.getElementById('tt');
+  const cals = document.getElementById('cals');
+
+  function buildTip(raw){
+    let data;
+    try{ data = JSON.parse(raw); }catch(e){ return ""; }
+    const rows = data.g.map(g =>
+      `<div class="tt-row"><span class="tt-chip" style="background:${esc(g.c)}"></span>` +
+      `<span>${esc(g.n)}</span><span class="tt-plat">· ${esc(g.p)}</span></div>`
+    ).join("");
+    return `<div class="tt-date">${esc(data.d)}</div>${rows}`;
+  }
+
+  function positionTip(e){
+    const pad = 14;
+    let x = e.clientX + pad, y = e.clientY + pad;
+    const r = tt.getBoundingClientRect();
+    if(x + r.width + 8 > window.innerWidth) x = e.clientX - r.width - pad;
+    if(y + r.height + 8 > window.innerHeight) y = e.clientY - r.height - pad;
+    tt.style.left = Math.max(8, x) + "px";
+    tt.style.top  = Math.max(8, y) + "px";
+  }
+
+  function hideTip(){ tt.classList.remove('show'); tt.setAttribute('aria-hidden','true'); }
+
+  cals.addEventListener('mouseover', (e)=>{
+    const cell = e.target.closest('.day[data-tip]');
+    if(!cell){ return; }
+    tt.innerHTML = buildTip(cell.getAttribute('data-tip'));
+    tt.classList.add('show');
+    tt.setAttribute('aria-hidden','false');
+    positionTip(e);
+  });
+  cals.addEventListener('mousemove', (e)=>{
+    if(tt.classList.contains('show') && e.target.closest('.day[data-tip]')) positionTip(e);
+  });
+  cals.addEventListener('mouseout', (e)=>{
+    const to = e.relatedTarget;
+    if(!to || !to.closest || !to.closest('.day[data-tip]')) hideTip();
+  });
+  // hide on scroll / re-render so it never sticks
+  window.addEventListener('scroll', hideTip, { passive:true });
+
   function inRange(b){
     if(!b.checkIn || !b.checkOut) return false;
     const ci = new Date(b.checkIn+"T00:00:00"), co = new Date(b.checkOut+"T00:00:00");
@@ -233,15 +286,20 @@
     const map = {};
     for(const b of list){
       const plat = platClass(b.platform);
+      const info = { color: PLAT[plat], name: b.name || "Unnamed guest", platform: b.platform || plat };
       let d = new Date(b.checkIn+"T00:00:00");
       const end = new Date(b.checkOut+"T00:00:00");
       while(d < end){
         const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
-        (map[key] = map[key] || []).push(PLAT[plat]);
+        (map[key] = map[key] || []).push(info);
         d.setDate(d.getDate()+1);
       }
     }
     return map;
+  }
+
+  function tipData(dateLabel, infos){
+    return JSON.stringify({ d: dateLabel, g: infos.map(i => ({c:i.color, n:i.name, p:i.platform})) });
   }
 
   function renderMonth(year, month, label, nightMap){
@@ -256,9 +314,12 @@
       const key = `${year}-${String(month+1).padStart(2,"0")}-${String(n).padStart(2,"0")}`;
       const isToday = key === todayKey ? " today" : "";
       const c = nightMap[key];
-      if(!c){ cells += `<div class="day free${isToday}"><span class="num">${n}</span></div>`; }
-      else if(c.length===1){ bookedInMonth++; cells += `<div class="day booked${isToday}" style="background:${c[0]}"><span class="num">${n}</span></div>`; }
-      else { bookedInMonth++; cells += `<div class="day turn${isToday}" style="background:linear-gradient(135deg,${c[0]} 0 50%,${c[1]} 50% 100%)"><span class="num">${n}</span></div>`; }
+      if(!c){ cells += `<div class="day free${isToday}"><span class="num">${n}</span></div>`; continue; }
+      bookedInMonth++;
+      const dateLabel = `${label.split(" ")[0]} ${n}, ${year}`;
+      const tip = esc(tipData(dateLabel, c));
+      if(c.length===1){ cells += `<div class="day booked${isToday}" style="background:${c[0].color}" data-tip="${tip}"><span class="num">${n}</span></div>`; }
+      else { cells += `<div class="day turn${isToday}" style="background:linear-gradient(135deg,${c[0].color} 0 50%,${c[1].color} 50% 100%)" data-tip="${tip}"><span class="num">${n}</span></div>`; }
     }
     const emptyClass = bookedInMonth ? "" : " empty-month";
     return `<div class="cal${emptyClass}"><h2>${label}</h2><div class="grid">${cells}</div></div>`;
@@ -280,6 +341,7 @@
     const nightMap = buildNightMap(list);
     document.getElementById('cals').innerHTML =
       MONTHS.map(m => renderMonth(m[0], m[1], m[2], nightMap)).join("");
+    hideTip();
 
     // table
     const rows = document.getElementById('rows');
